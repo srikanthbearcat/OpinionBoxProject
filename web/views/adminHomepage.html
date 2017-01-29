@@ -1,0 +1,29 @@
+ <div class="container">
+    <!--left pan-->
+    <div class="list-group col-md-2" style="margin-top:70px;">
+
+        <a ui-sref="viewModifyFaculty" class="list-group-item">View/Modify Faculty</a>
+        <a ui-sref="addFaculty" class="list-group-item">Add Faculty</a>
+
+        
+    </div>
+    <!--Admin Dashboard-->
+    <div class="col-md-10"  >
+        <div  style="margin-top:70px; width: 90%;">                    
+            <div class="panel panel-default " >
+                <div class="panel-heading panel-color" >
+                    <div class="panel-title">Dashboard</div>
+
+                </div>     
+
+                <div style="padding-top:30px" class="panel-body" >
+                    <ul>
+                        <li><p class="lead">Recently added Faculty: </p></li>
+                        <li><p class="lead">Number of faculty added: {{facultyData.length}}</p></li>
+                    </ul>
+
+                </div>                     
+            </div>  
+        </div>
+    </div>
+</div>
