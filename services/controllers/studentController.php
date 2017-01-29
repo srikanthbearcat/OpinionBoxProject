@@ -14,7 +14,14 @@ $loginStudent = function () use ($app) {
         $stmt->bindParam("password", $password);
         $response = new stdClass();
         $response->user_type = "student";
-       
+        if ($stmt->execute()) {
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $response->success = count($records) > 0;
+            $response->info = $response->success ? $records[0] : 0;
+        } else {
+            $response->success = FALSE;
+            $response->data = 0;
+        }
         echo json_encode($response);
     } catch (Exception $ex) {
 
