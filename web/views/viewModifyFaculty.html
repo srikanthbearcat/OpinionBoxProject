@@ -36,7 +36,24 @@
                                 {{ faculty.last_name || 'empty' }}
                             </span>
                 </td>
-                
+                <td>
+                            <span editable-text="faculty.user_name" e-name="user_name" e-form="rowform"
+                                  onbeforesave="checkUserName($data)" e-required>
+                                {{ faculty.user_name || 'empty' }}
+                            </span>
+                </td>
+                <td>
+                            <span editable-text="faculty.password" e-name="password" e-form="rowform"
+                                  onbeforesave="checkPassword($data)" e-required>
+                                {{ faculty.password || 'empty' }}
+                            </span>
+                </td>
+                <td>
+                            <span editable-text="faculty.email" e-name="email" e-form="rowform"
+                                  onbeforesave="checkEmail($data)" e-required>
+                                {{ faculty.email || 'empty' }}
+                            </span>
+                </td>
                 <td style="white-space: nowrap">
                     <form editable-form name="rowform" onaftersave="saveFaculty($data,faculty)"
                           ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == faculty">
