@@ -1,0 +1,74 @@
+<!--SignIn Panel-->
+<div class="container">
+    <div class="col-md-6" style="margin-top:100px;">
+        <img src="web/views/images/login_image.gif" alt="login" width="500px"></img>
+    </div>
+    <div style="margin-top:100px; " class="col-md-5 ">
+        <div class="panel panel-default ">
+            <div class="panel-heading panel-color">
+                <div class="panel-title">Sign In</div>
+
+            </div>
+
+            <div style="padding-top:30px" class="panel-body">
+
+                <!--<div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>-->
+
+                <form name="loginForm" class="form-horizontal" novalidate>
+                    <div style="margin-bottom: 10px" class="input-group"
+                         ng-class="{'has-error' : loginForm.usertype.$invalid && (loginForm.usertype.$dirty || loginForm.$submitted)}">
+                        <label class="radio-inline"><input type="radio" name="usertype" ng-model="loginInfo.usertype"
+                                                           value="student" class="active"
+                                                           ng-required="!loginInfo.usertype">Student</label>
+                        <label class="radio-inline"><input type="radio" name="usertype" ng-model="loginInfo.usertype"
+                                                           value="faculty"
+                                                           ng-required="!loginInfo.usertype">Faculty</label>
+                        <label class="radio-inline"><input type="radio" name="usertype" ng-model="loginInfo.usertype"
+                                                           value="admin" ng-required="!loginInfo.usertype">Admin</label>
+                        <span class="help-block"
+                              ng-show="loginForm.usertype.$error.required && (loginForm.usertype.$dirty|| loginForm.$submitted) ">*Select one option</span>
+                    </div>
+                    <div style="margin-bottom: 20px"
+                         ng-class="{'has-error' : loginForm.username.$invalid && (loginForm.username.$dirty || loginForm.$submitted)}">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <input type="text" class="form-control" id="username" name="username"
+                                   ng-model="loginInfo.username"
+                                   placeholder="username" ng-required="true">
+
+                        </div>
+                        <span class="help-block"
+                              ng-show="loginForm.username.$error.required && (loginForm.username.$dirty|| loginForm.$submitted) ">*username is required</span>
+                    </div>
+                    <div style="margin-bottom: 20px"
+                         ng-class="{'has-error' : loginForm.password.$invalid && (loginForm.password.$dirty|| loginForm.$submitted)}">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                            <input id="password" type="password" name="password" class="form-control"
+                                   ng-model="loginInfo.password"
+                                   placeholder="password" ng-required="true"></input>
+                        </div>
+                        <span class="help-block"
+                              ng-show="loginForm.password.$error.required && (loginForm.password.$dirty || loginForm.$submitted)">*password is required</span>
+                    </div>
+
+                    <!--<div class="alert alert-success page-alert">-->
+                    <!--<p id="validations"></p>-->
+                    <!--</div>-->
+                    <div style="margin-top:10px" class="form-group">
+                        <!-- Button -->
+                        <div class="col-sm-15 text-center controls">
+
+                            <button type="submit" class="btn btn-success" ng-click="onSubmitForm()"> Login</button>
+                        </div>
+                    </div>
+                </form>
+                <!--<div class="alert alert-danger alert-dismissable fade in" ng-show="loginAlert">-->
+                <!--<a href="#" class="close" data-dismiss="alert" aria-label="close" ng-click="loginAlert =!loginAlert">&times;</a>-->
+                <!--Incorrect username or password.-->
+                <!--</div>-->
+                <div uib-alert  ng-class="'alert-danger'" ng-show="loginAlert" close="loginAlert =!loginAlert" >Incorrect username or password</div>
+            </div>
+        </div>
+    </div>
+</div>
