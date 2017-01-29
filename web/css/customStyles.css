@@ -1,0 +1,121 @@
+
+/* 
+    Created on : 5 Nov, 2016, 2:35:14 PM
+    Author     : S525796
+*/
+
+@media screen and (min-width: 960px) {
+    html {
+        margin-left: calc(100vw - 100%);
+        margin-right: 0;
+
+    }
+}
+/*html,*/
+/*body {*/
+    /*margin:0;*/
+    /*padding:0;*/
+    /*height:100%;*/
+/*}*/
+/*wraps whole content*/
+.wrapper{
+    min-height:100%;
+    position:relative;
+}
+    
+/*header*/
+.header{
+
+}
+/*content*/
+.content{
+    padding-bottom:60px; /* Height of the footer element */
+
+}
+
+/*footer*/ 
+.footer {
+    position:absolute;
+    bottom:0;
+    left:0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    line-height: 60px; /* Vertically center the text there */
+    background-color: #ECEFF1;
+    color: #ffffff;
+}
+
+/*float footer text to right*/
+.float-right {
+    float: right !important;
+}
+
+
+.header-background {
+    background: url("images/header-bg.jpg"); center top no-repeat;
+    height: 100px;
+}
+
+.header-northwest-logo {  
+    background: url("images/Northwest_Logo.png")  top no-repeat;
+    height: 150px;
+    margin: 0 800px 0 0;
+}
+
+/*navigation css*/
+nav.navbar-findcond { background: #fff;  box-shadow: 0 2px 1px 0 #ccc; font-size: 18px; }
+nav.navbar-findcond a { color: #26722C; }
+nav.navbar-findcond ul.navbar-nav a { color: #26722C; border-style: solid; border-width: 0 0 4px 0; border-color: #fff; }
+nav.navbar-findcond ul.navbar-nav a:hover,
+nav.navbar-findcond ul.navbar-nav a:visited,
+nav.navbar-findcond ul.navbar-nav a:focus,
+nav.navbar-findcond ul.navbar-nav a:active { background: #fff; }
+nav.navbar-findcond ul.navbar-nav a:hover { border-color: #26722C; }
+nav.navbar-findcond li.divider { background: #ccc; }
+nav.navbar-findcond button.navbar-toggle { background: #26722C; border-radius: 2px; }
+nav.navbar-findcond button.navbar-toggle:hover { background: #999; }
+nav.navbar-findcond button.navbar-toggle > span.icon-bar { background: #fff; }
+nav.navbar-findcond ul.dropdown-menu { border: 0; background: #fff; border-radius: 4px; margin: 4px 0; box-shadow: 0 0 4px 0 #ccc; }
+nav.navbar-findcond ul.dropdown-menu > li > a { color: #444; }
+nav.navbar-findcond ul.dropdown-menu > li > a:hover { background: #26722C; color: #fff; }
+
+
+/*panel color*/
+.panel-default > .panel-color {
+    color: #ffffff;
+    background: #6AB344;
+    border-color: #6AB344;
+}
+/*panel Title size and font*/
+.panel-title{
+    text-align: center;
+    font-size: 25px;
+ 
+}
+/*button size*/
+.btn-success{
+    font-size: 20px; 
+
+}
+/*Gradient color:gray*/
+#grad1 {
+    height: 100%;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+26,ededed+100 */
+    background: rgb(255,255,255); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 26%, rgba(237,237,237,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 26%,rgba(237,237,237,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  rgba(255,255,255,1) 50%,rgba(237,237,237,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+    background-size: cover;
+}
+
+.table > tbody > tr > td {
+     vertical-align: middle;
+}
+
+.table > thead > tr > th {
+     vertical-align: middle;
+     font-weight: bolder;
+     font-size: medium;
+}
