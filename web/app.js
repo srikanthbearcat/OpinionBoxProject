@@ -46,11 +46,11 @@ app.config(function ($stateProvider,$urlRouterProvider, $locationProvider) {
         controller: "studentController",
         templateUrl: "web/views/studentHomepage.html"
     });
-    $stateProvider.state("studentViewQuestions", {
-        url: "/studentViewQuestions",
-        controller: "studentController",
-        templateUrl: "web/views/studentViewQuestions.html"
-    });
+    // $stateProvider.state("studentViewQuestions", {
+    //     url: "/studentViewQuestions",
+    //     controller: "studentController",
+    //     templateUrl: "web/views/studentViewQuestions.html"
+    // });
     // $locationProvider.html5Mode(true);
 });
 app.run(function($rootScope, $location,editableOptions) {
