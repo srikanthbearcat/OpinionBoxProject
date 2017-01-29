@@ -1,0 +1,58 @@
+<!--left pan-->
+<div class="list-group col-md-2" style="margin-top:70px;">
+    <a ui-sref="addCourse" class="list-group-item">Add Course</a>
+    <a ui-sref="modifyCourse"  class="list-group-item">View/Modify Course</a>
+</div>
+
+<!--right dashboard-->
+<div class="col-md-10">
+    <h2>Courses</h2>
+    <table class="table table-hover" style="">
+        <thead>
+        <tr style="background-color: green; opacity: 0.75; color: white;height: 52px">
+            <th>S.No</th>
+            <th>Course CRN</th>
+            <th>Course Name</th>
+            <th>Trimester</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="course in courseData track by $index">
+            <td>{{$index +1}}</td>
+            <td >
+               {{course.course_crn}}
+            </td>
+            <td >
+               {{course.course_name}}
+            </td>
+            <td >
+               {{course.trimester}}
+            </td>
+        </tr>
+
+
+        <!--<tr>-->
+
+        <!--<td><a href="viewGroups.html" >44-643</a></td>-->
+        <!--<td><a href="viewGroups.html" >Mobile Computing - iOS</a></td>-->
+        <!--<td><a href="viewGroups.html" >Fall 2016</a></td>-->
+        <!--</tr>-->
+
+        <!--<tr>-->
+        <!--<td>44-560</td>-->
+        <!--<td>ADB topics in DB systems</td>-->
+        <!--<td>Fall 2016</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<td>44-691</td>-->
+        <!--<td>Graduate Directed Project</td>-->
+        <!--<td>Fall 2016</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<td>44-542</td>-->
+        <!--<td>Object oriented programming</td>-->
+        <!--<td>Fall 2016</td>-->
+        <!--</tr>-->
+        </tbody>
+    </table>
+</div>
