@@ -77,7 +77,20 @@
                 </div>
                 </br></br></br>
             </div>
-            
+            <div class="form-group">
+                <label  class="col-sm-3 control-label">Password <span
+                        style="color: red">*</span></label>
+                <div class="col-sm-8" ng-class="{'has-error' : addFacultyForm.password.$invalid && (addFacultyForm.password.$dirty || addFacultyForm.$submitted)}">
+                    <input type="password"
+                           ng-required="true"
+                           name="password"
+                           ng-model="addFaculty.password"
+                           class="form-control "
+                    >
+                    <span class="help-block"
+                          ng-show="addFacultyForm.password.$error.required && (addFacultyForm.password.$dirty|| addFacultyForm.$submitted) ">You can't leave this empty</span>
+
+                </div>
                 </br></br></br>
             </div>
             <div class="form-group">
