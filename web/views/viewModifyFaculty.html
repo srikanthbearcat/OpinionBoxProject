@@ -30,7 +30,12 @@
                                 <!--{{ faculty.first_name || 'empty' }}-->
                     </span>
                 </td>
-               
+                <td>
+                            <span editable-text="faculty.last_name" e-name="last_name" e-form="rowform"
+                                  onbeforesave="checkLastName($data)" e-required>
+                                {{ faculty.last_name || 'empty' }}
+                            </span>
+                </td>
                 
                 <td style="white-space: nowrap">
                     <form editable-form name="rowform" onaftersave="saveFaculty($data,faculty)"
