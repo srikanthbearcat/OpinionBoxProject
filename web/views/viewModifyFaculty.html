@@ -1,0 +1,70 @@
+<div class="container">
+    <!--left pan-->
+    <div class="list-group col-md-2" style="margin-top:70px;">
+
+        <a ui-sref="viewModifyFaculty" class="list-group-item active">View/Modify Faculty</a>
+        <a ui-sref="addFaculty" class="list-group-item">Add Faculty</a>
+
+
+    </div>
+    <div class="col-md-10 tab-content">
+        <h2>Faculty Details</h2>
+        <table class="table table-hover table-striped " align="center" style="table-layout: fixed"><thead>
+
+            <tr style="background-color: green; opacity: 0.75; color: white;height: 52px s">
+                <th style="width: 50px" >S.No</th>
+                <th style="width: 120px" >First Name</th>
+                <th style="width: 100px">Last Name</th>
+                <th style="width: 100px">Username</th>
+                <th style="width: 100px">Password</th>
+                <th style="width: 250px">Email</th>
+                <th style="width: 120px">Edit</th>
+            </tr>
+
+            <tr ng-repeat="faculty in facultyData track by $index">
+                <td >{{$index +1}}</td>
+                <td style="width: 120px">
+                    <span editable-text="faculty.first_name" e-name="first_name" e-form="rowform"
+                          onbeforesave="checkFirstName($data)" e-required>
+                        {{ faculty.first_name || 'empty' }}
+                                <!--{{ faculty.first_name || 'empty' }}-->
+                    </span>
+                </td>
+               
+                
+                <td style="white-space: nowrap">
+                    <form editable-form name="rowform" onaftersave="saveFaculty($data,faculty)"
+                          ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == faculty">
+                        <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                            save
+                        </button>
+                        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                            cancel
+                        </button>
+                    </form>
+                    <div class="buttons" ng-show="!rowform.$visible">
+                        <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+                        <button class="btn btn-danger" ng-click="removeFaculty($index, faculty.user_name)">del</button>
+                    </div>
+                </td>
+            </tr>
+
+
+            <!--old code without xeditable-->
+            <!--<tr ng-repeat="faculty in facultyData track by $index">-->
+            <!--<td>{{$index +1}}</td>-->
+            <!--<td>{{faculty.first_name}}</td>-->
+            <!--<td>{{faculty.last_name}}</td>-->
+            <!--<td>{{faculty.user_name}}</td>-->
+            <!--<td>{{faculty.password}}</td>-->
+            <!--<td>{{faculty.email}}</td>-->
+            <!--<td>-->
+            <!--<a ui-sref="deleteFaculty" ng-click="editFaculty(faculty)"><span class="glyphicon glyphicon-pencil"></span></a>-->
+            <!--</td>-->
+
+            <!--</tr>-->
+
+
+        </table>
+    </div>
+</div>
