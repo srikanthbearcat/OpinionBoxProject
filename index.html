@@ -1,0 +1,72 @@
+<html ng-app="myApp">
+
+<head>
+    <title>Opinion Box - Northwest</title>
+    <!--<base href="/">-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <!--<script src="http://code.jquery.com/jquery-1.9.1.js"></script>-->
+
+    <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <!--<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>-->
+    <!-- Custom styles for this template -->
+    <link href="web/css/customStyles.css" rel="stylesheet">
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="web/app.js"></script>
+    <script src="web/controllers/loginController.js"></script>
+    <script src="web/controllers/adminController.js"></script>
+    <script src="web/controllers/facultyController.js"></script>
+    <script src="web/controllers/navigationController.js"></script>
+
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <!--xeditable css and js-->
+    <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+    <link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.css">
+
+    <!--<script src="web/services/modalservice.js"></script>-->
+
+
+
+</head>
+<body id="grad1">
+<div class="wrapper">
+    <!--header-->
+    <div class="header">
+        <div class=" header-background">
+            <div class="container ">
+                <div class="header-northwest-logo">
+
+                </div>
+            </div>
+        </div>
+
+        <div ng-include="'web/views/navigationBar.html'" ng-if="location.path() !== '/login'" ng-controller="navigationController"></div>
+
+
+    </div>
+    <!--content-->
+    <div class="content">
+        <div class="container">
+        <!--<a ui-sref="login">login</a>-->
+        <div ui-view>
+            </div>
+        </div>
+    </div>
+
+
+    <!--footer-->
+    <div class="footer">
+        <div class="container">
+        <span class="text-muted">© 2016 Opinion Box  <span
+                class="float-right">Northwest Missouri State University.</span></span>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>
