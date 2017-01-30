@@ -2,119 +2,138 @@
     <!--left pan-->
     <div class="list-group col-md-2" style="margin-top:70px;">
         <a ui-sref="addCourse" class="list-group-item active">Add Course</a>
-        <a ui-sref="modifyCourse"  class="list-group-item ">View/Modify Course</a>
+        <a ui-sref="modifyCourse" class="list-group-item ">View/Modify Course</a>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-10">
+        <div class="col-md-8">
+            <div class="row">
+                <h2>Course Details</h2>
+                <form id="createCourseForm" class="form-horizontal" role="form" name="createCourse">
+                    <div class="form-group">
+                        <label class="col-md-3" for="courseName">Course Name: </label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" autocomplete="off" placeholder="Enter course name"
+                                   id="courseName" name="courseName" ng-model="courseName" required="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3"></label>
+                        <div class="col-md-8">
+                            <label for="courseName" generated="true" class="error"></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" for="courseCrn">Course CRN: </label>
+                        <div class="col-md-8">
+                            <input type="text" autocomplete="off" class="form-control" id="courseCrn"
+                                   placeholder="Enter course CRN"
+                                   name="courseCrn" ng-model="courseCrn" required="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3"></label>
+                        <div class="col-md-8">
+                            <label for="courseCrn" generated="true" class="error"></label>
+                        </div>
+                    </div>
 
-        <h2>Faculty Details</h2>
+                    <div class="form-group">
+                        <label class="col-md-3">
+                            <i class="glyphicon glyphicon glyphicon-info-sign fileinput-new"
+                               data-toggle="tooltip" data-placement="top" title="
+                               Data should contain appropriate headings(user_name,password,first_name,last_name,email_id),each field should be
+                               seperated by comma, no tailing and leading spaces before
+                               and after comma,each row should be seperated by new line
+                               and file should be saved with .csv extension.
+                               "></i>
+                        </label>
+                        <div class="col-md-5">
+                            <input id="filebutton" accept=".csv" name="filebutton"
+                                   fileread="files" class="input-file" type="file">
+                        </div>
+                        <div class="col-md-3">
+                            <a href="javascript:void(0)" ng-click="preview(callBack)" id="previewLink">preview</a>
+                            <!--                        <button class="input-buttongroup-addon btn btn-default" name="preview"
+                                                            ng-click="preview(callBack)" ng-show="studentData.length == 0">
+                                                        Preview File
+                                                    </button>-->
+                        </div>
+                    </div>
 
-        <form name="addFacultyForm" novalidate>
-            <div class="form-group">
-                <label  class="col-sm-3 control-label">First Name <span
-                        style="color: red">*</span></label>
-                <div class="col-sm-8" ng-class="{'has-error' : addFacultyForm.firstName.$invalid && (addFacultyForm.firstName.$dirty || addFacultyForm.$submitted)}">
-                    <input type="text"
-                           ng-required="true"
-                           name="firstName"
-                           ng-model="addFaculty.firstName"
-                           class="form-control "
-                    >
-                    <span class="help-block"
-                          ng-show="addFacultyForm.firstName.$error.required && (addFacultyForm.firstName.$dirty|| addFacultyForm.$submitted) ">You can't leave this empty</span>
+                    <div class="form-group">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-8">
+                            <label for="filebutton" generated="true" class="error"></label>
+                        </div>
+                    </div>
+                    <div uib-alert ng-class="'alert-danger'" ng-show="csvformatwrong" close="csvformatwrong = false">Please check the format of the csv file you are up
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-8">
+                            <!--                        <button class="input-buttongroup-addon btn btn-default" name="preview"
+                                                            ng-click="preview(callBack)" ng-show="studentData.length == 0">
+                                                        Get Student Data Preview
+                                                    </button>-->
+                            <button class="input-buttongroup-addon btn btn-default"
+                                    name="save" ng-click="saveData()"
+                                    ng-disabled="studentData.length == 0">
+                                Save
+                            </button>
+                            <button class="input-buttongroup-addon btn btn-default" name="cancel"
+                                    data-dismiss="fileinput" ng-click="cancel()"
+                                    ng-disabled="studentData.length == 0">Cancel
+                            </button>
+                        </div>
+                    </div>
+                </form>
 
+                <div id="successMessage" style="display:none;border: 2px solid green;
+                     min-height: 40px;
+                     width: 768px;">
+                    <p style="color: green;font-weight: bold;">
+                        Successful!! Course is created and students added to the course successfully.
+                    </p>
                 </div>
-                </br></br></br>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">last Name <span
-                        style="color: red">*</span></label>
-                <div class="col-sm-8" ng-class="{'has-error' : addFacultyForm.lastName.$invalid && (addFacultyForm.lastName.$dirty || addFacultyForm.$submitted)}">
-                    <input type="text"
-                           ng-required="true"
-                           name="lastName"
-                           ng-model="addFaculty.lastName"
-                           class="form-control "
-                    >
-                    <span class="help-block"
-                          ng-show="addFacultyForm.lastName.$error.required && (addFacultyForm.lastName.$dirty|| addFacultyForm.$submitted) ">You can't leave this empty</span>
+                <label id="errorMessageLabel" class="error"></label>
 
-                </div>
-                </br></br></br>
             </div>
+        </div>
+        <hr>
 
-            <div class="form-group">
-                <label  class="col-sm-3 control-label">Email address <span
-                        style="color: red">*</span></label>
-                <div class="col-sm-8" ng-class="{'has-error' : addFacultyForm.emailAddress.$invalid && (addFacultyForm.emailAddress.$dirty || addFacultyForm.$submitted)}">
-                    <input type="email"
-                           ng-required="true"
-                           name="emailAddress"
-                           ng-model="addFaculty.emailAddress"
-                           class="form-control "
-                    >
-                    <span class="help-block"
-                          ng-show="addFacultyForm.emailAddress.$error.required && (addFacultyForm.emailAddress.$dirty|| addFacultyForm.$submitted) ">You can't leave this empty</span>
+        <div class="row">
+            <div class="col-md-12" style="margin-top: 10px;">
+                <table class="table table-striped" ng-show="studentData.length > 0">
+                    <thead>
+                    <tr>
+                        <th>S No</th>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th>Username</th>
+                        <th>E-mail ID</th>
+                        <th>Password</th>
+                        <th>Group Number</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="student in studentData">
+                        <td>{{$index + 1}}</td>
+                        <td>{{student.first_name}}</td>
+                        <td>{{student.last_name}}</td>
+                        <td>{{student.user_name}}</td>
+                        <td>{{student.email_id}}</td>
+                        <td>{{student.password}}</td>
+                        <td>{{student.group_no}}</td>
+                    </tr>
+                    <!--cancel-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                </div>
-                </br></br></br>
-            </div>
-            <div class="form-group">
-                <label  class="col-sm-3 control-label">Username <span
-                        style="color: red">*</span></label>
-                <div class="col-sm-8" ng-class="{'has-error' : addFacultyForm.username.$invalid && (addFacultyForm.username.$dirty || addFacultyForm.$submitted)}">
-                    <input type="text"
-                           ng-required="true"
-                           name="username"
-                           ng-model="addFaculty.username"
-                           class="form-control "
-                    >
-                    <span class="help-block"
-                          ng-show="addFacultyForm.username.$error.required && (addFacultyForm.username.$dirty|| addFacultyForm.$submitted) ">You can't leave this empty</span>
-
-                </div>
-                </br></br></br>
-            </div>
-            <div class="form-group">
-                <label  class="col-sm-3 control-label">Password <span
-                        style="color: red">*</span></label>
-                <div class="col-sm-8" ng-class="{'has-error' : addFacultyForm.password.$invalid && (addFacultyForm.password.$dirty || addFacultyForm.$submitted)}">
-                    <input type="password"
-                           ng-required="true"
-                           name="password"
-                           ng-model="addFaculty.password"
-                           class="form-control "
-                    >
-                    <span class="help-block"
-                          ng-show="addFacultyForm.password.$error.required && (addFacultyForm.password.$dirty|| addFacultyForm.$submitted) ">You can't leave this empty</span>
-
-                </div>
-                </br></br></br>
-            </div>
-            <div class="form-group">
-                <label  class="col-sm-3 control-label">Confirm password <span
-                        style="color: red">*</span></label>
-                <div class="col-sm-8" ng-class="{'has-error' : addFacultyForm.confirmPassword.$invalid && (addFacultyForm.confirmPassword.$dirty || addFacultyForm.$submitted)}">
-                    <input type="password"
-                           ng-required="true"
-                           name="confirmPassword"
-                           ng-model="addFaculty.confirmPassword"
-                           class="form-control "
-                           ng-pattern="addFaculty.password">
-                    <span class="help-block"
-                          ng-show="addFacultyForm.confirmPassword.$error.required && (addFacultyForm.confirmPassword.$dirty|| addFacultyForm.$submitted) ">You can't leave this empty</span>
-                    <span class="help-block"
-                          ng-show="addFacultyForm.confirmPassword.$error.pattern && addFacultyForm.confirmPassword.$touched">Password mismatch</span>
-                </div>
-                </br></br></br>
-            </div>
-            <div style="margin-left:150px">
-                <button type="submit"  class="btn btn-success" ng-click="addNewFaculty()">
-                    Invite
-                </button>
-            </div>
-        </form>
-        <div uib-alert  ng-class="'alert-danger'" ng-show="addedFacultySuccess" close="addedFacultySuccess = false" >Faculty added successfully</div>
-        <div uib-alert  ng-class="'alert-danger'" ng-show="addedFacultyFailed" close="addedFacultyFailed = false" >Problem in adding faculty</div>
-        <div uib-alert  ng-class="'alert-danger'" ng-show="addFacultyExist" close="addFacultyExist = false" >Username is already taken</div>
     </div>
+    <!--old code-->
+
+
+</div>
 </div>
