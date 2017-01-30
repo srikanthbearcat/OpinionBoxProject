@@ -56,6 +56,11 @@ app.config(function ($stateProvider,$urlRouterProvider, $locationProvider) {
     //     controller: "facultyController",
     //     templateUrl: "web/views/facultyAddingQuestions.html"
     // });
+    // $stateProvider.state("studentGroups", {
+    //     url: "/studentgroups",
+    //     controller: "studentController",
+    //     templateUrl: "web/views/studentGroups.html"
+    // });
     // $locationProvider.html5Mode(true);
 });
 app.run(function($rootScope, $location,editableOptions) {
