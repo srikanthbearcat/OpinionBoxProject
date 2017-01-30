@@ -224,3 +224,47 @@
 
 </div>
 </div>
+<script>
+    $(document).ready(function () {
+//        $('[data-toggle="tooltip"]').css("align", "left").tooltip();
+
+        $('#createCourseForm').validate({
+            rules: {
+                courseName: {
+                    required: true
+                },
+                courseCrn: {
+                    minlength: 4,
+                    number: true,
+                    required: true
+                },
+                studentDataFile: {
+                    required: true
+                }
+
+            },
+            messages: {
+                courseName: {
+                    required: "Please enter course name"
+                },
+                courseCrn: {
+                    minlength: "Minumum length of CRN should be 4 digits",
+                    number: "CRN should be in digits",
+                    required: "Please enter the CRN"
+                },
+                studentDataFile: {
+                    required: "Please browse a csv file"
+                }
+            },
+            highlight: function (element) {
+                $(element).closest('.control-group').removeClass('success').addClass('error');
+            },
+            success: function (element) {
+            },
+            submitHandler: function (form) {
+//                    onSubmitForm();
+            }
+        });
+
+    });
+</script>
