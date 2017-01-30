@@ -66,7 +66,10 @@
                     </form>
                     <div class="buttons" ng-show="!rowform.$visible">
                         <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
-                        <button class="btn btn-danger" ng-click="removeFaculty($index, faculty.user_name)">del</button>
+                        <!--<button class="btn btn-danger" ng-click="removeFaculty($index, faculty.user_name)">del</button>-->
+			<button type="button" class="btn btn-danger" ng-click="removeFaculty($index, faculty.user_name)">
+          			<span class="glyphicon glyphicon-trash"></span> Trash 
+        		</button>
                     </div>
                 </td>
             </tr>
