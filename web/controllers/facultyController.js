@@ -4,17 +4,19 @@
 app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', function ($scope, $cookies, $state, $http, url, $uibModal) {
 //Get course data from database
     $scope.courseData = [];
-    $http.get(url + "/coursesByFaculty/"+ $cookies.get('username')).then(function successCallback(response) {
+    $http.get(url + "/coursesByFaculty/" + $cookies.get('username')).then(function successCallback(response) {
 
         $scope.courseData = response.data.info;
         console.log(JSON.stringify(response.data.info));
         console.log(JSON.stringify($scope.courseData));
     }, function errorCallback(response) {
     })
+
+
 }]);
 
 //controller to read CSV file
-app.controller('createCourseController', ['$scope', '$window','$uibModal','$http', 'url','$cookies', function ($scope, $window,$uibModal,$http, url,$cookies) {
+app.controller('createCourseController', ['$scope', '$window', '$uibModal', '$http', 'url', '$cookies', function ($scope, $window, $uibModal, $http, url, $cookies) {
 
     var USER_NAME_COLUMN_HEADER = "user_name";
     var PASSWORD_COLUMN_HEADER = "password";
@@ -22,13 +24,14 @@ app.controller('createCourseController', ['$scope', '$window','$uibModal','$http
     var LAST_NAME_COLUMN_HEADER = "last_name";
     var EMAIL_ID_COLUMN_HEADER = "email_id";
     var GROUP_NUMBER_COLUMN_HEADER = "group_no";
-
+    var GROUP_TOPIC_COLUMN_HEADER = "group_topic";
     $scope.csvformatwrong = false;
 
     $scope.studentData = [];
     $scope.courseCrn = "";
     $scope.files = null;
     $scope.courseName = "";
+    $scope.courseTrimester = "";
     $scope.callBack = function (data) {
 //                $scope.studentData = [];
         setTimeout(function () {
@@ -38,7 +41,7 @@ app.controller('createCourseController', ['$scope', '$window','$uibModal','$http
     };
     $scope.$watch('files', function (newValue, oldValue) {
         var data = [];
-        if ($scope.files == null){
+        if ($scope.files == null) {
             return;
         }
         console.log(JSON.stringify($scope.files));
@@ -49,12 +52,13 @@ app.controller('createCourseController', ['$scope', '$window','$uibModal','$http
             step: function (results) {
                 var row = results.data[0];
 
-                if (row[USER_NAME_COLUMN_HEADER] == (undefined || "" )
+                if (row[USER_NAME_COLUMN_HEADER] == (undefined )
                     || row[FIRST_NAME_COLUMN_HEADER] == undefined
                     || row[LAST_NAME_COLUMN_HEADER] == undefined
                     || row[EMAIL_ID_COLUMN_HEADER] == undefined
                     || row[PASSWORD_COLUMN_HEADER] == undefined
-                    || row[GROUP_NUMBER_COLUMN_HEADER] == undefined) {
+                    || row[GROUP_NUMBER_COLUMN_HEADER] == undefined
+                    || row[GROUP_TOPIC_COLUMN_HEADER] == undefined) {
                     // $scope.alert('sm', {modalHeader: "Error", modalBody: "Format Error: Please check the format of the csv file you are up", data:{}});
                     $scope.csvformatwrong = true;
 
@@ -69,7 +73,8 @@ app.controller('createCourseController', ['$scope', '$window','$uibModal','$http
                         last_name: row[LAST_NAME_COLUMN_HEADER],
                         email_id: row[EMAIL_ID_COLUMN_HEADER],
                         password: row[PASSWORD_COLUMN_HEADER],
-                        group_no: row[GROUP_NUMBER_COLUMN_HEADER]
+                        group_no: row[GROUP_NUMBER_COLUMN_HEADER],
+                        group_topic: row[GROUP_TOPIC_COLUMN_HEADER]
                     });
                 }
             },
@@ -105,27 +110,51 @@ app.controller('createCourseController', ['$scope', '$window','$uibModal','$http
 //                $("#save").css("visibility", "hidden");
     };
     $scope.saveData = function () {
-        if (!$scope.courseName || !$scope.courseCrn || $scope.studentData.length == 0)
+        if (!$scope.courseName || !$scope.courseCrn || !$scope.courseTrimester || $scope.studentData.length == 0)
             return;
-
-        $.ajax({
-            type: 'POST',
-            url: url+"/addCourse",
-            headers: {
-                "user_name": $cookies.get("username"),
-                "course_name": $scope.courseName,
-                "course_crn": $scope.courseCrn,
-                "data": JSON.stringify($scope.studentData)
-            }
-        }).done(function (data) {
-            if (data.success) {
+        var data = {
+            "faculty_user_name": $cookies.get("username"),
+            "course_name": $scope.courseName,
+            "course_crn": $scope.courseCrn,
+            "course_trimester": $scope.courseTrimester,
+            "student_data": JSON.stringify($scope.studentData)
+        }
+        console.log(JSON.stringify(data));
+        $http.post(url + "/addCourse", data).then(function successCallback(response) {
+            console.log(response.data.success + " add faculty request success");
+            if (response.data.success) {
                 $("#successMessage").fadeIn(2000).fadeOut(6000);
                 $("#errorMessageLabel").text("");
                 $scope.cancel();
             } else {
                 $("#errorMessageLabel").text(data.data).fadeIn(3000);
             }
+        }, function errorCallback(response) {
+            if (!response.data.success) {
+
+            }
+
         });
+
+
+        // $.ajax({
+        //     type: 'POST',
+        //     url: url + "/addCourse",
+        //     headers: {
+        //         "user_name": $cookies.get("username"),
+        //         "course_name": $scope.courseName,
+        //         "course_crn": $scope.courseCrn,
+        //         "data": JSON.stringify($scope.studentData)
+        //     }
+        // }).done(function (data) {
+        //     if (data.success) {
+        //         $("#successMessage").fadeIn(2000).fadeOut(6000);
+        //         $("#errorMessageLabel").text("");
+        //         $scope.cancel();
+        //     } else {
+        //         $("#errorMessageLabel").text(data.data).fadeIn(3000);
+        //     }
+        // });
     };
     $scope.cancel = function () {
         $scope.courseCrn = "";

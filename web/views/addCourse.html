@@ -36,7 +36,20 @@
                             <label for="courseCrn" generated="true" class="error"></label>
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <label class="col-md-3" for="courseTrimester">Course Trimester: </label>
+                        <div class="col-md-8">
+                            <input type="text" autocomplete="off" class="form-control" id="courseTrimester"
+                                   placeholder="Enter course trimester"
+                                   name="courseTrimester" ng-model="courseTrimester" required="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3"></label>
+                        <div class="col-md-8">
+                            <label for="courseTrimester" generated="true" class="error"></label>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="col-md-3">
                             <i class="glyphicon glyphicon glyphicon-info-sign fileinput-new"
@@ -113,6 +126,7 @@
                         <th>E-mail ID</th>
                         <th>Password</th>
                         <th>Group Number</th>
+                        <th>Group Topic</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -124,6 +138,7 @@
                         <td>{{student.email_id}}</td>
                         <td>{{student.password}}</td>
                         <td>{{student.group_no}}</td>
+                        <td>{{student.group_topic}}</td>
                     </tr>
                     <!--cancel-->
                     </tbody>
@@ -238,6 +253,10 @@
                     number: true,
                     required: true
                 },
+                courseTrimester: {
+
+                    required: true
+                },
                 studentDataFile: {
                     required: true
                 }
@@ -251,6 +270,9 @@
                     minlength: "Minumum length of CRN should be 4 digits",
                     number: "CRN should be in digits",
                     required: "Please enter the CRN"
+                },
+                courseTrimester: {
+                    required: "Please enter course trimester"
                 },
                 studentDataFile: {
                     required: "Please browse a csv file"

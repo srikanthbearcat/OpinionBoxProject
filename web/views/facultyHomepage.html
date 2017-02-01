@@ -17,16 +17,16 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="course in courseData track by $index">
+        <tr ng-repeat="course in courseData track by $index" ng-click="getStudents(course.course_crn)">
             <td>{{$index +1}}</td>
             <td >
-               {{course.course_crn}}
+                <a ui-sref="addCourse"> {{course.course_crn}}</a>
             </td>
             <td >
-               {{course.course_name}}
+                <a ui-sref="addCourse"> {{course.course_name}}</a>
             </td>
             <td >
-               {{course.trimester}}
+                <a ui-sref="addCourse"> {{course.trimester}}</a>
             </td>
         </tr>
 

@@ -33,13 +33,18 @@ app.config(function ($stateProvider,$urlRouterProvider, $locationProvider) {
     });
     $stateProvider.state("addCourse", {
         url: "/addCourse",
-        controller: "facultyController",
+        controller: "createCourseController",
         templateUrl: "web/views/addCourse.html"
     });
     $stateProvider.state("modifyCourse", {
         url: "/viewModifyCourse",
         controller: "facultyController",
         templateUrl: "web/views/viewModifyCourse.html"
+    });
+    $stateProvider.state("viewCourse", {
+        url: "/viewCourse",
+        controller: "facultyController",
+        templateUrl: "web/views/viewCourse.html"
     });
     $stateProvider.state("studentHome", {
         url: "/studenthome",
@@ -75,7 +80,9 @@ app.controller('modalInstanceController', function ($scope,$rootScope, $uibModal
     $scope.modalData.bodyText = modalInfo.modalBody;
 
     $scope.ok = function () {
-        $rootScope.$broadcast("DeleteFacultyConfirm", modalInfo);
+        if(modalInfo.data.delete){
+            $rootScope.$broadcast("DeleteFacultyConfirm", modalInfo);
+        }
         $uibModalInstance.close();
     }
     $scope.cancel = function () {

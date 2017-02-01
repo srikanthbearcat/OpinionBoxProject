@@ -5,7 +5,7 @@ require '_lib/class.Config.php';
 require '_lib/class.Core.php';
 require '_lib/class.AutoLoader.php';
 
-//require 'Models/class.UserName.php';
+//require 'Models/class.UserAccount.php';
 
 \Slim\Slim::registerAutoloader();
 

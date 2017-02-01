@@ -94,7 +94,7 @@ app.controller("LoginController", ['$scope', '$cookies', '$state', '$http', '$ro
             $cookies.put('email', response.data.info.email);
             $cookies.put('first_name', response.data.info.first_name);
             $cookies.put('last_name', response.data.info.last_name);
-            $cookies.put('username', response.data.info.user_name);
+            $cookies.put('username', response.data.user_name);
             $state.reload();
         } else {
             console.log("enter else");
