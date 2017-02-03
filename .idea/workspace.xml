@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="164f7d12-4914-4cd5-a2dd-64b9c62cd0fb" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/views/viewCourse.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/services/Models/class.Course.php" afterPath="$PROJECT_DIR$/services/Models/class.Course.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/services/controllers/facultyController.php" afterPath="$PROJECT_DIR$/services/controllers/facultyController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/app.js" afterPath="$PROJECT_DIR$/web/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/controllers/facultyController.js" afterPath="$PROJECT_DIR$/web/controllers/facultyController.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/controllers/loginController.js" afterPath="$PROJECT_DIR$/web/controllers/loginController.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/views/facultyHomepage.html" afterPath="$PROJECT_DIR$/web/views/facultyHomepage.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/views/viewModifyCourse.html" afterPath="$PROJECT_DIR$/web/views/viewModifyCourse.html" />
     </list>
     <ignored path=".idea/dataSources.local.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -34,8 +27,8 @@
           <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/index.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="672">
-                  <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+                <state relative-caret-position="651">
+                  <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -78,19 +71,22 @@
           <file leaf-file-name="facultyController.php" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/services/controllers/facultyController.php">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="504">
-                  <caret line="30" column="2" selection-start-line="30" selection-start-column="2" selection-end-line="30" selection-end-column="2" />
+                <state relative-caret-position="518">
+                  <caret line="154" column="25" selection-start-line="154" selection-start-column="25" selection-end-line="154" selection-end-column="25" />
                   <folding>
-                    <marker date="1486158689031" expanded="true" signature="242:391" ph="SELECT first... faculty" />
-                    <marker date="1486158689031" expanded="true" signature="312:390" ph="SELECT first... user_account" />
-                    <marker date="1486158689031" expanded="true" signature="1291:1476" ph="SELECT cours... course" />
-                    <marker date="1486158689031" expanded="true" signature="1366:1475" ph="select id fr... faculty" />
-                    <marker date="1486158689031" expanded="true" signature="1424:1474" ph="select id fr... user_account" />
-                    <marker date="1486158689031" expanded="true" signature="3312:5052" ph="..." />
-                    <marker date="1486158689031" expanded="true" signature="5342:5425" ph="INSERT INTO `user_account`... " />
-                    <marker date="1486158689031" expanded="true" signature="6068:6140" ph="SELECT `user... user_account" />
-                    <marker date="1486158689031" expanded="true" signature="8265:8344" ph="SELECT `cour... course" />
-                    <marker date="1486158689031" expanded="true" signature="8865:8942" ph="SELECT `cour... course" />
+                    <marker date="1486158991802" expanded="true" signature="242:391" ph="SELECT first... faculty" />
+                    <marker date="1486158991802" expanded="true" signature="312:390" ph="SELECT first... user_account" />
+                    <marker date="1486158991802" expanded="true" signature="1291:1476" ph="SELECT cours... course" />
+                    <marker date="1486158991802" expanded="true" signature="1366:1475" ph="select id fr... faculty" />
+                    <marker date="1486158991802" expanded="true" signature="1424:1474" ph="select id fr... user_account" />
+                    <marker date="1486158991802" expanded="true" signature="3312:5052" ph="..." />
+                    <marker date="1486158991802" expanded="true" signature="5429:5528" ph="select id fr... faculty" />
+                    <marker date="1486158991802" expanded="true" signature="5470:5527" ph="select id fr... user_account" />
+                    <marker date="1486158991802" expanded="true" signature="5850:5978" ph="INSERT INTO course... " />
+                    <marker date="1486158991802" expanded="true" signature="6858:6941" ph="INSERT INTO `user_account`... " />
+                    <marker date="1486158991802" expanded="true" signature="7584:7656" ph="SELECT `user... user_account" />
+                    <marker date="1486158991802" expanded="true" signature="9781:9860" ph="SELECT `cour... course" />
+                    <marker date="1486158991802" expanded="true" signature="10381:10458" ph="SELECT `cour... course" />
                   </folding>
                 </state>
               </provider>
@@ -148,11 +144,11 @@
                 <state relative-caret-position="189">
                   <caret line="9" column="49" selection-start-line="9" selection-start-column="49" selection-end-line="9" selection-end-column="49" />
                   <folding>
-                    <marker date="1486158689031" expanded="true" signature="312:390" ph="SELECT first... user_account" />
-                    <marker date="1486158689031" expanded="true" signature="1291:1476" ph="SELECT cours... course" />
-                    <marker date="1486158689031" expanded="true" signature="1366:1475" ph="select id fr... faculty" />
-                    <marker date="1486158689031" expanded="true" signature="1424:1474" ph="select id fr... user_account" />
-                    <marker date="1486158689031" expanded="true" signature="3312:5052" ph="..." />
+                    <marker date="1486158991802" expanded="true" signature="312:390" ph="SELECT first... user_account" />
+                    <marker date="1486158991802" expanded="true" signature="1291:1476" ph="SELECT cours... course" />
+                    <marker date="1486158991802" expanded="true" signature="1366:1475" ph="select id fr... faculty" />
+                    <marker date="1486158991802" expanded="true" signature="1424:1474" ph="select id fr... user_account" />
+                    <marker date="1486158991802" expanded="true" signature="3312:5052" ph="..." />
                   </folding>
                 </state>
               </provider>
@@ -733,12 +729,12 @@
       <workItem from="1485848075102" duration="8654000" />
       <workItem from="1485910471749" duration="18914000" />
       <workItem from="1486020627469" duration="6004000" />
-      <workItem from="1486158534301" duration="157000" />
+      <workItem from="1486158534301" duration="458000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="46706000" />
+    <option name="totallyTimeSpent" value="47007000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="0" />
@@ -909,16 +905,19 @@
         <state relative-caret-position="2289">
           <caret line="109" column="0" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
           <folding>
-            <marker date="1486158689031" expanded="true" signature="242:391" ph="SELECT first... faculty" />
-            <marker date="1486158689031" expanded="true" signature="312:390" ph="SELECT first... user_account" />
-            <marker date="1486158689031" expanded="true" signature="1291:1476" ph="SELECT cours... course" />
-            <marker date="1486158689031" expanded="true" signature="1366:1475" ph="select id fr... faculty" />
-            <marker date="1486158689031" expanded="true" signature="1424:1474" ph="select id fr... user_account" />
-            <marker date="1486158689031" expanded="true" signature="3312:5052" ph="..." />
-            <marker date="1486158689031" expanded="true" signature="5342:5425" ph="INSERT INTO `user_account`... " />
-            <marker date="1486158689031" expanded="true" signature="6068:6140" ph="SELECT `user... user_account" />
-            <marker date="1486158689031" expanded="true" signature="8265:8344" ph="SELECT `cour... course" />
-            <marker date="1486158689031" expanded="true" signature="8865:8942" ph="SELECT `cour... course" />
+            <marker date="1486158991802" expanded="true" signature="242:391" ph="SELECT first... faculty" />
+            <marker date="1486158991802" expanded="true" signature="312:390" ph="SELECT first... user_account" />
+            <marker date="1486158991802" expanded="true" signature="1291:1476" ph="SELECT cours... course" />
+            <marker date="1486158991802" expanded="true" signature="1366:1475" ph="select id fr... faculty" />
+            <marker date="1486158991802" expanded="true" signature="1424:1474" ph="select id fr... user_account" />
+            <marker date="1486158991802" expanded="true" signature="3312:5052" ph="..." />
+            <marker date="1486158991802" expanded="true" signature="5429:5528" ph="select id fr... faculty" />
+            <marker date="1486158991802" expanded="true" signature="5470:5527" ph="select id fr... user_account" />
+            <marker date="1486158991802" expanded="true" signature="5850:5978" ph="INSERT INTO course... " />
+            <marker date="1486158991802" expanded="true" signature="6858:6941" ph="INSERT INTO `user_account`... " />
+            <marker date="1486158991802" expanded="true" signature="7584:7656" ph="SELECT `user... user_account" />
+            <marker date="1486158991802" expanded="true" signature="9781:9860" ph="SELECT `cour... course" />
+            <marker date="1486158991802" expanded="true" signature="10381:10458" ph="SELECT `cour... course" />
           </folding>
         </state>
       </provider>
@@ -1005,16 +1004,19 @@
         <state relative-caret-position="1554">
           <caret line="96" column="21" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="21" />
           <folding>
-            <marker date="1486158689031" expanded="true" signature="242:391" ph="SELECT first... faculty" />
-            <marker date="1486158689031" expanded="true" signature="312:390" ph="SELECT first... user_account" />
-            <marker date="1486158689031" expanded="true" signature="1291:1476" ph="SELECT cours... course" />
-            <marker date="1486158689031" expanded="true" signature="1366:1475" ph="select id fr... faculty" />
-            <marker date="1486158689031" expanded="true" signature="1424:1474" ph="select id fr... user_account" />
-            <marker date="1486158689031" expanded="true" signature="3312:5052" ph="..." />
-            <marker date="1486158689031" expanded="true" signature="5342:5425" ph="INSERT INTO `user_account`... " />
-            <marker date="1486158689031" expanded="true" signature="6068:6140" ph="SELECT `user... user_account" />
-            <marker date="1486158689031" expanded="true" signature="8265:8344" ph="SELECT `cour... course" />
-            <marker date="1486158689031" expanded="true" signature="8865:8942" ph="SELECT `cour... course" />
+            <marker date="1486158991802" expanded="true" signature="242:391" ph="SELECT first... faculty" />
+            <marker date="1486158991802" expanded="true" signature="312:390" ph="SELECT first... user_account" />
+            <marker date="1486158991802" expanded="true" signature="1291:1476" ph="SELECT cours... course" />
+            <marker date="1486158991802" expanded="true" signature="1366:1475" ph="select id fr... faculty" />
+            <marker date="1486158991802" expanded="true" signature="1424:1474" ph="select id fr... user_account" />
+            <marker date="1486158991802" expanded="true" signature="3312:5052" ph="..." />
+            <marker date="1486158991802" expanded="true" signature="5429:5528" ph="select id fr... faculty" />
+            <marker date="1486158991802" expanded="true" signature="5470:5527" ph="select id fr... user_account" />
+            <marker date="1486158991802" expanded="true" signature="5850:5978" ph="INSERT INTO course... " />
+            <marker date="1486158991802" expanded="true" signature="6858:6941" ph="INSERT INTO `user_account`... " />
+            <marker date="1486158991802" expanded="true" signature="7584:7656" ph="SELECT `user... user_account" />
+            <marker date="1486158991802" expanded="true" signature="9781:9860" ph="SELECT `cour... course" />
+            <marker date="1486158991802" expanded="true" signature="10381:10458" ph="SELECT `cour... course" />
           </folding>
         </state>
       </provider>
@@ -1077,16 +1079,19 @@
         <state relative-caret-position="1197">
           <caret line="79" column="62" selection-start-line="79" selection-start-column="62" selection-end-line="79" selection-end-column="62" />
           <folding>
-            <marker date="1486158689031" expanded="true" signature="242:391" ph="SELECT first... faculty" />
-            <marker date="1486158689031" expanded="true" signature="312:390" ph="SELECT first... user_account" />
-            <marker date="1486158689031" expanded="true" signature="1291:1476" ph="SELECT cours... course" />
-            <marker date="1486158689031" expanded="true" signature="1366:1475" ph="select id fr... faculty" />
-            <marker date="1486158689031" expanded="true" signature="1424:1474" ph="select id fr... user_account" />
-            <marker date="1486158689031" expanded="true" signature="3312:5052" ph="..." />
-            <marker date="1486158689031" expanded="true" signature="5342:5425" ph="INSERT INTO `user_account`... " />
-            <marker date="1486158689031" expanded="true" signature="6068:6140" ph="SELECT `user... user_account" />
-            <marker date="1486158689031" expanded="true" signature="8265:8344" ph="SELECT `cour... course" />
-            <marker date="1486158689031" expanded="true" signature="8865:8942" ph="SELECT `cour... course" />
+            <marker date="1486158991802" expanded="true" signature="242:391" ph="SELECT first... faculty" />
+            <marker date="1486158991802" expanded="true" signature="312:390" ph="SELECT first... user_account" />
+            <marker date="1486158991802" expanded="true" signature="1291:1476" ph="SELECT cours... course" />
+            <marker date="1486158991802" expanded="true" signature="1366:1475" ph="select id fr... faculty" />
+            <marker date="1486158991802" expanded="true" signature="1424:1474" ph="select id fr... user_account" />
+            <marker date="1486158991802" expanded="true" signature="3312:5052" ph="..." />
+            <marker date="1486158991802" expanded="true" signature="5429:5528" ph="select id fr... faculty" />
+            <marker date="1486158991802" expanded="true" signature="5470:5527" ph="select id fr... user_account" />
+            <marker date="1486158991802" expanded="true" signature="5850:5978" ph="INSERT INTO course... " />
+            <marker date="1486158991802" expanded="true" signature="6858:6941" ph="INSERT INTO `user_account`... " />
+            <marker date="1486158991802" expanded="true" signature="7584:7656" ph="SELECT `user... user_account" />
+            <marker date="1486158991802" expanded="true" signature="9781:9860" ph="SELECT `cour... course" />
+            <marker date="1486158991802" expanded="true" signature="10381:10458" ph="SELECT `cour... course" />
           </folding>
         </state>
       </provider>
@@ -1162,8 +1167,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="672">
-          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+        <state relative-caret-position="651">
+          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1294,19 +1299,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/services/controllers/facultyController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="30" column="2" selection-start-line="30" selection-start-column="2" selection-end-line="30" selection-end-column="2" />
+        <state relative-caret-position="518">
+          <caret line="154" column="25" selection-start-line="154" selection-start-column="25" selection-end-line="154" selection-end-column="25" />
           <folding>
-            <marker date="1486158689031" expanded="true" signature="242:391" ph="SELECT first... faculty" />
-            <marker date="1486158689031" expanded="true" signature="312:390" ph="SELECT first... user_account" />
-            <marker date="1486158689031" expanded="true" signature="1291:1476" ph="SELECT cours... course" />
-            <marker date="1486158689031" expanded="true" signature="1366:1475" ph="select id fr... faculty" />
-            <marker date="1486158689031" expanded="true" signature="1424:1474" ph="select id fr... user_account" />
-            <marker date="1486158689031" expanded="true" signature="3312:5052" ph="..." />
-            <marker date="1486158689031" expanded="true" signature="5342:5425" ph="INSERT INTO `user_account`... " />
-            <marker date="1486158689031" expanded="true" signature="6068:6140" ph="SELECT `user... user_account" />
-            <marker date="1486158689031" expanded="true" signature="8265:8344" ph="SELECT `cour... course" />
-            <marker date="1486158689031" expanded="true" signature="8865:8942" ph="SELECT `cour... course" />
+            <marker date="1486158991802" expanded="true" signature="242:391" ph="SELECT first... faculty" />
+            <marker date="1486158991802" expanded="true" signature="312:390" ph="SELECT first... user_account" />
+            <marker date="1486158991802" expanded="true" signature="1291:1476" ph="SELECT cours... course" />
+            <marker date="1486158991802" expanded="true" signature="1366:1475" ph="select id fr... faculty" />
+            <marker date="1486158991802" expanded="true" signature="1424:1474" ph="select id fr... user_account" />
+            <marker date="1486158991802" expanded="true" signature="3312:5052" ph="..." />
+            <marker date="1486158991802" expanded="true" signature="5429:5528" ph="select id fr... faculty" />
+            <marker date="1486158991802" expanded="true" signature="5470:5527" ph="select id fr... user_account" />
+            <marker date="1486158991802" expanded="true" signature="5850:5978" ph="INSERT INTO course... " />
+            <marker date="1486158991802" expanded="true" signature="6858:6941" ph="INSERT INTO `user_account`... " />
+            <marker date="1486158991802" expanded="true" signature="7584:7656" ph="SELECT `user... user_account" />
+            <marker date="1486158991802" expanded="true" signature="9781:9860" ph="SELECT `cour... course" />
+            <marker date="1486158991802" expanded="true" signature="10381:10458" ph="SELECT `cour... course" />
           </folding>
         </state>
       </provider>
