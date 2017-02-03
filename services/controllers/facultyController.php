@@ -190,6 +190,26 @@ function addStudent($student, $data)
 
 
 
+function addCourseStudent($course_id_global,$student_id) {
+    $app = \Slim\Slim::getInstance();
+    try {
+        $core = Core::getInstance();
+        $sql = "INSERT INTO `course_student` (`course_id`, `student_id`) VALUES"
+            . "(:course_id, :student_id)"; //Insert record in to course_student table
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("course_id", $course_id_global);
+        $stmt->bindParam("student_id", $student_id);;
+        $response = new stdClass();
+        $response->success = $stmt->execute();
+        $response->data = 0;
+        return $response;
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
+
+
 function addUser($user)
 {
     $core = Core::getInstance();
