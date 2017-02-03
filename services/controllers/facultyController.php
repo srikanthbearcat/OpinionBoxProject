@@ -160,6 +160,36 @@ function addCourse($course, $faculty_user_name)
     }
 }
 
+
+function addStudent($student, $data)
+{
+    $app = \Slim\Slim::getInstance();
+    try {
+        $core = Core::getInstance();
+        $sql = "INSERT INTO `student` ( `first_name`, `last_name`, `email_id`,`user_id`) VALUES (:first_name, :last_name, :email_id,:user_id)"; //Insert record in to student table
+        $stmt = $core->dbh->prepare($sql);
+        $first_name = $student->getFirstName();
+        $last_name = $student->getLastName();
+        $email_id = $student->getEmailId();
+        $user_id = $data;
+        $stmt->bindParam("first_name", $first_name);
+        $stmt->bindParam("last_name", $last_name);
+        $stmt->bindParam("email_id", $email_id);
+        $stmt->bindParam("user_id", $user_id);
+        $response = new stdClass();
+        $response->success = $stmt->execute();
+//        $stmt2 = $core->dbh->prepare("SELECT LAST_INSERT_ID()");
+        $response->data = $core->dbh->lastInsertId();
+        return $response;
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
+
+
+
+
 function addUser($user)
 {
     $core = Core::getInstance();
