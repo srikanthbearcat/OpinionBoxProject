@@ -1,0 +1,181 @@
+<html ng-app="opinionBox" >
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<link href="customStyles.css" rel="stylesheet">
+<script type="text/javascript">
+
+function confirmDeleteModal(id){
+    $('#deleteModal').modal();
+	$('#deleteButton').html('<a class="btn btn-success" onclick="deleteData('+id+')">Yes</a>');
+        
+}     
+
+function deleteData(id){
+  // do your stuffs with id
+  $("#successMessage").html("Submitted Succesfully");
+  $('#NextButton').html('<a href="Student After Submission.html"  class="btn btn-success">Next</a>');
+  $('#deleteModal').modal('hide'); 
+  
+  //// now close modal
+  
+  //$('#deleteModal').modal('show');
+}  
+</script>
+</head>
+        
+    </head>
+    <body id="grad1">
+       
+        <div class="wrapper" >
+            <!--header-->
+            <div class="header">
+                <div class=" header-background" >
+                    <div class="container "> 
+                        <div class="header-northwest-logo">
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--Navigation-->
+                <div >
+                    <nav class="navbar navbar-findcond navbar-fixed">
+                        <div class="container">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <a class="navbar-brand" href="#">Welcome user</a>
+                            </div>
+                            <div class="collapse navbar-collapse" id="navbar">
+                                <ul class="nav navbar-nav">
+                                    <li class="active"><a href="Student After Submission.html">Home</a></li>
+                                </ul>
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="#"><span class="glyphicon glyphicon glyphicon-cog"></span> Settings</a></li>
+                                    <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <!--content-->
+            <div class="content">
+                <div  style="margin-left: 450px; " class="col-md-5 ">                  
+                    <div class="panel panel-default " >
+                        <div class="panel-heading panel-color" >
+                            <div class="panel-title"><b>Review</b></div>
+
+                        </div>  
+                        <div style="padding-top:30px" class="panel-body" >
+
+
+                           
+                                <table align="center">
+                                    <tr>
+
+
+                                        <td> <b>1. Is the team member coopeartive</b></td>
+                                        <td>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>
+                                        <td>  
+                                            <b>5</b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>2. Does the team member responds to email frequently</b></td>
+                                        <td>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>
+                                        <td>  
+                                             <b>8</b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td> <b>3. Does the team member attends meeting on time</b></td>
+                                        <td>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>
+                                        <td>  
+                                             <b>7</b>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td> <b> Comments</b></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td> <input type="text" class="form-control"  aria-describedby="question01" size="50" style="height: 90px"></td>
+                                    </tr>
+
+                            </div>
+                            </table>
+                        
+                        <br>
+                        <div class="col-md-8"  style="text-align: center">
+                            <div id="deleteModal" class="modal fade" role='dialog'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+<!--                <h4 class="modal-title">Yes </h4>-->
+            </div>
+            <div class="modal-body">
+                <p>Do you want to submit?</p>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">No</button>
+				<span id= 'deleteButton'></span>
+            </div>
+			
+        </div>
+      </div>
+                         
+  </div>
+                            <button type="button" class="btn btn-success"onclick="confirmDeleteModal('112')">Submit</button>
+                            <br>
+                            <div   style="text-align: center">
+                                <br>
+                            <div id="successMessage" style="font-size:20px;color:green;font-weight:bold;text-align: center"></div>
+                            </div>
+                          
+                            <div id="successMessage" class="col-md-4" ></div>
+                             <div id="NextButton" class="col-md-4"></div>
+                            
+                        </div>
+                        <div class="col-md-13"  >
+                            <button type="button" class="btn btn-success">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!--footer-->
+            <div class="footer" >
+                <div class="container">
+                    <span class="text-muted">© 2016 Opinion Box  <span class ="float-right" >Northwest Missouri State University.</span></span>
+                </div>
+            </div>
+        </div>
+
+    </body>
+
+</html
