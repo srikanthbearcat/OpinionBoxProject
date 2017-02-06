@@ -274,22 +274,26 @@ function isCourseExist($course)
         $response->flag = 0;
         if ($courseExistByName > 0) {
             $response->success = FALSE;
+            $response->course_exist = TRUE;
             $response->data = "Course name already exist, but CRN does not match. "
                 . "If you want to add students to existing course go to manage tab and then students sub tab.";
             $response->flag = 1;
             if ($courseExistByCRN) {
 //                $response->success = TRUE;
                 $response->success = FALSE;
+                $response->course_exist = TRUE;
                 $response->data = "course already exist.If you want to add students to existing course go to manage tab and then students sub tab.";
                 $response->flag = 1;
             }
         } else if ($courseExistByCRN > 0) {
             $response->success = FALSE;
+            $response->course_exist = TRUE;
             $response->data = "Course CRN already exist, but course name doesn't exist."
                 . "If you want to add students to existing course go to manage tab and then students sub tab.";
             $response->flag = 1;
         } else {
             $response->success = TRUE;
+            $response->course_exist = FALSE;
             $response->data = "course does not exist";
         }
         return $response;
@@ -307,10 +311,8 @@ function editCourseData(){
         $core = Core::getInstance();
         $json = $app->request->getBody();
         $postData = json_decode($json, true); // parse the JSON into an assoc. array
-        
         $course_name = $postData['course_name'];
         $trimester = $postData['trimester'];
-        
         $course_crn = $postData['course_crn'];
         $original_course_crn = $postData['original_course_crn'];
         $course = new Course($course_crn, $course_name, $trimester);
@@ -319,14 +321,16 @@ function editCourseData(){
             throw new Exception('Missing course $original_course_crn or course_name  or trimester of course');
         } else {
             if ($original_course_crn != $course_crn) {
-                $courseExist = isCourseExist($course);
-                if ($courseExist->success == FALSE) {
+                if ( isCourseExistByCRN($course_crn)>0) {
+                    $response->data = "Course name/crn already exist.";
                     // throw new Exception("Cannot Update! Because course_crn already Exists", 400);
                 } else {
+                    $response->data = "Course name/crn doesn't exist.";
+                    // throw new Exception("Cannot Update! Because course_crn already Exists", 400);
                     $response = updateCourse($course, $original_course_crn);
                 }
             } else {
-                $response = updateCourse($course, $original_course_crn);
+                $response = updateCourse($course, $course_crn);
             }
         }
         echo json_encode($response);
@@ -364,9 +368,9 @@ function updateCourse($course, $original_course_crn) {
         $app->response()->status(400);
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
-    $response->success = FALSE;
-    $response->data = 0;
-    return $response;
+//    $response->success = FALSE;
+//    $response->data = 0;
+//    return $response;
 }
 
 
