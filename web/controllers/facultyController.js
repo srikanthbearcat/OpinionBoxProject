@@ -2,16 +2,92 @@
  * Created by S525796 on 04-01-2017.
  */
 app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', function ($scope, $cookies, $state, $http, url, $uibModal) {
-//Get course data from database
-    $scope.courseData = [];
-    $http.get(url + "/coursesByFaculty/" + $cookies.get('username')).then(function successCallback(response) {
+// //Get course data from database
+//     $scope.courseData = [];
+//     $http.get(url + "/coursesByFaculty/" + $cookies.get('username')).then(function successCallback(response) {
 
-        $scope.courseData = response.data.info;
-        console.log(JSON.stringify(response.data.info));
+//         $scope.courseData = response.data.info;
+//         console.log(JSON.stringify(response.data.info));
+//         console.log(JSON.stringify($scope.courseData));
+//     }, function errorCallback(response) {
+//     })
+
+
+$scope.alert = function (size, modal_Info) {
+        // $scope.alert = function (size){
+        // $scope.animateEnabled = true;
+
+        var modalPopUpInstance = $uibModal.open({
+            // animate:$scope.animateEnabled,
+            templateUrl: 'web/views/modal.html',
+            controller: 'modalInstanceController',
+            // size: size,
+            resolve: {
+                modalInfo: function () {
+                    return modal_Info;
+                }
+            }
+        });
+}
+ //Get course data from database
+    $scope.courseData = [];
+    $http.get(url + "/coursesByFaculty/"+ $cookies.get('username')).then(function successCallback(response) {
+
+        // angular.forEach(response.data.info, function () {1
+        // });
+        // $scope.facultyData = response.data.info;
+        $.each(response.data.info, function (i, data) {
+            data.i = i;
+            data.original_course_crn = data.course_crn;
+            $scope.courseData.push(data);
+        });
         console.log(JSON.stringify($scope.courseData));
     }, function errorCallback(response) {
     })
 
+ $scope.checkCourseNumber = function (data) {
+        // console.log(data+" sdvf"+data.length);
+        var letters = /^[0-9]+$/;
+        if (data === undefined || data === '') {
+            return "Enter crn number";
+        } else if (!data.match(letters)) {
+            return "Only numbers";
+        }
+    };
+    $scope.checkCourseName = function (data) {
+        // console.log(data+" sdvf"+data.length);
+        var letters = /^[A-Za-z ]+$/;
+        if (data === undefined || data === '') {
+            return "Enter course name";
+        } else if (!data.match(letters)) {
+            return "Only character";
+        }
+    };
+    $scope.checkTrimester = function (data) {
+
+        if (data === undefined || data === '') {
+            return "Enter trimester";
+        }
+    };
+   
+    //Edit course data from database
+    $scope.saveCourse = function (data, course) {
+        console.log(JSON.stringify(data)+"Hello "+JSON.stringify(course));
+        var editCourseData = {
+            original_course_crn: course.original_course_crn,
+            course_name: data.course_name,
+            trimester: data.trimester,
+            course_crn: data.course_crn,
+            
+        };
+        $http.post(url + "/faculty/editCourseData",editCourseData).then(function successCallback(response) {
+
+        }, function errorCallback(response) {
+        })
+    }
+
+    
+    
 
 }]);
 
