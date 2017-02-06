@@ -8,12 +8,14 @@ $loginAdmin = function () use ($app) {
         $user_name = $postData['username'];
         $password = $postData['password'];
         $core = Core::getInstance();
-        $sql = "SELECT first_name,last_name,user_name,email FROM user_account WHERE user_name=:user_name AND password =:password";
-        $stmt = $core->dbh->prepare($sql);
+
+       $sql = "SELECT first_name,last_name,email_id FROM `admin` WHERE user_id in (SELECT id FROM user_account WHERE user_name=:user_name AND password =:password)";
+       $stmt = $core->dbh->prepare($sql);
         $stmt->bindParam("user_name", $user_name);
         $stmt->bindParam("password", $password);
         $response = new stdClass();
         $response->user_type = "admin";
+       $response->user_name = $user_name;
         if ($stmt->execute()) {
             $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $response->success = count($records) > 0;

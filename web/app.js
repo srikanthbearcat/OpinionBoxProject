@@ -51,6 +51,12 @@ app.config(function ($stateProvider,$urlRouterProvider, $locationProvider) {
         controller: "studentController",
         templateUrl: "web/views/studentHomepage.html"
     });
+	$stateProvider.state("Settings", {
+        url: "/Settings",
+        controller: "settingsController",
+        templateUrl: "web/views/Settings.html"
+    });
+	
     // $stateProvider.state("studentViewQuestions", {
     //     url: "/studentViewQuestions",
     //     controller: "studentController",

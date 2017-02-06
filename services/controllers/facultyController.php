@@ -24,7 +24,8 @@ $loginFaculty = function () use ($app) {
         }
         echo json_encode($response);
     } catch (Exception $ex) {
-
+        $response->success = FALSE;
+        $response->data = $ex->getMessage();
         $app->response()->status(400);
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
