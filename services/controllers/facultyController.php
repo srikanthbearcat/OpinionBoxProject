@@ -410,16 +410,30 @@ function isCourseExistByCRN($CRN)
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
-
-
-
-
-
-
 function isJson($string) {
     json_decode($string);
     return (json_last_error() == JSON_ERROR_NONE);
 }
+
+//removing course from course data
+$removeCourseData = function() use($app) {
+    $json = $app->request->getBody();
+    $postData = json_decode($json, true); // parse the JSON into an assoc. array
+    $course_crn = $postData['course_crn'];
+    try {
+        $core = Core::getInstance();
+        $sql = "delete from course where course_crn=:course_crn";
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("course_crn", $course_crn);
+        $response = new stdClass();
+        $response->success = $stmt->execute();
+        $response->data = 0;
+        echo json_encode($response);
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+};
 
 //For the url http://localhost/OpinionBox/services/index.php/faculty/login
 $app->post('/faculty/login', $loginFaculty);
@@ -427,5 +441,9 @@ $app->post('/faculty/login', $loginFaculty);
 $app->get('/coursesByFaculty/:fname', 'getCoursesByFaculty');
 //For the url http://localhost/TimeClock/services/index.php/addStudent
 $app->post('/addCourse', $addCourse);
+//For the url http://localhost/OpinionBox/services/index.php/faculty/editCourse
+$app->post('/faculty/editCourseData', 'editCourseData');
+//For the url http://localhost/OpinionBox/services/index.php/faculty/removeCourse
+$app->post('/faculty/removeCourseData', $removeCourseData);
 
 ?>
