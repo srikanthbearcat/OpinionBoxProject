@@ -86,8 +86,29 @@ $scope.alert = function (size, modal_Info) {
         })
     }
 
-    
-    
+    //delete course data from database
+    $scope.removeCourse = function (indexd, course_crn) {
+        $scope.alert('sm', {modalHeader: "Delete Course", modalBody: "Are you sure you want to delete? All the data related to this course will be deleted", data:{indexd:indexd,course_crn:course_crn,deleteCourse:true}});
+
+
+    };
+
+//event handler
+    $scope.$on("DeleteCourseConfirm", function (evt, modalInfo) {
+        var deleteCourseData = {
+            course_crn: modalInfo.data.course_crn
+        };
+        $http.post(url + "/faculty/removeCourseData",deleteCourseData).then(function successCallback(response) {
+            if(response.data.success == true){
+                console.log(response.data.success);
+                console.log(JSON.stringify($scope.courseData));
+                $scope.courseData.splice(modalInfo.data.indexd, 1);
+                console.log(JSON.stringify($scope.courseData));
+            }
+
+        }, function errorCallback(response) {
+        })
+    });
 
 }]);
 
