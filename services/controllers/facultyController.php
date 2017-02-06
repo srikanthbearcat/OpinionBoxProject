@@ -299,6 +299,79 @@ function isCourseExist($course)
     }
 }
 
+
+//Edit faculty Data
+function editCourseData(){
+    $app = \Slim\Slim::getInstance();
+    try {
+        $core = Core::getInstance();
+        $json = $app->request->getBody();
+        $postData = json_decode($json, true); // parse the JSON into an assoc. array
+        
+        $course_name = $postData['course_name'];
+        $trimester = $postData['trimester'];
+        
+        $course_crn = $postData['course_crn'];
+        $original_course_crn = $postData['original_course_crn'];
+        $course = new Course($course_crn, $course_name, $trimester);
+        $response = new stdClass();
+        if (!$course_crn || !$course_name ||  !$trimester || !$original_course_crn) {
+            throw new Exception('Missing course $original_course_crn or course_name  or trimester of course');
+        } else {
+            if ($original_course_crn != $course_crn) {
+                $courseExist = isCourseExist($course);
+                if ($courseExist->success == FALSE) {
+                    // throw new Exception("Cannot Update! Because course_crn already Exists", 400);
+                } else {
+                    $response = updateCourse($course, $original_course_crn);
+                }
+            } else {
+                $response = updateCourse($course, $original_course_crn);
+            }
+        }
+        echo json_encode($response);
+    } catch (Exception $ex) {
+        $response->success = FALSE;
+        $response->data = $ex->getMessage();
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
+
+function updateCourse($course, $original_course_crn) {
+    $app = \Slim\Slim::getInstance();
+    $response = new stdClass();
+    try {
+        $core = Core::getInstance();
+        $sql = "UPDATE course SET `course_crn`=:course_crn, `course_name`=:course_name, trimester="
+            . ":trimester WHERE `course_crn`=:original_course_crn"; //Update record in to course table
+        $stmt = $core->dbh->prepare($sql);
+
+        $course_crn = $course->getCourseCrn();
+        $course_name = $course->getCourseName();
+        $trimester = $course->getCourseTrimester();
+        
+        $stmt->bindParam("original_course_crn", $original_course_crn);
+        $stmt->bindParam("course_crn", $course_crn);
+        $stmt->bindParam("course_name", $course_name);
+        $stmt->bindParam("trimester", $trimester);
+    
+        $response->success = $stmt->execute();
+        $response->data = 0;
+        return $response;
+    } catch (Exception $ex) {
+        $response->errorMessage = $ex->getMessage();
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+    $response->success = FALSE;
+    $response->data = 0;
+    return $response;
+}
+
+
+
+
 function isCourseExistByName($name)
 {
     $app = \Slim\Slim::getInstance();
