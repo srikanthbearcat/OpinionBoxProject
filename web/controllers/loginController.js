@@ -1,7 +1,6 @@
 app.controller("LoginController", ['$scope', '$cookies', '$state', '$http', '$rootScope', 'url', '$uibModal', function ($scope, $cookies, $state, $http, $rootScope, url, $uibModal) {
 
     //Variables
-
     $scope.loginInfo = {};
     // $scope.state = $state;
     $scope.loginAlert = false;
