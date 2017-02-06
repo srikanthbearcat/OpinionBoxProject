@@ -96,9 +96,13 @@ $addCourse = function () use ($app) {
                         $response->data =  $courseData;
                     }
                     foreach (json_decode($jsonString) as $student) {
-                        if (isUserExist($student->user_name) > 0) {
+                        $result = isUserExist($student->user_name);
+                        $response->data =  $result;
+                        if ($result->count > 0) {
+                            addCourseStudent($course_id_global,$result->id);
 
-                        } else {
+                        }
+                        else {
                             $userData = addUser(new UserAccount($student->user_name, $student->password));
                             if ($userData->success == TRUE) {
                                 $studentData = addStudent(new Student($student->first_name, $student->last_name, $student->email_id), $userData->data);
@@ -111,7 +115,8 @@ $addCourse = function () use ($app) {
 
                     $response->success = TRUE;
                     $response->data = $courseExist->data;
-                } else {
+                }
+                else {
 
                     $response->success = FALSE;
                     $response->data = $courseExist->data;
@@ -213,12 +218,13 @@ function addCourseStudent($course_id_global,$student_id) {
 function addUser($user)
 {
     $core = Core::getInstance();
-    $sql = "INSERT INTO `user_account` (`user_name`, `password`) VALUES (:user_name ,:password)"; //Insert record in to student table
+    $sql = "INSERT INTO `user_account` (`user_name`, `password`, `role`) VALUES (:user_name ,:password, :role)"; //Insert record in to student table
     $stmt = $core->dbh->prepare($sql);
     $user_name = $user->getUserName();
     $password = $user->getPassword();
     $stmt->bindParam("user_name", $user_name);
     $stmt->bindParam("password", $password);
+    $stmt->bindParam("role", 'student');
     $response = new stdClass();
 
     $response->success = $stmt->execute();
@@ -236,11 +242,17 @@ function isUserExist($user_name)
     $app = \Slim\Slim::getInstance();
     try {
         $core = Core::getInstance();
-        $sql = "SELECT `user_name` FROM `user_account` WHERE `user_name` LIKE :user_name";
+        $sql = "SELECT `id` FROM `student` WHERE `user_id` in (select id from user_account WHERE user_name=:user_name)";
         $stmt = $core->dbh->prepare($sql);
         $stmt->bindParam("user_name", $user_name);
+        $result = new stdClass();
         if ($stmt->execute()) {
-            return count($stmt->fetchAll(PDO::FETCH_ASSOC));
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $student_id = $records[0];
+            $result->id = (int)($student_id["id"]);
+            $result->count = count($records);
+//            return (int)$student_id;
+            return $result;
         } else {
             return false;
         }
