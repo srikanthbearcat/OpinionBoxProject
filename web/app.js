@@ -56,22 +56,6 @@ app.config(function ($stateProvider,$urlRouterProvider, $locationProvider) {
         controller: "settingsController",
         templateUrl: "web/views/Settings.html"
     });
-	
-    // $stateProvider.state("studentViewQuestions", {
-    //     url: "/studentViewQuestions",
-    //     controller: "studentController",
-    //     templateUrl: "web/views/studentViewQuestions.html"
-    // });
-    // $stateProvider.state("facultyAddingQuestions", {
-    //     url: "/facultyaddingquestions",
-    //     controller: "facultyController",
-    //     templateUrl: "web/views/facultyAddingQuestions.html"
-    // });
-    // $stateProvider.state("studentGroups", {
-    //     url: "/studentgroups",
-    //     controller: "studentController",
-    //     templateUrl: "web/views/studentGroups.html"
-    // });
     // $locationProvider.html5Mode(true);
 });
 app.run(function($rootScope, $location,editableOptions) {
