@@ -1,74 +1,38 @@
-<div class="container">
-    <!--left pan-->
-    <div class="list-group col-md-2" style="margin-top:70px;">
-        <a ui-sref="addCourse" class="list-group-item">Add Course</a>
-        <a ui-sref="modifyCourse"  class="list-group-item active">View/Modify Course</a>
-    </div>
-    <div class="col-md-10 tab-content">
-        <h2>Student Details</h2>
-        <table class="table table-hover table-striped " align="center" style="table-layout: fixed"><thead>
+<!--left pan-->
+<div class="list-group col-md-2" style="margin-top:70px;">
+    <a ui-sref="viewGroups({courseid:course_crn})" ui-sref-active="active" class="list-group-item">View Groups</a>
+    <a ui-sref="addQuestions({courseid:course_crn})"  ui-sref-active="active" class="list-group-item">Add Questions</a>
+</div>
 
-        <tr style="background-color: green; opacity: 0.75; color: white;height: 52px s">
-            <th style="width: 50px" >S.No</th>
-            <th style="width: 120px" >First Name</th>
-            <th style="width: 100px">Last Name</th>
-            <th style="width: 100px">Username</th>
-            <th style="width: 100px">Password</th>
-            <th style="width: 250px">Email</th>
-            <th style="width: 120px">Edit</th>
+<!--right dashboard-->
+<div class="col-md-10">
+    <h2>Students</h2>
+
+    <table class="table table-hover" style="">
+        <thead>
+        <tr style="background-color: green; opacity: 0.75; color: white;height: 52px">
+            <th>S.No</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email id</th>
         </tr>
-
-        <tr ng-repeat="faculty in facultyData track by $index">
-            <td >{{$index +1}}</td>
-            <td style="width: 120px">
-                    <span editable-text="faculty.first_name" e-name="first_name" e-form="rowform"
-                          onbeforesave="checkFirstName($data)" e-required>
-                        {{ faculty.first_name || 'empty' }}
-                        <!--{{ faculty.first_name || 'empty' }}-->
-                    </span>
+        </thead>
+        <tbody>
+        <tr ng-repeat="student in studentData track by $index">
+            <td>{{$index +1}}</td>
+            <td >
+                 {{student.first_name}}
             </td>
-            <td>
-                            <span editable-text="faculty.last_name" e-name="last_name" e-form="rowform"
-                                  onbeforesave="checkLastName($data)" e-required>
-                                {{ faculty.last_name || 'empty' }}
-                            </span>
+            <td >
+               {{student.last_name}}
             </td>
-            <td>
-                            <span editable-text="faculty.user_name" e-name="user_name" e-form="rowform"
-                                  onbeforesave="checkUserName($data)" e-required>
-                                {{ faculty.user_name || 'empty' }}
-                            </span>
-            </td>
-            <td>
-                            <span editable-text="faculty.password" e-name="password" e-form="rowform"
-                                  onbeforesave="checkPassword($data)" e-required>
-                                {{ faculty.password || 'empty' }}
-                            </span>
-            </td>
-            <td>
-                            <span editable-text="faculty.email" e-name="email" e-form="rowform"
-                                  onbeforesave="checkEmail($data)" e-required>
-                                {{ faculty.email || 'empty' }}
-                            </span>
-            </td>
-            <td style="white-space: nowrap">
-                <form editable-form name="rowform" onaftersave="saveFaculty($data,faculty)"
-                      ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == faculty">
-                    <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
-                        save
-                    </button>
-                    <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
-                        cancel
-                    </button>
-                </form>
-                <div class="buttons" ng-show="!rowform.$visible">
-                    <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
-                    <button class="btn btn-danger" ng-click="removeFaculty($index, faculty.user_name)">del</button>
-                </div>
+            <td >
+                {{student.email_id}}
             </td>
         </tr>
 
 
-        </table>
-    </div>
+
+        </tbody>
+    </table>
 </div>
