@@ -408,6 +408,100 @@ app.controller("addQuestionsController", ['$scope', '$cookies', '$state', '$http
 
         });
     });
+ $scope.preview = function (callBack) {
+        // console.log($scope.questionData);
+//                var data = [];
+//                $window.Papa.parse($scope.files, {
+//                    header: true,
+//                    dynamicTyping: true,
+//                    complete: function (results) {
+//                        callBack(results.data);
+//                    }
+//
+//                });
+    };
+    $scope.remove = function () {
+        $scope.cancel();
+//                $("#preview").css("visibility", "visible");
+//                $("#save").css("visibility", "hidden");
+//                $("#cancel").css("visibility", "hidden");
+    };
+    $scope.change = function () {
+//                $("#previewTable").css("visibility", "hidden");
+//                $("#preview").css("visibility", "visible");
+//                $("#cancel").css("visibility", "hidden");
+//                $("#save").css("visibility", "hidden");
+    };
+    $scope.saveData = function () {
+        if ($scope.questionData.length == 0)
+            return;
+        var data = {
+            "faculty_user_name": $cookies.get("username"),
+            "course_crn": $scope.course_crn,
+            "question_data": JSON.stringify($scope.questionData)
+        }
+        console.log(JSON.stringify(data));
+        $http.post(url + "/addQuestionsToCourse", data).then(function successCallback(response) {
+            console.log(response.data.success + " add questions request success");
+            if (response.data.success) {
+                $("#successMessage").fadeIn(2000).fadeOut(6000);
+                $("#errorMessageLabel").text("");
+                $scope.cancel();
+            } else {
+                $("#failedMessage").text(response.data.data).fadeIn(2000).fadeOut(6000);
+            }
+        }, function errorCallback(response) {
+            if (!response.data.success) {
+
+            }
+
+        });
+
+
+        // $.ajax({
+        //     type: 'POST',
+        //     url: url + "/addCourse",
+        //     headers: {
+        //         "user_name": $cookies.get("username"),
+        //         "course_name": $scope.courseName,
+        //         "course_crn": $scope.courseCrn,
+        //         "data": JSON.stringify($scope.questionData)
+        //     }
+        // }).done(function (data) {
+        //     if (data.success) {
+        //         $("#successMessage").fadeIn(2000).fadeOut(6000);
+        //         $("#errorMessageLabel").text("");
+        //         $scope.cancel();
+        //     } else {
+        //         $("#errorMessageLabel").text(data.data).fadeIn(3000);
+        //     }
+        // });
+    };
+    $scope.cancel = function () {
+        $scope.questionData = [];
+        $("#filebutton").val('');
+        $("#previewLink").trigger('click');
+    };
+
+    $scope.alert = function (size, modal_Info) {
+        // $scope.alert = function (size){
+        // $scope.animateEnabled = true;
+
+        var modalPopUpInstance = $uibModal.open({
+            // animate:$scope.animateEnabled,
+            templateUrl: 'web/views/modal.html',
+            controller: 'modalInstanceController',
+            // size: size,
+            resolve: {
+                modalInfo: function () {
+                    return modal_Info;
+                }
+            }
+        });
+    };
+
+
+}]);
 app.directive("fileread", [function () {
     return {
         scope: {
