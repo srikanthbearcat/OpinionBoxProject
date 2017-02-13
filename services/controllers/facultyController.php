@@ -90,7 +90,6 @@ $addCourse = function () use ($app) {
                 if ($courseExist->success == TRUE) {
                     // 1) Adding each course in to course table if doesnot exist in it
                     if ($courseExist->flag == 0) {
-//
                         $courseData = addCourse($course, $faculty_user_name);
                         $course_id = $courseData->data;
                         $course_id_global = $course_id;
@@ -99,27 +98,35 @@ $addCourse = function () use ($app) {
                     foreach (json_decode($jsonString) as $student) {
                         $result = isUserExist($student->user_name);
                         $response->data =  $result;
-                        if ($result->count > 0) {
-                            addCourseStudent($course_id_global,$result->id);
+//                        $group = new Group($student->group_no,$student->group_topic);
+//                        $groupData = addGroup(new Group($student->group_no,$student->group_topic), $course_id_global);
+                        $groupData = addGroup($student->group_no,$student->group_topic, $course_id_global);
+                        if ($result->userExist == TRUE) {
+                            $response->data =  addCourseStudent($course_id_global,$result->id);
+                            addGroupStudent($groupData->group_id,$result->id);
 
                         }
                         else {
-                            $userData = addUser(new UserAccount($student->user_name, $student->password));
+                            $user_type = "student";
+                            $userData = addUser(new UserAccount($student->user_name, $student->password),$user_type);
                             if ($userData->success == TRUE) {
                                 $studentData = addStudent(new Student($student->first_name, $student->last_name, $student->email_id), $userData->data);
                                 $student_id = $studentData->data;
                                 addCourseStudent($course_id_global,$student_id);
+                                addGroupStudent($groupData->group_id,$student_id);
                             }
 
                         }
                     }
 
                     $response->success = TRUE;
-                    $response->data = $courseExist->data;
+
+//                    $response->data = $courseExist->data;
                 }
                 else {
 
                     $response->success = FALSE;
+
                     $response->data = $courseExist->data;
                 }
             }
@@ -129,6 +136,7 @@ $addCourse = function () use ($app) {
     } catch (Exception $ex) {
         $app->response()->status(400);
         $app->response()->header('X-Status-Reason', $ex->getMessage());
+        echo json_encode($response) ;
     }
 };
 
@@ -163,6 +171,43 @@ function addCourse($course, $faculty_user_name)
     } catch (Exception $ex) {
         $app->response()->status(400);
         $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
+
+//add group
+function addGroup($group_no,$group_topic, $course_id)
+{
+    $app = \Slim\Slim::getInstance();
+    try {
+        $response = new stdClass();
+        $core = Core::getInstance();
+        $group_sql = "SELECT `id` FROM `group` WHERE (course_id=:course_id AND group_no=:group_no)";
+        $group_stmt = $core->dbh->prepare($group_sql);
+        $group_stmt->bindParam("course_id", $course_id);
+        $group_stmt->bindParam("group_no", $group_no);
+        $hello = $group_stmt->execute();
+        $records = $group_stmt->fetchAll(PDO::FETCH_ASSOC);
+        $response->records = $hello;
+        if(count($records) > 0){
+            $response->groupExist = TRUE;
+            $response->group_id = $records[0]["id"];
+        }else{
+            $sql = "INSERT INTO `group` (`group_no`,`group_topic`,`course_id`) VALUES (:group_no,:group_topic,:course_id)";
+            $stmt = $core->dbh->prepare($sql);
+//            $group_no = $group->getGroupNo();
+//            $group_topic = $group->getGroupTopic();
+            $stmt->bindParam("group_no", $group_no);
+            $stmt->bindParam("group_topic", $group_topic);
+            $stmt->bindParam("course_id", $course_id);
+            $stmt->execute();
+            $response->groupExist = FALSE;
+            $response->group_id = $core->dbh->lastInsertId();
+        }
+        return $response;
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+        return json_encode($response);
     }
 }
 
@@ -206,7 +251,7 @@ function addCourseStudent($course_id_global,$student_id) {
         $stmt->bindParam("student_id", $student_id);;
         $response = new stdClass();
         $response->success = $stmt->execute();
-        $response->data = 0;
+        $response->data = $course_id_global." ".$student_id ;
         return $response;
     } catch (Exception $ex) {
         $app->response()->status(400);
@@ -215,7 +260,26 @@ function addCourseStudent($course_id_global,$student_id) {
 }
 
 
-function addUser($user)
+function addGroupStudent($group_id,$student_id) {
+    $app = \Slim\Slim::getInstance();
+    try {
+        $core = Core::getInstance();
+        $sql = "INSERT INTO `group_student` (`group_id`, `student_id`) VALUES"
+            . "(:group_id, :student_id)"; //Insert record in to group_student table
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("group_id", $group_id);
+        $stmt->bindParam("student_id", $student_id);;
+        $response = new stdClass();
+        $response->success = $stmt->execute();
+        $response->data = 0;
+        return $response;
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
+
+function addUser($user,$user_type)
 {
     $core = Core::getInstance();
     $sql = "INSERT INTO `user_account` (`user_name`, `password`, `role`) VALUES (:user_name ,:password, :role)"; //Insert record in to student table
@@ -224,7 +288,7 @@ function addUser($user)
     $password = $user->getPassword();
     $stmt->bindParam("user_name", $user_name);
     $stmt->bindParam("password", $password);
-    $stmt->bindParam("role", 'student');
+    $stmt->bindParam("role", $user_type);
     $response = new stdClass();
 
     $response->success = $stmt->execute();
@@ -240,19 +304,36 @@ function addUser($user)
 function isUserExist($user_name)
 {
     $app = \Slim\Slim::getInstance();
+    $response = new stdClass();
     try {
         $core = Core::getInstance();
+//        $sql = "SELECT `id` FROM `student` WHERE `user_id` in (select id from user_account WHERE user_name=:user_name)";
         $sql = "SELECT `id` FROM `student` WHERE `user_id` in (select id from user_account WHERE user_name=:user_name)";
         $stmt = $core->dbh->prepare($sql);
         $stmt->bindParam("user_name", $user_name);
-        $result = new stdClass();
         if ($stmt->execute()) {
             $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $student_id = $records[0];
-            $result->id = (int)($student_id["id"]);
-            $result->count = count($records);
+            if(count($records)>0){
+                $response->userExist = TRUE;
+                $response->id = $records[0]["id"];
+            }else{
+                $response->userExist = FALSE;
+//                $sql = "INSERT INTO `group` (`group_no`,`group_topic`,`course_id`) VALUES (:group_no,:group_topic,:course_id)";
+//                $stmt = $core->dbh->prepare($sql);
+//                $group_no = $group->getGroupNo();
+//                $group_topic = $group->getGroupTopic();
+//                $stmt->bindParam("group_no", $group_no);
+//                $stmt->bindParam("group_topic", $group_topic);
+//                $stmt->bindParam("course_id", $course_id);
+//                $response->groupExist = FALSE;
+//                $response->group_id = $core->dbh->lastInsertId();
+            }
+//            $student_id = $records[0];
+//            $result->id = $student_id;
+//            $result->id = (int)($student_id["id"]);
+//            $result->count = count($records);
 //            return (int)$student_id;
-            return $result;
+            return $response;
         } else {
             return false;
         }
@@ -438,15 +519,144 @@ $removeCourseData = function() use($app) {
     }
 };
 
+
+function getStudentsByCourse($course_crn){
+    try {
+        // $faculty = "faculty";
+        $core = Core::getInstance();
+        $sql = "SELECT first_name,last_name,email_id FROM `student` WHERE id in (select student_id from `course_student` WHERE course_id in (select id from `course` WHERE course_crn=:course_crn))";
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("course_crn", $course_crn);
+        $response = new stdClass();
+        if ($stmt->execute()) {
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $response->success = count($records) > 0;
+            $response->info = $response->success ? $records : 0;
+
+        } else {
+            $response->success = FALSE;
+            $response->info = 0;
+
+        }
+//        echo $course_crn;
+        echo json_encode($response);
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
+
+function viewGroupsByCourse($course_crn){
+    try {
+        // $faculty = "faculty";
+        $core = Core::getInstance();
+        $sql = "SELECT group_no,group_topic FROM `group` WHERE course_id in (select id from `course` WHERE course_crn=:course_crn)";
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("course_crn", $course_crn);
+        $response = new stdClass();
+        if ($stmt->execute()) {
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $response->success = count($records) > 0;
+            $response->info = $response->success ? $records : 0;
+
+        } else {
+            $response->success = FALSE;
+            $response->info = 0;
+
+        }
+//        echo $course_crn;
+        echo json_encode($response);
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
+
+$addQuestionsToCourse = function () use ($app) {
+    $response = new stdClass();
+    $json = $app->request->getBody();
+    $postData = json_decode($json, true); // parse the JSON into an assoc. array
+    $course_crn = $postData['course_crn'];
+    $jsonString = $postData['question_data'];
+    $core = Core::getInstance();
+    try {
+    $course_sql = "select id from `course` WHERE course_crn=:course_crn";
+    $course_stmt = $core->dbh->prepare($course_sql);
+    $course_stmt->bindParam("course_crn", $course_crn);
+    $course_stmt->execute();
+    $records = $course_stmt->fetchAll(PDO::FETCH_ASSOC);
+    $course =  $records[0];
+    $course_id = $course['id'];
+    $delete_sql = "DELETE FROM `question_bank` WHERE course_id=:course_id";
+    $delete_stmt = $core->dbh->prepare($delete_sql);
+        $delete_stmt->bindParam("course_id", $course_id);
+        $response->test = $delete_stmt->execute();
+        foreach (json_decode($jsonString) as $ques) {
+            $sql = "INSERT INTO question_bank (question,max_rating,course_id) VALUES (:question,:max_rating,:course_id)";
+            $stmt = $core->dbh->prepare($sql);
+            $stmt->bindParam("question", $ques->question);
+            $stmt->bindParam("max_rating", $ques->max_rating);
+            $stmt->bindParam("course_id", $course_id);
+            if ($stmt->execute()) {
+//                $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $response->success = TRUE;
+            } else {
+                $response->success = FALSE;
+            }
+        }
+        echo json_encode($response);
+    } catch (Exception $ex) {
+        $response->success = FALSE;
+        $response->data = $ex->getMessage();
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+        echo json_encode($response);
+    }
+};
+
+
+function getQuestionsByCourse($course_crn){
+    try {
+        // $faculty = "faculty";
+        $core = Core::getInstance();
+        $sql = "SELECT question,max_rating FROM `question_bank` WHERE course_id in (select id from `course` WHERE course_crn=:course_crn)";
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("course_crn", $course_crn);
+        $response = new stdClass();
+        if ($stmt->execute()) {
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $response->success = count($records) > 0;
+            $response->info = $response->success ? $records : 0;
+
+        } else {
+            $response->success = FALSE;
+            $response->info = 0;
+
+        }
+//        echo $course_crn;
+        echo json_encode($response);
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
+
 //For the url http://localhost/OpinionBox/services/index.php/faculty/login
 $app->post('/faculty/login', $loginFaculty);
 //For the url http://localhost/OpinionBox/services/index.php/coursesByFaculty/facultyusername
 $app->get('/coursesByFaculty/:fname', 'getCoursesByFaculty');
-//For the url http://localhost/TimeClock/services/index.php/addStudent
+//For the url http://localhost/OpinionBox/services/index.php/addStudent
 $app->post('/addCourse', $addCourse);
 //For the url http://localhost/OpinionBox/services/index.php/faculty/editCourse
 $app->post('/faculty/editCourseData', 'editCourseData');
 //For the url http://localhost/OpinionBox/services/index.php/faculty/removeCourse
 $app->post('/faculty/removeCourseData', $removeCourseData);
-
+//For the url http://localhost/OpinionBox/services/index.php/faculty/viewGroupsByCourse/:course_crn
+$app->get('/viewStudentsByCourse/:course_crn','getStudentsByCourse');
+//For the url http://localhost/OpinionBox/services/index.php/faculty/viewGroupsByCourse/:course_crn
+$app->get('/viewGroupsByCourse/:course_crn','viewGroupsByCourse');
+//For the url http://localhost/OpinionBox/services/index.php/addQuestionsToCourse/
+$app->post('/addQuestionsToCourse',$addQuestionsToCourse);
+//For the url http://localhost/OpinionBox/services/index.php/getQuestionsByCourse/:course_crn
+$app->get('/getQuestionsByCourse/:course_crn','getQuestionsByCourse');
 ?>

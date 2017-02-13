@@ -206,6 +206,7 @@ $removeFacultyData = function() use($app) {
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 };
+
 function Settings() {
     $app = \Slim\Slim::getInstance();
     $response = new stdClass();
@@ -264,6 +265,7 @@ function isPasswordMatch($user_name,$password){
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
+
 
 
 
