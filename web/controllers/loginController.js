@@ -10,7 +10,7 @@ app.controller("LoginController", ['$scope', '$cookies', '$state', '$http', '$ro
         }
         else if ($cookies.get('user_type') === "faculty") {
             $state.go('facultyHome');
-        } else {
+        } else if ($cookies.get('user_type') === "student"){
             $state.go('studentHome');
         }
     } else {

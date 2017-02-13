@@ -53,7 +53,7 @@
 
 
 .header-background {
-    background: url("images/header-bg.jpg"); center top no-repeat;
+    background: url("images/header-bg.jpg"); center: top no-repeat;
     height: 100px;
 }
 
@@ -119,4 +119,8 @@ nav.navbar-findcond ul.dropdown-menu > li > a:hover { background: #26722C; color
      vertical-align: middle;
      font-weight: bolder;
      font-size: medium;
+}
+/*Table borderless*/
+.borderless td, .borderless th {
+    border: none;
 }

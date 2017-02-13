@@ -1,7 +1,7 @@
 /**
  * Created by S525796 on 04-01-2017.
  */
-app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope){
+app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope) {
 // //Get course data from database
 //     $scope.courseData = [];
 //     $http.get(url + "/coursesByFaculty/" + $cookies.get('username')).then(function successCallback(response) {
@@ -11,6 +11,7 @@ app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'u
 //         console.log(JSON.stringify($scope.courseData));
 //     }, function errorCallback(response) {
 //     })
+
     $scope.getStudents = function (course_crn) {
         $rootScope.studentData = [];
         console.log("crn" + course_crn);
@@ -26,8 +27,8 @@ app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'u
         })
     }
 
-//To get popup message
-$scope.alert = function (size, modal_Info) {
+    //To get popup message
+    $scope.alert = function (size, modal_Info) {
         // $scope.alert = function (size){
         // $scope.animateEnabled = true;
 
@@ -42,10 +43,10 @@ $scope.alert = function (size, modal_Info) {
                 }
             }
         });
-}
- //Get course data from database
+    }
+    //Get course data from database
     $scope.courseData = [];
-    $http.get(url + "/coursesByFaculty/"+ $cookies.get('username')).then(function successCallback(response) {
+    $http.get(url + "/coursesByFaculty/" + $cookies.get('username')).then(function successCallback(response) {
 
         // angular.forEach(response.data.info, function () {1
         // });
@@ -59,7 +60,7 @@ $scope.alert = function (size, modal_Info) {
     }, function errorCallback(response) {
     })
 
- $scope.checkCourseNumber = function (data) {
+    $scope.checkCourseNumber = function (data) {
         // console.log(data+" sdvf"+data.length);
         var letters = /^[0-9]+$/;
         if (data === undefined || data === '') {
@@ -83,18 +84,18 @@ $scope.alert = function (size, modal_Info) {
             return "Enter trimester";
         }
     };
-   
+
     //Edit course data from database
     $scope.saveCourse = function (data, course) {
-        console.log(JSON.stringify(data)+"Hello "+JSON.stringify(course));
+        console.log(JSON.stringify(data) + "Hello " + JSON.stringify(course));
         var editCourseData = {
             original_course_crn: course.original_course_crn,
             course_name: data.course_name,
             trimester: data.trimester,
             course_crn: data.course_crn,
-            
+
         };
-        $http.post(url + "/faculty/editCourseData",editCourseData).then(function successCallback(response) {
+        $http.post(url + "/faculty/editCourseData", editCourseData).then(function successCallback(response) {
 
         }, function errorCallback(response) {
         })
@@ -116,8 +117,8 @@ $scope.alert = function (size, modal_Info) {
         var deleteCourseData = {
             course_crn: modalInfo.data.course_crn
         };
-        $http.post(url + "/faculty/removeCourseData",deleteCourseData).then(function successCallback(response) {
-            if(response.data.success == true){
+        $http.post(url + "/faculty/removeCourseData", deleteCourseData).then(function successCallback(response) {
+            if (response.data.success == true) {
                 console.log(response.data.success);
                 console.log(JSON.stringify($scope.courseData));
                 $scope.courseData.splice(modalInfo.data.indexd, 1);
@@ -242,7 +243,7 @@ app.controller('createCourseController', ['$scope', '$window', '$uibModal', '$ht
                 $("#errorMessageLabel").text("");
                 $scope.cancel();
             } else {
-                 $("#failedMessage").text(response.data.data).fadeIn(2000).fadeOut(6000);
+                $("#failedMessage").text(response.data.data).fadeIn(2000).fadeOut(6000);
             }
         }, function errorCallback(response) {
             if (!response.data.success) {
@@ -298,6 +299,7 @@ app.controller('createCourseController', ['$scope', '$window', '$uibModal', '$ht
 
 }]);
 
+
 app.controller("courseViewController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope, $stateParams) {
 //display course details
     $scope.studentData = [];
@@ -316,7 +318,7 @@ app.controller("courseViewController", ['$scope', '$cookies', '$state', '$http',
     $scope.range = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 }]);
-//groupViewController
+
 app.controller("groupViewController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope, $stateParams) {
 //display group details
     $scope.groupData = [];
@@ -335,7 +337,7 @@ app.controller("groupViewController", ['$scope', '$cookies', '$state', '$http', 
 
 
 }]);
-//addQuestionsController
+
 app.controller("addQuestionsController", ['$scope', '$cookies', '$state', '$http', 'url', '$window', '$uibModal', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $window, $stateParams) {
     //get questions for the course
     $scope.getQuestionData = [];
@@ -356,7 +358,9 @@ app.controller("addQuestionsController", ['$scope', '$cookies', '$state', '$http
     }, function errorCallback(response) {
         console.log('error')
     })
- //Add questions to the course
+
+
+    //Add questions to the course
     $scope.course_crn = $stateParams.courseid;
     var QUESTION_COLUMN_HEADER = "question";
     var MAX_RATING_COLUMN_HEADER = "max_rating";
@@ -408,7 +412,7 @@ app.controller("addQuestionsController", ['$scope', '$cookies', '$state', '$http
 
         });
     });
- $scope.preview = function (callBack) {
+    $scope.preview = function (callBack) {
         // console.log($scope.questionData);
 //                var data = [];
 //                $window.Papa.parse($scope.files, {
@@ -502,6 +506,7 @@ app.controller("addQuestionsController", ['$scope', '$cookies', '$state', '$http
 
 
 }]);
+
 app.directive("fileread", [function () {
     return {
         scope: {
