@@ -1,0 +1,176 @@
+<!--left pan-->
+<div class="list-group col-md-2" style="margin-top:70px;">
+    <a ui-sref="viewGroups({courseid:course_crn})" ui-sref-active="active" class="list-group-item">View Groups</a>
+    <a ui-sref="addQuestions({courseid:course_crn})"  ui-sref-active="active" class="list-group-item">Add Questions</a>
+</div>
+
+<!--right dashboard-->
+<div class="col-md-10">
+
+
+    <h2>Questions</h2>
+
+    <table class="table table-hover" style="">
+        <thead>
+        <tr style="background-color: green; opacity: 0.75; color: white;height: 52px">
+            <th>S.No</th>
+            <th>Question</th>
+            <th>Maximum Rating</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="quest in getQuestionData track by $index">
+            <td>{{$index +1}}</td>
+            <td >
+                {{quest.question}}
+            </td>
+            <td >
+                {{quest.max_rating}}
+            </td>
+
+        </tr>
+
+
+        </tbody>
+    </table>
+        <div class="col-md-8">
+            <div class="row">
+                <h2>Upload Questions</h2>
+                <form id="addQuestionsForm" class="form-horizontal" role="form" name="createCourse">
+
+                    <div class="form-group">
+                        <label class="col-md-3">
+                            <i class="glyphicon glyphicon glyphicon-info-sign fileinput-new"
+                               data-toggle="tooltip" data-placement="top" title="
+                               Data should contain appropriate headings(question,max_rating),each field should be seperated by comma, no tailing and leading spaces before
+                               and after comma,each row should be seperated by new line
+                               and file should be saved with .csv extension.
+                               "></i>
+                        </label>
+                        <div class="col-md-5">
+                            <input id="filebutton" accept=".csv" name="courseDataFile"
+                                   fileread="files" class="input-file" type="file">
+                        </div>
+                        <div class="col-md-3">
+                            <a href="javascript:void(0)" ng-click="preview(callBack)" id="previewLink">preview</a>
+                            <!--                        <button class="input-buttongroup-addon btn btn-default" name="preview"
+                                                            ng-click="preview(callBack)" ng-show="questionData.length == 0">
+                                                        Preview File
+                                                    </button>-->
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-8">
+                            <label for="filebutton" generated="true" class="error"></label>
+                        </div>
+                    </div>
+                    <div uib-alert ng-class="'alert-danger'" ng-show="csvformatwrong" close="csvformatwrong = false">Please check the format of the csv file you are up
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-8">
+                            <!--                        <button class="input-buttongroup-addon btn btn-default" name="preview"
+                                                            ng-click="preview(callBack)" ng-show="questionData.length == 0">
+                                                        Get Student Data Preview
+                                                    </button>-->
+                            <button class="input-buttongroup-addon btn btn-default"
+                                    name="save" ng-click="saveData()"
+                                    ng-disabled="questionData.length == 0">
+                                Save
+                            </button>
+                            <button class="input-buttongroup-addon btn btn-default" name="cancel"
+                                    data-dismiss="fileinput" ng-click="cancel()"
+                                    ng-disabled="questionData.length == 0">Cancel
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <div id="successMessage" style="display:none;border: 2px solid green;
+                     min-height: 40px;
+                     width: 768px;">
+                    <p style="color: green;font-weight: bold;">
+                        Successful!! Questions are added to the course successfully.
+                    </p>
+                </div>
+                <div id="failedMessage" style="display:none;border: 2px solid red;
+                     min-height: 40px;
+                     width: 768px;">
+                    <p style="color: red;font-weight: bold;">
+                        <label id="errorMessageLabel" class="error"></label>
+                    </p>
+                </div>
+
+
+            </div>
+        </div>
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12" style="margin-top: 10px;">
+                <table class="table table-striped" ng-show="questionData.length > 0">
+                    <thead>
+                    <tr>
+                        <th>S No</th>
+                        <th>Question</th>
+                        <th>Max Rating</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="question in questionData">
+                        <td>{{$index + 1}}</td>
+                        <td>{{question.question}}</td>
+                        <td>{{question.max_rating}}</td>
+                    </tr>
+                    <!--cancel-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+    <!--<fieldset  data-ng-repeat="question in questions" >-->
+        <!--<div class="form-inline">-->
+        <!--<input type="text"  placeholder="Enter a question" class="form-control" style="width: 80%">-->
+        <!--<select class="form-control" ng-model="selectedRating" style="width: 6%">-->
+            <!--<option ng-repeat="n in range" value="{{n}}">{{n}}</option>-->
+        <!--</select>-->
+        <!--</div>-->
+        <!--<button class="remove" ng-show="$last" ng-click="removeChoice()">remove</button>-->
+    <!--</fieldset>-->
+</div>
+<script>
+    $(document).ready(function () {
+//        $('[data-toggle="tooltip"]').css("align", "left").tooltip();
+
+        $('#addQuestionsForm').validate({
+            rules: {
+
+                courseDataFile: {
+                    required: true
+                }
+
+            },
+            messages: {
+
+                courseDataFile: {
+                    required: "Please browse a csv file"
+                }
+            },
+            highlight: function (element) {
+                $(element).closest('.control-group').removeClass('success').addClass('error');
+            },
+            success: function (element) {
+            },
+            submitHandler: function (form) {
+//                    onSubmitForm();
+            }
+        });
+
+    });
+</script>

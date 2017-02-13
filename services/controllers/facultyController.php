@@ -166,7 +166,6 @@ function addCourse($course, $faculty_user_name)
     }
 }
 
-
 function addStudent($student, $data)
 {
     $app = \Slim\Slim::getInstance();
