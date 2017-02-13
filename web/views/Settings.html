@@ -12,7 +12,7 @@
                            name="currentPwd"
                            ng-model="settings.currentPwd"
                            class="form-control "
-                           >
+                    >
                     <span class="help-block"
                           ng-show="settingsForm.currentPwd.$error.required && (settingsForm.currentPwd.$dirty|| settingsForm.$submitted) ">You can't leave this empty</span>
 
@@ -44,7 +44,7 @@
                            name="confirmPwd"
                            ng-model="settings.confirmPwd"
                            class="form-control "
-                    ng-pattern="settings.newPwd">
+                           ng-pattern="settings.newPwd">
                     <span class="help-block"
                           ng-show="settingsForm.confirmPwd.$error.required && (settingsForm.confirmPwd.$dirty|| settingsForm.$submitted) ">You can't leave this empty</span>
                     <span class="help-block"
@@ -58,7 +58,8 @@
                 </button>
             </div>
         </form>
-        <div uib-alert  ng-class="'alert-danger'" ng-show="passwordChangeSuccess" close="passwordChangeSuccess = false" >Password changed successfully</div>
+        <div uib-alert  ng-class="'alert-danger'" ng-show="passwordMismatch" close="passwordMismatch = true" >Enter your password correctly</div>
+        <div uib-alert  ng-class="'alert-success'" ng-show="passwordChangeSuccess" close="passwordChangeSuccess = false" >Password changed successfully</div>
         <div uib-alert  ng-class="'alert-danger'" ng-show="passwordChangeFailed" close="passwordChangeFailed = false" >Problem in changing password</div>
     </div>
 </div>
