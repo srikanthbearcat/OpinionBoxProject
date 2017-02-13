@@ -1,7 +1,7 @@
 /**
  * Created by S525796 on 04-01-2017.
  */
-app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope) {
+app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope){
 // //Get course data from database
 //     $scope.courseData = [];
 //     $http.get(url + "/coursesByFaculty/" + $cookies.get('username')).then(function successCallback(response) {
