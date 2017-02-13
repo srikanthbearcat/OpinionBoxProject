@@ -316,7 +316,7 @@ app.controller("courseViewController", ['$scope', '$cookies', '$state', '$http',
     $scope.range = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 }]);
-
+//groupViewController
 app.controller("groupViewController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope, $stateParams) {
 //display group details
     $scope.groupData = [];
@@ -335,6 +335,7 @@ app.controller("groupViewController", ['$scope', '$cookies', '$state', '$http', 
 
 
 }]);
+//addQuestionsController
 app.controller("addQuestionsController", ['$scope', '$cookies', '$state', '$http', 'url', '$window', '$uibModal', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $window, $stateParams) {
     //get questions for the course
     $scope.getQuestionData = [];
