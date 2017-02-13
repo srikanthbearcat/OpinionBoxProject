@@ -1,7 +1,7 @@
 <!--left pan-->
 <div class="list-group col-md-2" style="margin-top:70px;">
-    <a ui-sref="addCourse" class="list-group-item">Add Course</a>
-    <a ui-sref="modifyCourse"  class="list-group-item">View/Modify Course</a>
+    <a ui-sref="addCourse" ui-sref-active="active" class="list-group-item">Add Course</a>
+    <a ui-sref="modifyCourse" ui-sref-active="active" class="list-group-item">View/Modify Course</a>
 </div>
 
 <!--right dashboard-->
@@ -17,16 +17,17 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="course in courseData track by $index" ng-click="getStudents(course.course_crn)">
+        <!--<tr ng-repeat="course in courseData track by $index" ng-click="getStudents(course.course_crn)">-->
+        <tr ng-repeat="course in courseData track by $index" >
             <td>{{$index +1}}</td>
             <td >
-                <a ui-sref="addCourse"> {{course.course_crn}}</a>
+                <a ui-sref="viewCourse({courseid:course.course_crn})"> {{course.course_crn}}</a>
             </td>
             <td >
-                <a ui-sref="addCourse"> {{course.course_name}}</a>
+                <a ui-sref="viewCourse({courseid:course.course_crn})"> {{course.course_name}}</a>
             </td>
             <td >
-                <a ui-sref="addCourse"> {{course.trimester}}</a>
+                <a ui-sref="viewCourse({courseid:course.course_crn})"> {{course.trimester}}</a>
             </td>
         </tr>
 
