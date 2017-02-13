@@ -102,7 +102,11 @@ $scope.alert = function (size, modal_Info) {
 
     //delete course data from database
     $scope.removeCourse = function (indexd, course_crn) {
-        $scope.alert('sm', {modalHeader: "Delete Course", modalBody: "Are you sure you want to delete? All the data related to this course will be deleted", data:{indexd:indexd,course_crn:course_crn,deleteCourse:true}});
+        $scope.alert('sm', {
+            modalHeader: "Delete Course",
+            modalBody: "Are you sure you want to delete? All the data related to this course will be deleted",
+            data: {indexd: indexd, course_crn: course_crn, deleteCourse: true}
+        });
 
 
     };
