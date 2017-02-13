@@ -236,13 +236,13 @@ app.controller('createCourseController', ['$scope', '$window', '$uibModal', '$ht
         }
         console.log(JSON.stringify(data));
         $http.post(url + "/addCourse", data).then(function successCallback(response) {
-            console.log(response.data.success + " add faculty request success");
+            console.log(response.data.success + " add course request success");
             if (response.data.success) {
                 $("#successMessage").fadeIn(2000).fadeOut(6000);
                 $("#errorMessageLabel").text("");
                 $scope.cancel();
             } else {
-                $("#errorMessageLabel").text(data.data).fadeIn(3000);
+                 $("#failedMessage").text(response.data.data).fadeIn(2000).fadeOut(6000);
             }
         }, function errorCallback(response) {
             if (!response.data.success) {
