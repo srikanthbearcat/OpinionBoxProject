@@ -11,8 +11,22 @@ app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'u
 //         console.log(JSON.stringify($scope.courseData));
 //     }, function errorCallback(response) {
 //     })
+    $scope.getStudents = function (course_crn) {
+        $rootScope.studentData = [];
+        console.log("crn" + course_crn);
+        $http.get(url + "/viewStudentsByCourse/" + course_crn).then(function successCallback(response) {
+            $.each(response.data.info, function (i, data) {
+                data.i = i;
+                // data.original_course_crn = data.course_crn;
+                $scope.studentData.push(data);
+            });
+            console.log(JSON.stringify($scope.studentData))
+        }, function errorCallback(response) {
+            console.log('error')
+        })
+    }
 
-
+//To get popup message
 $scope.alert = function (size, modal_Info) {
         // $scope.alert = function (size){
         // $scope.animateEnabled = true;
