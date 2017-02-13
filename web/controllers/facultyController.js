@@ -335,6 +335,26 @@ app.controller("groupViewController", ['$scope', '$cookies', '$state', '$http', 
 
 
 }]);
+app.controller("addQuestionsController", ['$scope', '$cookies', '$state', '$http', 'url', '$window', '$uibModal', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $window, $stateParams) {
+    //get questions for the course
+    $scope.getQuestionData = [];
+    $scope.course_crn = $stateParams.courseid;
+    console.log($stateParams.courseid);
+    $http.get(url + "/getQuestionsByCourse/" + $scope.course_crn).then(function successCallback(response) {
+        if (response.data.success){
+            $.each(response.data.info, function (i, data) {
+                data.i = i;
+                // data.original_course_crn = data.course_crn;
+                $scope.getQuestionData.push(data);
+            });
+        }else{
+
+        }
+
+
+    }, function errorCallback(response) {
+        console.log('error')
+    })
 
 app.directive("fileread", [function () {
     return {
