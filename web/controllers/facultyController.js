@@ -298,6 +298,26 @@ app.controller('createCourseController', ['$scope', '$window', '$uibModal', '$ht
 
 }]);
 
+app.controller("courseViewController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope, $stateParams) {
+//display course details
+    $scope.studentData = [];
+    $scope.course_crn = $stateParams.courseid;
+    $http.get(url + "/viewStudentsByCourse/" + $scope.course_crn).then(function successCallback(response) {
+        $.each(response.data.info, function (i, data) {
+            data.i = i;
+            // data.original_course_crn = data.course_crn;
+            $scope.studentData.push(data);
+        });
+        console.log(JSON.stringify($scope.studentData))
+    }, function errorCallback(response) {
+        console.log('error')
+    })
+    $scope.questions = [{id: 1, selectedRating: 10, question: ''}];
+    $scope.range = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+}]);
+
+
 app.directive("fileread", [function () {
     return {
         scope: {
