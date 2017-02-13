@@ -206,7 +206,64 @@ $removeFacultyData = function() use($app) {
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 };
+function Settings() {
+    $app = \Slim\Slim::getInstance();
+    $response = new stdClass();
+    try {
+//        $postData = $app->request->post();
+        $json = $app->request->getBody();
+        $postData = json_decode($json, true); // parse the JSON into an assoc. array
+        $password = $postData['current_password'];
+        $user_name = $postData['user_name'];
+        $new_pwd = $postData['new_password'];
+        $core = Core::getInstance();
+        $passwordMatch = isPasswordMatch($user_name,$password);
+        if ($passwordMatch >0) {
+            $sql = "UPDATE user_account set password=:new_pwd WHERE user_name=:user_name && password =:password";
+            $stmt = $core->dbh->prepare($sql);
+            $stmt->bindParam("user_name", $user_name);
+            $stmt->bindParam("password", $password);
+            $stmt->bindParam("new_pwd", $new_pwd);
+            $response->success = $stmt->execute();
+            $response->data = 0;
 
+        }else {
+
+            throw new Exception("User doesn't exist", 400);
+
+        }
+        echo json_encode($response);
+    } catch (Exception $ex) {
+        $response = $app->response();
+        $response->status(400);
+        $response->success = false;
+        $response->info["reason"] = $ex->getMessage();
+        echo json_encode($response);
+//        $app->response()->status(400);
+//        $app->response()->header('X-Status-Reason', $ex->getMessage());
+//        // Append response body
+//        $app->response->write('Bar');
+//        echo json_encode($response);
+    }
+};
+function isPasswordMatch($user_name,$password){
+    $app = \Slim\Slim::getInstance();
+    try {
+        $core = Core::getInstance();
+        $sql = "select user_name from user_account where user_name=:user_name && password=:password";
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("user_name", $user_name);
+        $stmt->bindParam("password", $password);
+        if ($stmt->execute()) {
+            return count($stmt->fetchAll(PDO::FETCH_ASSOC));
+        } else {
+            return false;
+        }
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
 
 
 
@@ -221,4 +278,5 @@ $app->post('/admin/getFacultyData', 'getFacultyData');
 $app->post('/admin/editFacultyData', 'editFacultyData');
 //For the url http://localhost/OpinionBox/services/index.php/admin/removeFaculty
 $app->post('/admin/removeFacultyData', $removeFacultyData);
+$app->post('/Settings', 'Settings');
 ?>
