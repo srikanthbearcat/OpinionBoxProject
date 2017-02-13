@@ -356,7 +356,58 @@ app.controller("addQuestionsController", ['$scope', '$cookies', '$state', '$http
     }, function errorCallback(response) {
         console.log('error')
     })
+ //Add questions to the course
+    $scope.course_crn = $stateParams.courseid;
+    var QUESTION_COLUMN_HEADER = "question";
+    var MAX_RATING_COLUMN_HEADER = "max_rating";
 
+    $scope.csvformatwrong = false;
+
+    $scope.questionData = [];
+    $scope.files = null;
+    $scope.callBack = function (data) {
+        setTimeout(function () {
+            $scope.questionData = data;
+        }, 2000);
+        $scope.questionData = data;
+    };
+    $scope.$watch('files', function (newValue, oldValue) {
+        var data = [];
+        if ($scope.files == null) {
+            return;
+        }
+        console.log(JSON.stringify($scope.files));
+        Papa.parse($scope.files, {
+            header: true,
+            dynamicTyping: true,
+            skipEmptyLines: true,
+            step: function (results) {
+                var row = results.data[0];
+
+                if (row[QUESTION_COLUMN_HEADER] == undefined
+                    || row[MAX_RATING_COLUMN_HEADER] == undefined) {
+                    // $scope.alert('sm', {modalHeader: "Error", modalBody: "Format Error: Please check the format of the csv file you are up", data:{}});
+                    $scope.csvformatwrong = true;
+
+                    // alertDialog({
+                    //     title: "Error",
+                    //     message: "Format Error: Please check the format of the csv file you are up "
+                    // });
+                } else {
+                    data.push({
+                        question: row[QUESTION_COLUMN_HEADER],
+                        max_rating: row[MAX_RATING_COLUMN_HEADER]
+
+                    });
+                }
+            },
+            complete: function (results) {
+                $scope.questionData = data;
+                $("#previewLink").trigger('click');
+            }
+
+        });
+    });
 app.directive("fileread", [function () {
     return {
         scope: {
