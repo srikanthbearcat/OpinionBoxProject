@@ -42,9 +42,19 @@ app.config(function ($stateProvider,$urlRouterProvider, $locationProvider) {
         templateUrl: "web/views/viewModifyCourse.html"
     });
     $stateProvider.state("viewCourse", {
-        url: "/viewCourse",
-        controller: "facultyController",
+        url: "/viewCourse/:courseid",
+        controller: "courseViewController",
         templateUrl: "web/views/viewCourse.html"
+    });
+    $stateProvider.state("viewGroups", {
+        url: "/viewGroups/:courseid",
+        controller: "groupViewController",
+        templateUrl: "web/views/viewGroups.html"
+    });
+    $stateProvider.state("addQuestions", {
+        url: "/addQuestions/:courseid",
+        controller: "addQuestionsController",
+        templateUrl: "web/views/addQuestions.html"
     });
     $stateProvider.state("studentHome", {
         url: "/studenthome",
