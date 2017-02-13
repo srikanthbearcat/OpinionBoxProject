@@ -317,6 +317,24 @@ app.controller("courseViewController", ['$scope', '$cookies', '$state', '$http',
 
 }]);
 
+app.controller("groupViewController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope, $stateParams) {
+//display group details
+    $scope.groupData = [];
+    $scope.course_crn = $stateParams.courseid;
+    console.log($stateParams.courseid);
+    $http.get(url + "/viewGroupsByCourse/" + $scope.course_crn).then(function successCallback(response) {
+        $.each(response.data.info, function (i, data) {
+            data.i = i;
+            // data.original_course_crn = data.course_crn;
+            $scope.groupData.push(data);
+        });
+
+    }, function errorCallback(response) {
+        console.log('error')
+    })
+
+
+}]);
 
 app.directive("fileread", [function () {
     return {
