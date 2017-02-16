@@ -10,4 +10,17 @@ app.controller("navigationController", ['$scope','$cookies','$state' ,function (
         $cookies.remove('user_type');
         $state.go('login');
     }
+	$scope.homepage = function(){
+	    console.log($cookies.get('user_type'));
+        	if ($cookies.get('user_type') === "admin") {
+            		$state.go('adminHome');
+        	}
+       		 else if ($cookies.get('user_type') === "faculty") {
+            		$state.go('facultyHome');
+        	}
+		else {
+            		$state.go('studentHome');
+        	}
+
+}
 }]);

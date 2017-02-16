@@ -103,6 +103,8 @@ app.controller("LoginController", ['$scope', '$cookies', '$state', '$http', '$ro
             $scope.$apply();
         }
     }
+	
+
 }]);
 
 
