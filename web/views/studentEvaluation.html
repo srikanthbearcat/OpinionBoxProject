@@ -1,0 +1,34 @@
+<!--right dashboard-->
+<div class="col-md-10 col-md-offset-1" >
+    <div class="panel panel-default ">
+        <!-- Default panel contents -->
+        <div class="panel-heading panel-color text-center"><h4>Student Evaluation</h4></div>
+        <table class="table borderless" style="">
+
+            <!--<tr ng-repeat="course in courseData track by $index" ng-click="getStudents(course.course_crn)">-->
+            <tr ng-repeat="questions in questionData track by $index" >
+                {{questions.max_rating}}
+            <!--<div ng-if="questions.max_rating != '0'">-->
+                <td >
+                    {{questions.question}}
+                </td>
+                <td>
+                    <select ng-model="responseStudent[questions.id]" ng-init="(_Array = []).length = questions.max_rating;">
+                        <option ng-repeat="i in _Array track by $index+1">{{$index+1}}</option>
+                    </select>
+                </td>
+            <!--</div>-->
+               <!--<div ng-if="questions.max_rating == '0'">-->
+                    <!--<td>-->
+                        <!--{{questions.question}}-->
+
+                    <!--</td>-->
+                    <!--<td>-->
+                    <!--<textarea ng-model="responseStudent[questions.id]"></textarea>-->
+                    <!--</td>-->
+                <!--</div>-->
+            </tr>
+        </table>
+<button type="submit" ng-click="submit()">submit</button>
+    </div>
+</div>
