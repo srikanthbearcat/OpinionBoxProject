@@ -45,26 +45,26 @@
                     <th>Course Name</th>
                     <th>Group Number</th>
                     <th>Group Name</th>
-                    <th>Go</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 <!--<tr ng-repeat="course in courseData track by $index" ng-click="getStudents(course.course_crn)">-->
-                <tr ng-repeat="student in courseData track by $index" >
+                <tr ng-repeat="student in groupData track by $index" >
                     <td>
                          {{$index +1}}
                     </td>
                     <td >
                        {{student.course_name}}
                     </td>
-                    <td >
+                    <td>
                      {{student.group_no}}
                     </td>
                     <td >
                       {{student.group_topic}}
                     </td>
                     <td >
-                        <a ui-sref="Settings" type="button" class="btn btn-success"> Go</a>
+                        <a ui-sref="studentsInGroup({groupid:student.group_id})" type="button" class="btn btn-success"> Go</a>
                     </td>
                 </tr>
 
