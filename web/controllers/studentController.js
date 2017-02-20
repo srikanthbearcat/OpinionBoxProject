@@ -18,3 +18,22 @@ app.controller("studentHomeController", ['$scope', '$cookies', '$state', '$http'
     }, function errorCallback(response) {
     })
 }]);
+app.controller("studentsInGroupViewController", ['$scope', '$cookies', '$state', '$http', 'url', '$window', '$uibModal', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $window, $stateParams) {
+//Get students of group from database
+    $scope.group_id = $stateParams.groupid;
+    $scope.studentsInGroupData = [];
+    console.log($scope.group_id);
+    $http.post(url + "/studentsInGroup/" + $cookies.get('username')+"/"+$scope.group_id).then(function successCallback(response) {
+        console.log(response);
+        // angular.forEach(response.data.info, function () {1
+        // });
+        // $scope.facultyData = response.data.info;
+        $.each(response.data.info, function (i, data) {
+            data.i = i;
+            $scope.studentsInGroupData.push(data);
+        });
+        console.log(response);
+        //console.log(JSON.stringify($scope.courseData));
+    }, function errorCallback(response) {
+    })
+}]);
