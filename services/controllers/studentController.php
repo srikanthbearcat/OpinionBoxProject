@@ -36,8 +36,8 @@ function getCoursesByStudent($sname)
     try {
         // $faculty = "faculty";
         $core = Core::getInstance();
-        $sql = "Select firstset.group_no,firstset.group_topic,secondset.course_name from
-(SELECT course_id,group_no, group_topic FROM  `group` WHERE id IN (SELECT group_id FROM group_student WHERE student_id IN (SELECT id FROM student WHERE user_id IN (SELECT id FROM user_account WHERE user_name=:sname)))) as firstset
+        $sql = "Select firstset.group_no,firstset.group_topic,secondset.course_name,firstset.group_id from
+(SELECT course_id,group_no, group_topic,group.id as group_id FROM  `group` WHERE id IN (SELECT group_id FROM group_student WHERE student_id IN (SELECT id FROM student WHERE user_id IN (SELECT id FROM user_account WHERE user_name=:sname)))) as firstset
 INNER JOIN
 (select course_name,id from `course`) as secondset
 ON firstset.course_id = secondset.id";
