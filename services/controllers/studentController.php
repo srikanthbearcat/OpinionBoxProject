@@ -111,4 +111,6 @@ $app->post('/student/login', $loginStudent);
 $app->post('/coursesByStudent/:sname', 'getCoursesByStudent');
 //For the url http://localhost/OpinionBox/services/index.php/studentsInGroup/:username/:groupId
 $app->post('/studentsInGroup/:username/:groupId', 'getStudentsInGroup');
+//For the url http://localhost/OpinionBox/services/index.php/quesionsInGroup/:studentId/:groupId
+$app->post('/questionsInGroup/:studentId/:groupId', 'getQuestionsInGroup');
 ?>
