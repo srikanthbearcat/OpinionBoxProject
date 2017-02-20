@@ -113,4 +113,7 @@ $app->post('/coursesByStudent/:sname', 'getCoursesByStudent');
 $app->post('/studentsInGroup/:username/:groupId', 'getStudentsInGroup');
 //For the url http://localhost/OpinionBox/services/index.php/quesionsInGroup/:studentId/:groupId
 $app->post('/questionsInGroup/:studentId/:groupId', 'getQuestionsInGroup');
+//For the url http://localhost/OpinionBox/services/index.php/responsesForQuestions/:responseStudent/:username/:studentId
+$app->post('/responsesForQuestions/:responseStudent/:username/:studentId', 'insertResponses');
+?>
 ?>
