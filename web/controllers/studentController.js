@@ -37,3 +37,23 @@ app.controller("studentsInGroupViewController", ['$scope', '$cookies', '$state',
     }, function errorCallback(response) {
     })
 }]);
+app.controller("studentEvaluationController", ['$scope', '$cookies', '$state', '$http', 'url', '$window', '$uibModal', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $window, $stateParams) {
+//Get questions of group from database
+    $scope.group_id = $stateParams.groupid;
+    $scope.student_id = $stateParams.studentid;
+    $scope.questionData = [];
+    console.log($scope.group_id);
+    $http.post(url + "/questionsInGroup/" + $scope.student_id +"/" + $scope.group_id).then(function successCallback(response) {
+        console.log(response);
+        // angular.forEach(response.data.info, function () {1
+        // });
+        // $scope.facultyData = response.data.info;
+        $.each(response.data.info, function (i, data) {
+            data.i = i;
+            $scope.questionData.push(data);
+        });
+        console.log(response);
+        //console.log(JSON.stringify($scope.courseData));
+    }, function errorCallback(response) {
+    })
+}]);
