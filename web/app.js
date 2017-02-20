@@ -61,6 +61,11 @@ app.config(function ($stateProvider,$urlRouterProvider, $locationProvider) {
         controller: "studentController",
         templateUrl: "web/views/studentHomepage.html"
     });
+	$stateProvider.state("studentsInGroup", {
+        url: "/studentsInGroup/:groupid",
+        controller: "studentsInGroupViewController",
+        templateUrl: "web/views/studentsInGroup.html"
+    });
     $stateProvider.state("studentEvaluation", {
         url: "/studentEvaluation/:studentid/:groupid",
         controller: "studentEvaluationController",
