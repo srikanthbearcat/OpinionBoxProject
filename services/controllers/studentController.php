@@ -82,7 +82,29 @@ function getStudentsInGroup($username,$groupId)
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
+function getQuestionsInGroup($studentId,$groupId)
+{
+    try {
 
+        $core = Core::getInstance();
+        $sql = "SELECT id,question,max_rating FROM `question_bank` WHERE course_id in (SELECT course_id FROM `group` WHERE id=:group_id)";
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("group_id", $groupId);
+        $response = new stdClass();
+        if ($stmt->execute()) {
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $response->success = count($records) > 0;
+            $response->info = $response->success ? $records : 0;
+        } else {
+            $response->success = FALSE;
+            $response->info = 0;
+        }
+        echo json_encode($response);
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
 //For the url http://localhost/OpinionBox/services/index.php/student/login
 $app->post('/student/login', $loginStudent);
 //For the url http://localhost/OpinionBox/services/index.php/coursesByStudent/studentusername
