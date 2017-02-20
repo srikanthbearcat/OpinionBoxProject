@@ -58,7 +58,30 @@ ON firstset.course_id = secondset.id";
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
+function getStudentsInGroup($username,$groupId)
+{
+    try {
 
+        $core = Core::getInstance();
+        $sql = "SELECT first_name,last_name,id FROM `student` WHERE id in (SELECT student_id FROM `group_student` WHERE group_id=:group_id AND student_id != (SELECT id FROM `student` WHERE user_id in (SELECT id FROM `user_account` WHERE user_name=:user_name)))";
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("group_id", $groupId);
+        $stmt->bindParam("user_name", $username);
+        $response = new stdClass();
+        if ($stmt->execute()) {
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $response->success = count($records) > 0;
+            $response->info = $response->success ? $records : 0;
+        } else {
+            $response->success = FALSE;
+            $response->info = 0;
+        }
+        echo json_encode($response);
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
 
 //For the url http://localhost/OpinionBox/services/index.php/student/login
 $app->post('/student/login', $loginStudent);
