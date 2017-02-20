@@ -18,7 +18,6 @@ app.controller("studentHomeController", ['$scope', '$cookies', '$state', '$http'
     }, function errorCallback(response) {
     })
 }]);
-//studentsInGroupViewController
 app.controller("studentsInGroupViewController", ['$scope', '$cookies', '$state', '$http', 'url', '$window', '$uibModal', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $window, $stateParams) {
 //Get students of group from database
     $scope.group_id = $stateParams.groupid;
