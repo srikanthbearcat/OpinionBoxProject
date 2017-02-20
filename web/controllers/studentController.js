@@ -56,4 +56,21 @@ app.controller("studentEvaluationController", ['$scope', '$cookies', '$state', '
         //console.log(JSON.stringify($scope.courseData));
     }, function errorCallback(response) {
     })
+	    $scope.responseStudent = {};
+    $scope.responseData = [];
+    $scope.submit = function () {
+        $http.post(url + "/responsesForQuestions/" + $scope.responseStudent +"/" + $cookies.get('username')+"/" + $scope.student_id).then(function successCallback(response) {
+            console.log(responseStudent);
+            // angular.forEach(response.data.info, function () {1
+            // });
+            // $scope.facultyData = response.data.info;
+            // $.each(response.data.info, function (i, data) {
+            //     data.i = i;
+            //     $scope.responseData.push(data);
+            // });
+            console.log(response);
+            //console.log(JSON.stringify($scope.courseData));
+        }, function errorCallback(response) {
+        })
+    }
 }]);
