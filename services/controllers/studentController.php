@@ -87,4 +87,6 @@ function getStudentsInGroup($username,$groupId)
 $app->post('/student/login', $loginStudent);
 //For the url http://localhost/OpinionBox/services/index.php/coursesByStudent/studentusername
 $app->post('/coursesByStudent/:sname', 'getCoursesByStudent');
+//For the url http://localhost/OpinionBox/services/index.php/studentsInGroup/:username/:groupId
+$app->post('/studentsInGroup/:username/:groupId', 'getStudentsInGroup');
 ?>
