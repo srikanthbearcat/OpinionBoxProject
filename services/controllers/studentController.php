@@ -82,7 +82,6 @@ function getStudentsInGroup($username,$groupId)
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
-//getting Questions in group
 function getQuestionsInGroup($studentId,$groupId)
 {
     try {
