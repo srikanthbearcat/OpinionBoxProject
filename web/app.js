@@ -71,7 +71,13 @@ app.config(function ($stateProvider,$urlRouterProvider, $locationProvider) {
     $stateProvider.state("studentHome", {
         url: "/studenthome",
         controller: "studentHomeController",
-        templateUrl: "web/views/studentHomepage.html"
+        templateUrl: "web/views/studentHomepage.html",
+        onEnter: function(){
+            angular.element('nav.navbar-findcond ul.navbar-nav a.highlight').css('border-color', '#26722C');
+        },
+        onExit: function(){
+            angular.element('nav.navbar-findcond ul.navbar-nav a.highlight').css('border-color', '#fff');
+        }
     });
 	$stateProvider.state("studentsInGroup", {
         url: "/studentsInGroup/:groupid",
