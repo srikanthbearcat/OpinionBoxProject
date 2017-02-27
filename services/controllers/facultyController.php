@@ -640,7 +640,56 @@ function getQuestionsByCourse($course_crn){
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
+function getStudentDataInGroups($group_id){
+    try {
+        // $faculty = "faculty";
+        $core = Core::getInstance();
+        $sql = "SELECT id,group_no,group_topic FROM `group` WHERE course_id in (select id from `course` WHERE course_crn=:course_crn)";
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("group_id", $group_id);
+        $response = new stdClass();
+        if ($stmt->execute()) {
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $response->success = count($records) > 0;
+            $response->info = $response->success ? $records : 0;
 
+        } else {
+            $response->success = FALSE;
+            $response->info = 0;
+
+        }
+//        echo $course_crn;
+        echo json_encode($response);
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
+function getStudentDataInGroups($group_id){
+    try {
+        // $faculty = "faculty";
+        $core = Core::getInstance();
+        $sql = "SELECT id,group_no,group_topic FROM `group` WHERE course_id in (select id from `course` WHERE course_crn=:course_crn)";
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("group_id", $group_id);
+        $response = new stdClass();
+        if ($stmt->execute()) {
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $response->success = count($records) > 0;
+            $response->info = $response->success ? $records : 0;
+
+        } else {
+            $response->success = FALSE;
+            $response->info = 0;
+
+        }
+//        echo $course_crn;
+        echo json_encode($response);
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
 //For the url http://localhost/OpinionBox/services/index.php/faculty/login
 $app->post('/faculty/login', $loginFaculty);
 //For the url http://localhost/OpinionBox/services/index.php/coursesByFaculty/facultyusername
