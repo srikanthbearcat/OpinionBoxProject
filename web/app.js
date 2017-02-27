@@ -35,7 +35,13 @@ app.config(function ($stateProvider,$urlRouterProvider, $locationProvider) {
     $stateProvider.state("facultyHome", {
         url: "/facultyhome",
         controller: "facultyController",
-        templateUrl: "web/views/facultyHomepage.html"
+        templateUrl: "web/views/facultyHomepage.html",
+        onEnter: function(){
+        angular.element('nav.navbar-findcond ul.navbar-nav a.highlight').css('border-color', '#26722C');
+    },
+    onExit: function(){
+        angular.element('nav.navbar-findcond ul.navbar-nav a.highlight').css('border-color', '#fff');
+    }
     });
     $stateProvider.state("addCourse", {
         url: "/addCourse",
