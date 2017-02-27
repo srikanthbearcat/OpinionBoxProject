@@ -85,7 +85,7 @@
                            ng-required="true"
                            name="password"
                            ng-model="addFaculty.password"
-                          
+                           ng-pattern="/^[A-Za-z0-9]{8}/"
                            class="form-control "
                     >
                     <span  ng-show="addFacultyForm.password.$error.pattern">Password must contain alteast one capital letter, small letter and number and length should be 8 characters. Example: Opinion1</span>
