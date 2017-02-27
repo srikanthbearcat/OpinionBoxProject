@@ -318,7 +318,22 @@ app.controller("courseViewController", ['$scope', '$cookies', '$state', '$http',
     $scope.range = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 }]);
+app.controller("viewStudentsInCourseController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope, $stateParams) {
+//display group details
+    $scope.groupStudentData = [];
+    $scope.group_id = $stateParams.groupid;
+    console.log($stateParams.groupid);
+    $http.get(url + "/viewStudentsInCourse/" + $scope.group_id).then(function successCallback(response) {
+        $.each(response.data.info, function (i, data) {
+            data.i = i;
+            // data.original_course_crn = data.course_crn;
+            $scope.groupStudentData.push(data);
+        });
 
+    }, function errorCallback(response) {
+        console.log('error')
+    })
+}]);
 app.controller("groupViewController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope, $stateParams) {
 //display group details
     $scope.groupData = [];
