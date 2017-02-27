@@ -85,8 +85,10 @@
                            ng-required="true"
                            name="password"
                            ng-model="addFaculty.password"
+                          
                            class="form-control "
                     >
+                    <span  ng-show="addFacultyForm.password.$error.pattern">Password must contain alteast one capital letter, small letter and number and length should be 8 characters. Example: Opinion1</span>
                     <span class="help-block"
                           ng-show="addFacultyForm.password.$error.required && (addFacultyForm.password.$dirty|| addFacultyForm.$submitted) ">You can't leave this empty</span>
 
@@ -116,8 +118,8 @@
                 </button>
             </div>
         </form>
-        <div uib-alert  ng-class="'alert-danger'" ng-show="addedFacultySuccess" close="addedFacultySuccess = false" >Faculty added successfully</div>
-        <div uib-alert  ng-class="'alert-danger'" ng-show="addedFacultyFailed" close="addedFacultyFailed = false" >Problem in adding faculty</div>
+        <div uib-alert  ng-class="'alert-danger'" ng-show="addedFacultySuccess" close="addedFacultySuccess = false" >{{addFaculty.firstName}} {{addFaculty.lastName}} added successfully</div>
+        <div uib-alert  ng-class="'alert-danger'" ng-show="addedFacultyFailed" close="addedFacultyFailed = false" >Problem in adding {{addFaculty.firstName}} {{addFaculty.lastName}} </div>
         <div uib-alert  ng-class="'alert-danger'" ng-show="addFacultyExist" close="addFacultyExist = false" >Username is already taken</div>
     </div>
 </div>
