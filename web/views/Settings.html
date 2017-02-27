@@ -11,8 +11,10 @@
                            ng-required="true"
                            name="currentPwd"
                            ng-model="settings.currentPwd"
+                           
                            class="form-control "
                     >
+                   
                     <span class="help-block"
                           ng-show="settingsForm.currentPwd.$error.required && (settingsForm.currentPwd.$dirty|| settingsForm.$submitted) ">You can't leave this empty</span>
 
@@ -27,8 +29,10 @@
                            ng-required="true"
                            name="newPwd"
                            ng-model="settings.newPwd"
+                           ng-pattern="/^[A-Za-z0-9]{8}/"
                            class="form-control "
                     >
+                    
                     <span class="help-block"
                           ng-show="settingsForm.newPwd.$error.required && (settingsForm.newPwd.$dirty|| settingsForm.$submitted) ">You can't leave this empty</span>
 
