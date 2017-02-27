@@ -13,7 +13,13 @@ app.config(function ($stateProvider,$urlRouterProvider, $locationProvider) {
     $stateProvider.state("adminHome", {
         url: "/adminHome",
         controller: "adminController",
-        templateUrl: "web/views/adminHomepage.html"
+        templateUrl: "web/views/adminHomepage.html",
+        onEnter: function(){
+        angular.element('nav.navbar-findcond ul.navbar-nav a.highlight').css('border-color', '#26722C');
+    },
+        onExit: function(){
+            angular.element('nav.navbar-findcond ul.navbar-nav a.highlight').css('border-color', '#fff');
+        }
     });
     $stateProvider.state("viewModifyFaculty", {
         url: "/viewModifyFaculty",
@@ -58,7 +64,7 @@ app.config(function ($stateProvider,$urlRouterProvider, $locationProvider) {
     });
     $stateProvider.state("studentHome", {
         url: "/studenthome",
-        controller: "studentController",
+        controller: "studentHomeController",
         templateUrl: "web/views/studentHomepage.html"
     });
 	$stateProvider.state("studentsInGroup", {
@@ -90,8 +96,11 @@ app.controller('modalInstanceController', function ($scope,$rootScope, $uibModal
     $scope.modalData.bodyText = modalInfo.modalBody;
 
     $scope.ok = function () {
-        if(modalInfo.data.delete){
+        if(modalInfo.data.deleteFaculty){
             $rootScope.$broadcast("DeleteFacultyConfirm", modalInfo);
+        }
+        if(modalInfo.data.deleteCourse){
+            $rootScope.$broadcast("DeleteCourseConfirm", modalInfo);
         }
         $uibModalInstance.close();
     }
