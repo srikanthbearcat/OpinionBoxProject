@@ -89,6 +89,11 @@ app.config(function ($stateProvider,$urlRouterProvider, $locationProvider) {
         controller: "studentEvaluationController",
         templateUrl: "web/views/studentEvaluation.html"
     });
+	$stateProvider.state("viewStudentsInCourse", {
+        url: "/viewStudentsInCourse/:groupid",
+        controller: "viewStudentsInCourseController",
+        templateUrl: "web/views/viewStudentsInCourse.html"
+    });
     $stateProvider.state("Settings", {
         url: "/Settings",
         controller: "settingsController",
