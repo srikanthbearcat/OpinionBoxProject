@@ -708,4 +708,6 @@ $app->get('/viewGroupsByCourse/:course_crn','viewGroupsByCourse');
 $app->post('/addQuestionsToCourse',$addQuestionsToCourse);
 //For the url http://localhost/OpinionBox/services/index.php/getQuestionsByCourse/:course_crn
 $app->get('/getQuestionsByCourse/:course_crn','getQuestionsByCourse');
+//For the url http://localhost/OpinionBox/services/index.php/getQuestionsByCourse/:course_crn
+$app->get('/viewStudentsInCourse/:group_id','getStudentDataInGroups');
 ?>
