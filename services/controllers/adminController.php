@@ -49,16 +49,20 @@ $addFaculty = function () use ($app) {
         if ($facultyExist > 0) {
             throw new Exception("Username already Exists", 400);
         }else {
-            $sql = "INSERT INTO user_account (first_name,last_name,user_name,email,password)  VALUES (:first_name,:last_name,:user_name,:email,:password)";
+            $sql = "INSERT INTO user_account (user_name,password,role)  VALUES (:user_name,:password,'faculty')";
             $stmt = $core->dbh->prepare($sql);
-            $stmt->bindParam("first_name", $first_name);
-            $stmt->bindParam("last_name", $last_name);
             $stmt->bindParam("user_name", $user_name);
             $stmt->bindParam("password", $password);
-            $stmt->bindParam("email", $email);
-
-            $response->success = $stmt->execute();
-            $response->data = 0;
+            $stmt->execute();
+            $user_account_id = $core->dbh->lastInsertId();
+            $sql2 = "INSERT INTO faculty (first_name,last_name,email_id,user_id)  VALUES (:first_name,:last_name,:email_id,:user_id)";
+            $stmt2 = $core->dbh->prepare($sql2);
+            $stmt2->bindParam("first_name", $first_name);
+            $stmt2->bindParam("last_name", $last_name);
+            $stmt2->bindParam("user_id", $user_account_id);
+            $stmt2->bindParam("email_id", $email);
+            $response->success = $stmt2->execute();
+            $response->data = $user_account_id;
             echo json_encode($response);
         }
     } catch (Exception $ex) {
@@ -79,7 +83,7 @@ function isFacultyExist($user_name){
     $app = \Slim\Slim::getInstance();
     try {
         $core = Core::getInstance();
-        $sql = "select user_name from user_account where user_name=:user_name";
+        $sql = "select user_name from user_account where user_name=:user_name AND role='faculty'";
         $stmt = $core->dbh->prepare($sql);
         $stmt->bindParam("user_name", $user_name);
         if ($stmt->execute()) {
@@ -97,7 +101,9 @@ function getFacultyData(){
     $app = \Slim\Slim::getInstance();
     try {
         $core = Core::getInstance();
-        $sql = "SELECT * FROM user_account";
+        $sql = "SELECT first_name,last_name,email_id,user_name FROM `faculty`,`user_account` WHERE  user_account.id=faculty.user_id AND user_account.role='faculty'";
+//        $sql = "SELECT first_name,last_name,email_id,user_name FROM `faculty`,`user_account` WHERE user_id in (SELECT id FROM user_account WHERE role='faculty')";
+//        $sql = "SELECT * FROM user_account";
         $stmt = $core->dbh->prepare($sql);
         $response = new stdClass();
         if ($stmt->execute()) {
@@ -126,13 +132,13 @@ function editFacultyData(){
         $postData = json_decode($json, true); // parse the JSON into an assoc. array
         $first_name = $postData['first_name'];
         $last_name = $postData['last_name'];
-        $password = $postData['password'];
-        $email = $postData['email'];
+//        $password = $postData['password'];
+        $email_id = $postData['email_id'];
         $user_name = $postData['user_name'];
         $original_user_name = $postData['original_user_name'];
-        $user = new Users($user_name, $first_name, $last_name, $email, $password);
+        $faculty = new faculty($first_name, $last_name, $email_id);
         $response = new stdClass();
-        if (!$user_name || !$first_name ||  !$last_name ||  !$email ||  !$password) {
+        if (!$user_name || !$first_name ||  !$last_name ||  !$email_id ) {
             throw new Exception('Missing faculty $original_user_name or email  or password or email of faculty');
         } else {
             if ($original_user_name != $user_name) {
@@ -140,10 +146,10 @@ function editFacultyData(){
                 if ($facultyExist > 0) {
                     throw new Exception("Cannot Update! Because username already Exists", 400);
                 } else {
-                    $response = updateFaculty($user, $original_user_name);
+                    $response = updateFaculty($faculty,$user_name, $original_user_name);
                 }
             } else {
-                $response = updateFaculty($user, $original_user_name);
+                $response = updateFaculty($faculty,$user_name, $original_user_name);
             }
         }
         echo json_encode($response);
@@ -155,26 +161,22 @@ function editFacultyData(){
     }
 }
 
-function updateFaculty($user, $original_user_name) {
+function updateFaculty($faculty,$user_name,$original_user_name) {
     $app = \Slim\Slim::getInstance();
     $response = new stdClass();
     try {
         $core = Core::getInstance();
-        $sql = "UPDATE user_account SET `user_name`=:user_name, `first_name`=:first_name, last_name="
-            . ":last_name, `email`=:email, `password`=:password WHERE `user_name`=:original_user_name"; //Insert record in to user_account table
+        $sql = "UPDATE user_account INNER JOIN faculty ON user_account.id = faculty.user_id SET user_name=:user_name, first_name=:first_name, last_name="
+            . ":last_name, email_id=:email_id WHERE user_name=:original_user_name"; //Insert record in to user_account table
         $stmt = $core->dbh->prepare($sql);
-
-        $user_name = $user->getUsername();
-        $first_name = $user->getFirstName();
-        $last_name = $user->getLastName();
-        $email = $user->getEmail();
-        $password = $user->getPassword();
+        $first_name = $faculty->getFirstName();
+        $last_name = $faculty->getLastName();
+        $email_id = $faculty->getEmailId();
         $stmt->bindParam("original_user_name", $original_user_name);
         $stmt->bindParam("user_name", $user_name);
         $stmt->bindParam("first_name", $first_name);
         $stmt->bindParam("last_name", $last_name);
-        $stmt->bindParam("email", $email);
-        $stmt->bindParam("password", $password);
+        $stmt->bindParam("email_id", $email_id);
         $response->success = $stmt->execute();
         $response->data = 0;
         return $response;

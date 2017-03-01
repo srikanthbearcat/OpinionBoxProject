@@ -16,7 +16,7 @@
                 <th style="width: 120px" >First Name</th>
                 <th style="width: 100px">Last Name</th>
                 <th style="width: 100px">Username</th>
-                <th style="width: 100px">Password</th>
+                <!--<th style="width: 100px">Password</th>-->
                 <th style="width: 250px">Email</th>
                 <th style="width: 120px">Edit</th>
             </tr>
@@ -42,16 +42,16 @@
                                 {{ faculty.user_name || 'empty' }}
                             </span>
                 </td>
+                <!--<td>-->
+                            <!--<span editable-text="faculty.password" e-name="password" e-form="rowform"-->
+                                  <!--onbeforesave="checkPassword($data)" e-required>-->
+                                <!--{{ faculty.password || 'empty' }}-->
+                            <!--</span>-->
+                <!--</td>-->
                 <td>
-                            <span editable-text="faculty.password" e-name="password" e-form="rowform"
-                                  onbeforesave="checkPassword($data)" e-required>
-                                {{ faculty.password || 'empty' }}
-                            </span>
-                </td>
-                <td>
-                            <span editable-text="faculty.email" e-name="email" e-form="rowform"
+                            <span editable-text="faculty.email_id" e-name="email_id" e-form="rowform"
                                   onbeforesave="checkEmail($data)" e-required>
-                                {{ faculty.email || 'empty' }}
+                                {{ faculty.email_id || 'empty' }}
                             </span>
                 </td>
                 <td style="white-space: nowrap">
@@ -70,7 +70,7 @@
           			<span class="glyphicon glyphicon-pencil"></span>
         		</button>
                         <!--<button class="btn btn-danger" ng-click="removeFaculty($index, faculty.user_name)">del</button>-->
-			<button type="button" class="btn btn-danger" ng-click="removeFaculty($index, faculty.user_name)">
+			<button type="button" class="btn btn-danger" ng-click="removeFaculty($index, faculty.user_name,faculty.first_name,faculty.last_name)">
           			<span class="glyphicon glyphicon-trash"></span>
         		</button>
                     </div>

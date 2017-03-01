@@ -105,29 +105,45 @@ function getQuestionsInGroup($studentId,$groupId)
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
-function insertResponses($responseStudent,$username,$studentId)
-{
-    try {
 
+$insertResponses = function ($username,$studentId) use ($app)
+//function insertResponses($username,$studentId)
+{
+    $response = new stdClass();
+    $json = $app->request->getBody();
+    $postData = json_decode($json, true); // parse the JSON into an assoc. array
+    try {
         $core = Core::getInstance();
-        $sql = "INSERT INTO response_bank (response,question_id,response_by_id,response_to_id) VALUES (:response,:question_id,:response_by_id,:response_to_id";
-        $stmt = $core->dbh->prepare($sql);
-        $stmt->bindParam("group_id", $groupId);
-        $response = new stdClass();
-        if ($stmt->execute()) {
-            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $response->success = count($records) > 0;
-            $response->info = $response->success ? $records : 0;
-        } else {
-            $response->success = FALSE;
-            $response->info = 0;
+        $student_sql = "SELECT id FROM `student` WHERE user_id in (SELECT id FROM user_account WHERE user_name=:user_name)";
+        $student_stmt = $core->dbh->prepare($student_sql);
+        $student_stmt->bindParam("user_name", $username);
+        $student_stmt->execute();
+        $records = $student_stmt->fetchAll(PDO::FETCH_ASSOC);
+        $record=  $records[0] ;
+        $response_by_id = $record['id'];
+        foreach ($postData as $key => $value){
+            $question_id = $key;
+            $answer = $value;
+            $sql = "INSERT INTO `response_bank` (response,question_id,response_by_id,response_to_id) VALUES (:response,:question_id,:response_by_id,:response_to_id)";
+            $stmt = $core->dbh->prepare($sql);
+            $stmt->bindParam("response", $answer);
+            $stmt->bindParam("question_id", $question_id);
+            $stmt->bindParam("response_by_id", $response_by_id);
+            $stmt->bindParam("response_to_id", $studentId);
+            if ($stmt->execute()) {
+                $response->success = TRUE;
+            } else {
+                $response->success = FALSE;
+                $response->info  = "Response submission failed";
+            }
         }
+
         echo json_encode($response);
     } catch (Exception $ex) {
         $app->response()->status(400);
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
-}
+};
 //For the url http://localhost/OpinionBox/services/index.php/student/login
 $app->post('/student/login', $loginStudent);
 //For the url http://localhost/OpinionBox/services/index.php/coursesByStudent/studentusername
@@ -137,5 +153,5 @@ $app->post('/studentsInGroup/:username/:groupId', 'getStudentsInGroup');
 //For the url http://localhost/OpinionBox/services/index.php/quesionsInGroup/:studentId/:groupId
 $app->post('/questionsInGroup/:studentId/:groupId', 'getQuestionsInGroup');
 //For the url http://localhost/OpinionBox/services/index.php/responsesForQuestions/:responseStudent/:username/:studentId
-$app->post('/responsesForQuestions/:responseStudent/:username/:studentId', 'insertResponses');
+$app->post('/responsesForQuestions/:username/:studentId', $insertResponses);
 ?>

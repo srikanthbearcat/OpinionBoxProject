@@ -10,7 +10,7 @@
 
         <tr style="background-color: green; opacity: 0.75; color: white;height: 52px s">
             <th style="width: 50px" >S.No</th>
-            <th style="width: 120px" >Course CRN</th>
+            <th style="width: 120px" >CRN</th>
             <th style="width: 100px">Course Name</th>
             <th style="width: 100px">Trimester</th>
             <th style="width: 120px">Edit</th>
@@ -54,7 +54,7 @@
                     <span class="glyphicon glyphicon-pencil"></span>
                 </button>
                         <!--<button class="btn btn-danger" ng-click="removeFaculty($index, faculty.user_name)">del</button>-->
-            <button type="button" class="btn btn-danger" ng-click="removeCourse($index, course.course_crn)">
+            <button type="button" class="btn btn-danger" ng-click="removeCourse($index, course.course_crn,course.course_name)">
                     <span class="glyphicon glyphicon-trash"></span>
                 </button>
                     </div>

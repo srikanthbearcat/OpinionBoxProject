@@ -1,6 +1,20 @@
 /**
  * Created by S525796 on 04-01-2017.
  */
+ app.service('getCourseName', ['$http','url', function($http,url) {
+    var course_name = "";
+   this.returnCourseName = function(course_crn) {
+    $http.get(url + "/getCourseName/" + course_crn).then(function successCallback(response) {
+        console.log(response.data.info.course_name);
+    course_name = response.data.info.course_name;
+    }, function errorCallback(response) {
+        console.log('error');
+    })
+
+    return course_name;
+   };
+  
+}]);
 app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope) {
 // //Get course data from database
 //     $scope.courseData = [];
@@ -102,10 +116,10 @@ app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'u
     }
 
     //delete course data from database
-    $scope.removeCourse = function (indexd, course_crn) {
+    $scope.removeCourse = function (indexd, course_crn,course_name) {
         $scope.alert('sm', {
             modalHeader: "Delete Course",
-            modalBody: "Are you sure you want to delete? All the data related to this course will be deleted",
+            modalBody: "Are you sure you want to delete "+course_name+" course"+" ? All the data related to this course will be deleted",
             data: {indexd: indexd, course_crn: course_crn, deleteCourse: true}
         });
 
@@ -300,10 +314,13 @@ app.controller('createCourseController', ['$scope', '$window', '$uibModal', '$ht
 }]);
 
 
-app.controller("courseViewController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope, $stateParams) {
+app.controller("courseViewController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', '$stateParams','getCourseName', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope, $stateParams,getCourseName) {
 //display course details
+
     $scope.studentData = [];
     $scope.course_crn = $stateParams.courseid;
+    $scope.course_name = getCourseName.returnCourseName($scope.course_crn);
+    console.log($scope.course_name);
     $http.get(url + "/viewStudentsByCourse/" + $scope.course_crn).then(function successCallback(response) {
         $.each(response.data.info, function (i, data) {
             data.i = i;
@@ -316,24 +333,8 @@ app.controller("courseViewController", ['$scope', '$cookies', '$state', '$http',
     })
     $scope.questions = [{id: 1, selectedRating: 10, question: ''}];
     $scope.range = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
 }]);
-app.controller("viewStudentsInCourseController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope, $stateParams) {
-//display group details
-    $scope.groupStudentData = [];
-    $scope.group_id = $stateParams.groupid;
-    console.log($stateParams.groupid);
-    $http.get(url + "/viewStudentsInCourse/" + $scope.group_id).then(function successCallback(response) {
-        $.each(response.data.info, function (i, data) {
-            data.i = i;
-            // data.original_course_crn = data.course_crn;
-            $scope.groupStudentData.push(data);
-        });
 
-    }, function errorCallback(response) {
-        console.log('error')
-    })
-}]);
 app.controller("groupViewController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope, $stateParams) {
 //display group details
     $scope.groupData = [];

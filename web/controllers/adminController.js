@@ -48,6 +48,11 @@ app.controller("adminController", ['$scope', '$cookies', '$state', '$http', 'url
                     if (response.data.success) {
                         $scope.addedFacultySuccess = true;
                         $scope.addedFacultyFailed = false;
+                        // $scope.addFaculty = angular.copy({});
+                        // $scope.addFacultyForm.$setUntouched();
+                        $scope.addFacultyForm.$setPristine();
+
+
                     } else {
                         $scope.addedFacultySuccess = false;
                         $scope.addedFacultyFailed = true;
@@ -125,9 +130,9 @@ app.controller("adminController", ['$scope', '$cookies', '$state', '$http', 'url
             original_user_name : faculty.original_user_name,
             first_name: data.first_name,
             last_name: data.last_name,
-            email: data.email,
-            user_name: data.user_name,
-            password: data.password
+            email_id: data.email_id,
+            user_name: data.user_name
+            // password: data.password
         };
         $http.post(url + "/admin/editFacultyData",editFacultyData).then(function successCallback(response) {
 
@@ -135,8 +140,8 @@ app.controller("adminController", ['$scope', '$cookies', '$state', '$http', 'url
         })
     }
     //delete faculty data from database
-    $scope.removeFaculty = function (indexd, user_name) {
-        $scope.alert('sm', {modalHeader: "Delete Faculty", modalBody: "Are you sure you want to delete? All the data related to this faculty will be deleted", data:{indexd:indexd,user_name:user_name}});
+    $scope.removeFaculty = function (indexd, user_name,first_name,last_name) {
+        $scope.alert('sm', {modalHeader: "Delete Faculty", modalBody: "Are you sure you want to delete? All the data related to this "+first_name+" "+last_name+" will be deleted", data:{indexd:indexd,user_name:user_name, deleteFaculty: true}});
 
 
     };

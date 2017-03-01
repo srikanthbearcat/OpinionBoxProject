@@ -89,11 +89,6 @@ app.config(function ($stateProvider,$urlRouterProvider, $locationProvider) {
         controller: "studentEvaluationController",
         templateUrl: "web/views/studentEvaluation.html"
     });
-	$stateProvider.state("viewStudentsInCourse", {
-        url: "/viewStudentsInCourse/:groupid",
-        controller: "viewStudentsInCourseController",
-        templateUrl: "web/views/viewStudentsInCourse.html"
-    });
     $stateProvider.state("Settings", {
         url: "/Settings",
         controller: "settingsController",
@@ -105,7 +100,7 @@ app.run(function($rootScope, $location,editableOptions) {
     $rootScope.location = $location;
         editableOptions.theme = 'bs3';
 });
-//Alert controller   
+//Alert controller
 app.controller('modalInstanceController', function ($scope,$rootScope, $uibModalInstance, modalInfo) {
 
     $scope.modalData = {};

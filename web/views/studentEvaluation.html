@@ -7,28 +7,45 @@
 
             <!--<tr ng-repeat="course in courseData track by $index" ng-click="getStudents(course.course_crn)">-->
             <tr ng-repeat="questions in questionData track by $index" >
-                {{questions.max_rating}}
+
+
             <!--<div ng-if="questions.max_rating != '0'">-->
-                <td >
+                <td ng-if="questions.max_rating != '0'">
                     {{questions.question}}
                 </td>
-                <td>
-                    <select ng-model="responseStudent[questions.id]" ng-init="(_Array = []).length = questions.max_rating;">
+                <td ng-if="questions.max_rating != '0'" >
+                    <select class="form-control col-md-2" ng-model="responseStudent[questions.id]" ng-init="(_Array = []).length = questions.max_rating;">
                         <option ng-repeat="i in _Array track by $index+1">{{$index+1}}</option>
                     </select>
                 </td>
             <!--</div>-->
                <!--<div ng-if="questions.max_rating == '0'">-->
-                    <!--<td>-->
-                        <!--{{questions.question}}-->
-
-                    <!--</td>-->
-                    <!--<td>-->
-                    <!--<textarea ng-model="responseStudent[questions.id]"></textarea>-->
-                    <!--</td>-->
+                    <td ng-if="questions.max_rating == '0'">
+                        {{questions.question}}
+                    </td>
+                    <td ng-if="questions.max_rating == '0'" class="col-md-6">
+                    <textarea class="form-control" rows="5" ng-model="responseStudent[questions.id]"></textarea>
+                    </td>
                 <!--</div>-->
             </tr>
         </table>
-<button type="submit" ng-click="submit()">submit</button>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary text-center" ng-click="submit()">submit</button>
+        </div>
+
+        <div id="successMessage" style="display:none;border: 2px solid green;
+                     min-height: 40px;
+                     width: 768px;">
+            <p style="color: green;font-weight: bold;">
+                Response submitted successfully.
+            </p>
+        </div>
+        <div id="failedMessage" style="display:none;border: 2px solid red;
+                     min-height: 40px;
+                     width: 768px;">
+            <p style="color: red;font-weight: bold;">
+                <label id="errorMessageLabel" class="error"></label>
+            </p>
+        </div>
     </div>
 </div>

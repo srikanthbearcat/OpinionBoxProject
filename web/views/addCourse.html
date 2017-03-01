@@ -51,15 +51,14 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3">
-                            <i class="glyphicon glyphicon glyphicon-info-sign fileinput-new"
-                               data-toggle="tooltip" data-placement="top" title="
-                               Data should contain appropriate headings(user_name,password,first_name,last_name,email_id),each field should be
+                    <label class="col-md-3">
+                           
+                               <a data-toggle="tooltip" class="glyphicon glyphicon glyphicon-info-sign" title="  Data should contain appropriate headings(user_name,password,first_name,last_name,email_id), each field should be
                                seperated by comma, no tailing and leading spaces before
                                and after comma,each row should be seperated by new line
-                               and file should be saved with .csv extension.
-                               "></i>
+                               and file should be saved with .csv extension.">&nbspHelp</a>
                         </label>
+                       
                         <div class="col-md-5">
                             <input id="filebutton" accept=".csv" name="filebutton"
                                    fileread="files" class="input-file" type="file">
@@ -88,7 +87,7 @@
                                                             ng-click="preview(callBack)" ng-show="studentData.length == 0">
                                                         Get Student Data Preview
                                                     </button>-->
-                            <button class="input-buttongroup-addon btn btn-default"
+                            <button class="input-buttongroup-addon btn btn-success"
                                     name="save" ng-click="saveData()"
                                     ng-disabled="studentData.length == 0">
                                 Save
@@ -248,7 +247,7 @@
 <script>
     $(document).ready(function () {
 //        $('[data-toggle="tooltip"]').css("align", "left").tooltip();
-
+$('[data-toggle="tooltip"]').tooltip(); 
         $('#createCourseForm').validate({
             rules: {
                 courseName: {

@@ -60,8 +60,6 @@
                         <div class="col-sm-15 text-center controls">
 
                             <button type="submit" class="btn btn-success" ng-click="onSubmitForm()"> Login</button>
-							<br> </br>
-								<a ui-sref="forgotPassword">Forgot Password? </a>
                         </div>
                     </div>
                 </form>
@@ -69,7 +67,7 @@
                 <!--<a href="#" class="close" data-dismiss="alert" aria-label="close" ng-click="loginAlert =!loginAlert">&times;</a>-->
                 <!--Incorrect username or password.-->
                 <!--</div>-->
-                <div uib-alert  ng-class="'alert-danger'" ng-show="loginAlert" close="loginAlert =!loginAlert" >Incorrect username or password</div>
+                <div uib-alert  ng-class="'alert-danger'" ng-show="loginAlert" close="loginAlert =!loginAlert" >username and password didn't mismatch</div>
             </div>
         </div>
     </div>
