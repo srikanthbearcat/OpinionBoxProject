@@ -58,8 +58,38 @@ ON firstset.course_id = secondset.id";
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
+//function getStudentsInGroup($username,$groupId)
+//{
+//    try {
+//
+//        $core = Core::getInstance();
+//        $sql = "SELECT first_name,last_name,id FROM `student` WHERE id in (SELECT student_id FROM `group_student` WHERE group_id=:group_id AND student_id != (SELECT id FROM `student` WHERE user_id in (SELECT id FROM `user_account` WHERE user_name=:user_name)))";
+//        $stmt = $core->dbh->prepare($sql);
+//        $stmt->bindParam("group_id", $groupId);
+//        $stmt->bindParam("user_name", $username);
+//        $response = new stdClass();
+//        if ($stmt->execute()) {
+//            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+//            $response->success = count($records) > 0;
+//            $response->info = $response->success ? $records : 0;
+//
+//        } else {
+//            $response->success = FALSE;
+//            $response->info = 0;
+//        }
+//
+//
+//        echo json_encode($response);
+//    } catch (Exception $ex) {
+//        $app->response()->status(400);
+//        $app->response()->header('X-Status-Reason', $ex->getMessage());
+//    }
+//}
+
+
 function getStudentsInGroup($username,$groupId)
 {
+    $app = \Slim\Slim::getInstance();
     try {
 
         $core = Core::getInstance();
@@ -71,17 +101,56 @@ function getStudentsInGroup($username,$groupId)
         if ($stmt->execute()) {
             $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $response->success = count($records) > 0;
+            foreach ($records as &$student){
+                $student['evaluate'] =  checkEvaluation($groupId,$student['id'],$username);
+            }
             $response->info = $response->success ? $records : 0;
+            $response->success = TRUE;
         } else {
             $response->success = FALSE;
             $response->info = 0;
         }
+
         echo json_encode($response);
     } catch (Exception $ex) {
         $app->response()->status(400);
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
+
+function checkEvaluation($group_id,$response_to_id,$user_name)
+{
+    $app = \Slim\Slim::getInstance();
+    try {
+        $core = Core::getInstance();
+//        $faculty_sql = "select id from faculty WHERE user_id in (select id from user_account WHERE user_name=:faculty_name)";
+//        $faculty_stmt = $core->dbh->prepare($faculty_sql);
+//        $faculty_stmt->bindParam("faculty_name", $faculty_user_name);
+//        $faculty_stmt->execute();
+//        $records = $faculty_stmt->fetchAll(PDO::FETCH_ASSOC);
+//        $faculty_id =  $records[0] ;
+//        $faculty_int = (int)$faculty_id;
+        $sql = "SELECT * FROM `response_bank` WHERE response_by_id in (SELECT id FROM `student` WHERE user_id in (SELECT id FROM `user_account` WHERE user_name=:user_name )) AND response_to_id=:response_to_id AND question_id in (SELECT id FROM `question_bank` WHERE course_id in (SELECT course_id FROM `group` WHERE id=:group_id)) ";
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("user_name", $user_name);
+        $stmt->bindParam("response_to_id", $response_to_id);
+        $stmt->bindParam("group_id", $group_id);
+        $response = new stdClass();
+        if ($stmt->execute()) {
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $response->evaluate = count($records) > 0;
+
+        } else {
+            $response->evaluate = FALSE;
+        }
+        return $response->evaluate;
+
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
+
 function getQuestionsInGroup($studentId,$groupId)
 {
     try {
