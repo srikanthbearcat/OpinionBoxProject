@@ -4,56 +4,23 @@
     <a ui-sref="modifyCourse" ui-sref-active="active" class="list-group-item">View/Modify Course</a>
 </div>
 
-<!--right dashboard-->
-<div class="col-md-10">
-    <h2>Courses</h2>
-    <table class="table table-hover" style="">
-        <thead>
-        <tr style="background-color: green; opacity: 0.75; color: white;height: 52px">
-            <th>S.No</th>
-            <th>Course CRN</th>
-            <th>Course Name</th>
-            <th>Trimester</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!--<tr ng-repeat="course in courseData track by $index" ng-click="getStudents(course.course_crn)">-->
-        <tr ng-repeat="course in courseData track by $index" >
-            <td>{{$index +1}}</td>
-            <td >
-                <a ui-sref="viewCourse({courseid:course.course_crn})"> {{course.course_crn}}</a>
-            </td>
-            <td >
-                <a ui-sref="viewCourse({courseid:course.course_crn})"> {{course.course_name}}</a>
-            </td>
-            <td >
-                <a ui-sref="viewCourse({courseid:course.course_crn})"> {{course.trimester}}</a>
-            </td>
-        </tr>
 
+<!--Faculty Dashboard-->
+<div class="col-md-10"  >
+    <div  style="margin-top:70px; width: 90%;">
+        <div class="panel panel-default " >
+            <div class="panel-heading panel-color" >
+                <div class="panel-title">Dashboard</div>
 
-        <!--<tr>-->
+            </div>
 
-        <!--<td><a href="viewGroups.html" >44-643</a></td>-->
-        <!--<td><a href="viewGroups.html" >Mobile Computing - iOS</a></td>-->
-        <!--<td><a href="viewGroups.html" >Fall 2016</a></td>-->
-        <!--</tr>-->
+            <div style="padding-top:30px" class="panel-body" >
+                <ul>
 
-        <!--<tr>-->
-        <!--<td>44-560</td>-->
-        <!--<td>ADB topics in DB systems</td>-->
-        <!--<td>Fall 2016</td>-->
-        <!--</tr>-->
-        <!--<tr>-->
-        <!--<td>44-691</td>-->
-        <!--<td>Graduate Directed Project</td>-->
-        <!--<td>Fall 2016</td>-->
-        <!--</tr>-->
-        <!--<tr>-->
-        <!--<td>44-542</td>-->
-        <!--<td>Object oriented programming</td>-->
-        <!--<td>Fall 2016</td>-->
-        <!--</tr>-->
-        </tbody>
-    </table>
+                    <li><p class="lead">Courses added till date : {{facultyData.length}}</p></li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
 </div>
