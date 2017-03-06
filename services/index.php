@@ -23,9 +23,9 @@ $app = new \Slim\Slim(
 
 $app->response->headers->set('Content-Type', 'application/json');
 
-require 'Controllers/facultyController.php';
-require 'Controllers/adminController.php';
-require 'Controllers/studentController.php';
+require 'controllers/facultyController.php';
+require 'controllers/adminController.php';
+require 'controllers/studentController.php';
 
 //$app->log->debug('Debug called!');
 //$app->log->info('This is just info');
