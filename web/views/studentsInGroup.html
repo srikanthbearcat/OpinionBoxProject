@@ -11,10 +11,12 @@
                     {{student.first_name}}&nbsp{{student.last_name}}
                 </td>
                 <td >
-                    <a ui-sref="studentEvaluation({studentid:student.id,groupid:group_id})" type="button" class="btn btn-primary"> Evaluate</a>
+                    <button type="button" ng-disabled="student.evaluate" class="btn btn-primary" ng-click="callEvaluation(student.id)">Evaluate</button>
+                    <!--<a ui-sref="{{student.evaluate?'studentEvaluation({studentid:student.id,groupid:group_id})':'.'}}" type="button" class="btn btn-primary" ng-disabled="student.evaluate"> Evaluate</a>-->
                 </td>
                 <td>
-                    <a ui-sref="studentEvaluation({studentid:student.id,groupid:group_id})" type="button" class="btn btn-success"> Edit</a>
+                    <button type="button" ng-disabled="!student.evaluate" class="btn btn-success" ng-click="callEvaluation(student.id)">Edit</button>
+                    <!--<a ui-sref="studentEvaluation({studentid:student.id,groupid:group_id})" type="button" class="btn btn-success" ng-disabled="!student.evaluate"> Edit</a>-->
                 </td>
             </tr>
 
