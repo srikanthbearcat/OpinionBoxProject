@@ -3,28 +3,33 @@
     <div class="panel panel-default ">
         <!-- Default panel contents -->
         <div class="panel-heading panel-color text-center"><h4>Student Evaluation</h4></div>
+        <form name="evaluateStudentForm" novalidate>
         <table class="table borderless" style="">
 
             <!--<tr ng-repeat="course in courseData track by $index" ng-click="getStudents(course.course_crn)">-->
             <tr ng-repeat="questions in questionData track by $index" >
 
-
             <!--<div ng-if="questions.max_rating != '0'">-->
                 <td ng-if="questions.max_rating != '0'">
                     {{questions.question}}
                 </td>
-                <td ng-if="questions.max_rating != '0'" >
-                    <select class="form-control col-md-2" ng-model="responseStudent[questions.id]" ng-init="(_Array = []).length = questions.max_rating;">
+                <td ng-form="cellForm" ng-if="questions.max_rating != '0'" ng-class="{'has-error' : cellForm.responseStudent.$error.required && (cellForm.responseStudent.$dirty|| evaluateStudentForm.$submitted)}" >
+                    <select ng-required="true" name="responseStudent" class="form-control col-md-2" ng-model="responseStudent[questions.id]" ng-init="(_Array = []).length = questions.max_rating;">
                         <option ng-repeat="i in _Array track by $index+1">{{$index+1}}</option>
                     </select>
+
+                <span class="help-block"
+                      ng-show="cellForm.responseStudent.$error.required && (cellForm.responseStudent.$dirty|| evaluateStudentForm.$submitted) ">You can't leave this empty</span>
                 </td>
-            <!--</div>-->
+                    <!--</div>-->
                <!--<div ng-if="questions.max_rating == '0'">-->
                     <td ng-if="questions.max_rating == '0'">
                         {{questions.question}}
                     </td>
-                    <td ng-if="questions.max_rating == '0'" class="col-md-6">
-                    <textarea class="form-control" rows="5" ng-model="responseStudent[questions.id]"></textarea>
+                <td ng-form="cellForm1" ng-if="questions.max_rating == '0'" ng-class="{'has-error' : cellForm1.responseComment.$error.required && (cellForm1.responseComment.$dirty|| evaluateStudentForm.$submitted)}" >
+                <textarea ng-required="true" class="form-control" rows="5" name="responseComment" ng-model="responseStudent[questions.id]"></textarea>
+                        <span class="help-block"
+                              ng-show="cellForm1.responseComment.$error.required && (cellForm1.responseComment.$dirty|| evaluateStudentForm.$submitted) ">You can't leave this empty</span>
                     </td>
                 <!--</div>-->
             </tr>
@@ -32,7 +37,7 @@
         <div class="text-center">
             <button type="submit" class="btn btn-primary text-center" ng-click="submit()">submit</button>
         </div>
-
+        </form>
         <div id="successMessage" style="display:none;border: 2px solid green;
                      min-height: 40px;
                      width: 768px;">
