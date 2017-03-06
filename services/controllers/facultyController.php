@@ -519,6 +519,7 @@ $removeCourseData = function() use($app) {
     }
 };
 
+
 //function getStudentsByCourse($course_crn){
 //    try {
 //        // $faculty = "faculty";
@@ -740,7 +741,7 @@ function getQuestionsByCourse($course_crn){
     }
 }
 
-//Edit faculty Data
+//Get course name
 function getCourseName($course_crn){
     $app = \Slim\Slim::getInstance();
      $response = new stdClass();
@@ -767,6 +768,7 @@ function getCourseName($course_crn){
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
+
 function getCourseReport($course_crn){
     $app = \Slim\Slim::getInstance();
     $response = new stdClass();
@@ -813,6 +815,8 @@ function getCourseReport($course_crn){
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
+
+
 //For the url http://localhost/OpinionBox/services/index.php/faculty/login
 $app->post('/faculty/login', $loginFaculty);
 //For the url http://localhost/OpinionBox/services/index.php/coursesByFaculty/facultyusername
@@ -824,7 +828,9 @@ $app->post('/faculty/editCourseData', 'editCourseData');
 //For the url http://localhost/OpinionBox/services/index.php/faculty/removeCourse
 $app->post('/faculty/removeCourseData', $removeCourseData);
 //For the url http://localhost/OpinionBox/services/index.php/faculty/viewGroupsByCourse/:course_crn
-$app->get('/viewStudentsByCourse/:course_crn','getStudentsByCourse');
+//$app->get('/viewStudentsByCourse/:course_crn','getStudentsByCourse');
+//For the url http://localhost/OpinionBox/services/index.php/faculty/viewGroupsByCourse/:course_crn
+$app->get('/viewStudentsByCourse/:course_crn/:faculty_user_name','getStudentsByCourse');
 //For the url http://localhost/OpinionBox/services/index.php/faculty/viewGroupsByCourse/:course_crn
 $app->get('/viewGroupsByCourse/:course_crn','viewGroupsByCourse');
 //For the url http://localhost/OpinionBox/services/index.php/addQuestionsToCourse/
@@ -833,4 +839,10 @@ $app->post('/addQuestionsToCourse',$addQuestionsToCourse);
 $app->get('/getQuestionsByCourse/:course_crn','getQuestionsByCourse');
 //For the url http://localhost/OpinionBox/services/index.php/faculty/editCourse
 $app->get('/getCourseName/:course_crn', 'getCourseName');
+//For the url http://localhost/OpinionBox/services/index.php/courseReport/:course_crn
+$app->get('/courseReport/:course_crn', 'getCourseReport');
 ?>
+
+
+
+
