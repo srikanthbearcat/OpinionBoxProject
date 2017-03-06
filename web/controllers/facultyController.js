@@ -374,10 +374,13 @@ app.controller("courseViewController", ['$scope', '$cookies', '$state', '$http',
     }
 }]);
 
-app.controller("groupViewController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope, $stateParams) {
+app.controller("groupViewController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', '$stateParams','getCourseName', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope, $stateParams,getCourseName) {
 //display group details
     $scope.groupData = [];
     $scope.course_crn = $stateParams.courseid;
+    getCourseName.returnCourseName($scope.course_crn).then(function (data) {
+        $scope.course_name = data;
+    });
     console.log($stateParams.courseid);
     $http.get(url + "/viewGroupsByCourse/" + $scope.course_crn).then(function successCallback(response) {
         $.each(response.data.info, function (i, data) {
@@ -393,10 +396,13 @@ app.controller("groupViewController", ['$scope', '$cookies', '$state', '$http', 
 
 }]);
 
-app.controller("addQuestionsController", ['$scope', '$cookies', '$state', '$http', 'url', '$window', '$uibModal', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $window, $stateParams) {
+app.controller("addQuestionsController", ['$scope', '$cookies', '$state', '$http', 'url', '$window', '$uibModal', '$stateParams','getCourseName', function ($scope, $cookies, $state, $http, url, $uibModal, $window, $stateParams,getCourseName) {
     //get questions for the course
     $scope.getQuestionData = [];
     $scope.course_crn = $stateParams.courseid;
+    getCourseName.returnCourseName($scope.course_crn).then(function (data) {
+        $scope.course_name = data;
+    });
     console.log($stateParams.courseid);
     $http.get(url + "/getQuestionsByCourse/" + $scope.course_crn).then(function successCallback(response) {
         if (response.data.success){
