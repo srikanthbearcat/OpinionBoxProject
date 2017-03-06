@@ -2,18 +2,15 @@
  * Created by S525796 on 04-01-2017.
  */
  app.service('getCourseName', ['$http','url', function($http,url) {
-    var course_name = "";
-   this.returnCourseName = function(course_crn) {
-    $http.get(url + "/getCourseName/" + course_crn).then(function successCallback(response) {
-        console.log(response.data.info.course_name);
-    course_name = response.data.info.course_name;
-    }, function errorCallback(response) {
-        console.log('error');
-    })
+     this.returnCourseName = function (course_crn) {
+         return  $http.get(url + "/getCourseName/" + course_crn).then(function successCallback(response) {
 
-    return course_name;
-   };
-  
+                return response.data.info.course_name;
+             }, function errorCallback(response) {
+                 // console.log('error');
+                 return "";
+         });
+     }
 }]);
 app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope) {
 // //Get course data from database
@@ -119,7 +116,7 @@ app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'u
     $scope.removeCourse = function (indexd, course_crn,course_name) {
         $scope.alert('sm', {
             modalHeader: "Delete Course",
-            modalBody: "Are you sure you want to delete "+course_name+" course"+" ? All the data related to this course will be deleted",
+            modalBody: "Are you sure you want to delete "+course_name+" course"+" ? If you click 'OK' all the data related to this course will be deleted",
             data: {indexd: indexd, course_crn: course_crn, deleteCourse: true}
         });
 
@@ -146,7 +143,7 @@ app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'u
 }]);
 
 //controller to read CSV file
-app.controller('createCourseController', ['$scope', '$window', '$uibModal', '$http', 'url', '$cookies', function ($scope, $window, $uibModal, $http, url, $cookies) {
+app.controller('createCourseController', ['$scope', '$window', '$uibModal', '$http', 'url', '$cookies','$timeout', function ($scope, $window, $uibModal, $http, url, $cookies,$timeout) {
 
     var USER_NAME_COLUMN_HEADER = "user_name";
     var PASSWORD_COLUMN_HEADER = "password";
@@ -253,9 +250,17 @@ app.controller('createCourseController', ['$scope', '$window', '$uibModal', '$ht
         $http.post(url + "/addCourse", data).then(function successCallback(response) {
             console.log(response.data.success + " add course request success");
             if (response.data.success) {
-                $("#successMessage").fadeIn(2000).fadeOut(6000);
+                $("#successMessage").fadeIn(2000).fadeOut(4000);
                 $("#errorMessageLabel").text("");
                 $scope.cancel();
+                $scope.courseName = '';
+                $scope.courseCrn = '';
+                $scope.courseTrimester = '';
+                $scope.createCourse.$setPristine();
+                $scope.createCourse.$setUntouched();
+                $timeout(function() {
+                    window.history.go(-1);
+                }, 2000);
             } else {
                 $("#failedMessage").text(response.data.data).fadeIn(2000).fadeOut(6000);
             }
