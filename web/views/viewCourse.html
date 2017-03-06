@@ -6,8 +6,12 @@
 
 <!--right dashboard-->
 <div class="col-md-10">
-    <h2>Students  {{course_name}}</h2>
-
+    <div class="col-md-5 ">
+        <h2>Students - {{course_name}}</h2>
+    </div>
+    <div class="col-md-3 col-md-offset-4 clearfix" >
+<button class="btn btn-primary " style="margin-bottom: 0%" ng-click="downloadReport()">Extraction1</button>
+    </div>
     <table class="table table-hover" style="">
         <thead>
         <tr style="background-color: green; opacity: 0.75; color: white;height: 52px">
@@ -15,6 +19,8 @@
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email id</th>
+            <th>Group_topic</th>
+            <th>Evaluation</th>
         </tr>
         </thead>
         <tbody>
@@ -28,6 +34,14 @@
             </td>
             <td >
                 {{student.email_id}}
+            </td>
+            <td >
+                {{student.group_topic}}
+            </td>
+            <td >
+                <span class="glyphicon glyphicon-ok" style="color:darkgreen" ng-show="student.evaluate"></span>
+                <span class="glyphicon glyphicon-remove" style="color:crimson" ng-show="!student.evaluate"></span>
+                <!--{{student.evaluate}}-->
             </td>
         </tr>
 
