@@ -151,8 +151,8 @@ function addCourse($course, $faculty_user_name)
         $faculty_stmt->bindParam("faculty_name", $faculty_user_name);
         $faculty_stmt->execute();
         $records = $faculty_stmt->fetchAll(PDO::FETCH_ASSOC);
-        $faculty_id =  $records[0] ;
-        $faculty_int = (int)$faculty_id;
+        $faculty =  $records[0] ;
+        $faculty_id = $faculty['id'];
         $sql = "INSERT INTO course (course_crn,course_name,trimester,faculty_id) VALUES (:course_crn,:course_name,:course_trimester,:faculty_id)";
         $stmt = $core->dbh->prepare($sql);
         $course_crn = $course->getCourseCrn();
@@ -161,7 +161,7 @@ function addCourse($course, $faculty_user_name)
         $stmt->bindParam("course_crn", $course_crn);
         $stmt->bindParam("course_trimester", $course_trimester);
         $stmt->bindParam("course_name", $course_name);
-        $stmt->bindParam("faculty_id", $faculty_int);
+        $stmt->bindParam("faculty_id", $faculty_id);
         $response = new stdClass();
         $response->success = $stmt->execute();
 //        $stmt2 = $core->dbh->prepare("SELECT LAST_INSERT_ID()");
