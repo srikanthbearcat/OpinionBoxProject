@@ -767,7 +767,52 @@ function getCourseName($course_crn){
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
+function getCourseReport($course_crn){
+    $app = \Slim\Slim::getInstance();
+    $response = new stdClass();
+    $core = Core::getInstance();
+    try {
+        $sql = "SELECT response,question_id,response_by_id,response_to_id FROM response_bank WHERE response_by_id in (SELECT student_id FROM course_student WHERE course_id in (SELECT id FROM `course` WHERE course_crn=:course_crn)) AND question_id in (SELECT id FROM question_bank WHERE course_id in (SELECT id FROM `course` WHERE course_crn=:course_crn))";
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("course_crn", $course_crn);
+        if ($stmt->execute()) {
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $count = 0;
+            $response_array = [];
+            $temp_array = [];
+            foreach ($records as &$response1){
+                $temp_array = [];
+                $temp_array = array('response_by_id' => $response1['response_by_id'], 'response_to_id' => $response1['response_to_id']);
+                foreach ($records as &$response2){
 
+                    if($response1['response_by_id']==$response2['response_by_id'] && $response1['response_to_id']==$response2['response_to_id'] ){
+
+                         $temp_array = $temp_array + array($response2['question_id'] => $response2['response']);
+
+                    }
+                }
+                array_push($response_array,$temp_array);
+                $count = 0;
+            }
+
+//            $response_array = array_merge($response_array,$records);
+//                $total_student_records = $total_student_records + $student_records ;
+            $response->success = count($records) > 0;
+            $response->info = $response->success ? array_unique($response_array,SORT_REGULAR ) : 0;
+
+        } else {
+            $response->success = FALSE;
+            $response->info = 0;
+
+        }
+        echo json_encode($response);
+    } catch (Exception $ex) {
+        $response->success = FALSE;
+        $response->data = $ex->getMessage();
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
 //For the url http://localhost/OpinionBox/services/index.php/faculty/login
 $app->post('/faculty/login', $loginFaculty);
 //For the url http://localhost/OpinionBox/services/index.php/coursesByFaculty/facultyusername
