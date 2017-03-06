@@ -356,20 +356,20 @@ function isCourseExist($course)
             $response->success = FALSE;
             $response->course_exist = TRUE;
             $response->data = "Course name already exist, but CRN does not match. "
-                . "If you want to add students to existing course go to manage tab and then students sub tab.";
+                . "If you want to add students to existing course and click on add button.";
             $response->flag = 1;
             if ($courseExistByCRN) {
 //                $response->success = TRUE;
                 $response->success = FALSE;
                 $response->course_exist = TRUE;
-                $response->data = "course already exist.If you want to add students to existing course go to manage tab and then students sub tab.";
+                $response->data = "course already exist.If you want to add students to existing course and click on add button.";
                 $response->flag = 1;
             }
         } else if ($courseExistByCRN > 0) {
             $response->success = FALSE;
             $response->course_exist = TRUE;
             $response->data = "Course CRN already exist, but course name doesn't exist."
-                . "If you want to add students to existing course go to manage tab and then students sub tab.";
+                . "If you want to add students to existing course and click on add button.";
             $response->flag = 1;
         } else {
             $response->success = TRUE;
@@ -519,19 +519,85 @@ $removeCourseData = function() use($app) {
     }
 };
 
+//function getStudentsByCourse($course_crn){
+//    try {
+//        // $faculty = "faculty";
+//        $core = Core::getInstance();
+//        $sql = "SELECT first_name,last_name,email_id FROM `student` WHERE id in (select student_id from `course_student` WHERE course_id in (select id from `course` WHERE course_crn=:course_crn))";
+//        $stmt = $core->dbh->prepare($sql);
+//        $stmt->bindParam("course_crn", $course_crn);
+//        $response = new stdClass();
+//        if ($stmt->execute()) {
+//            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+//            $response->success = count($records) > 0;
+//            $response->info = $response->success ? $records : 0;
+//
+//        } else {
+//            $response->success = FALSE;
+//            $response->info = 0;
+//
+//        }
+////        echo $course_crn;
+//        echo json_encode($response);
+//    } catch (Exception $ex) {
+//        $app->response()->status(400);
+//        $app->response()->header('X-Status-Reason', $ex->getMessage());
+//    }
+//}
 
-function getStudentsByCourse($course_crn){
+
+function getStudentsByCourse($course_crn,$faculty_user_name){
+    $app = \Slim\Slim::getInstance();
     try {
         // $faculty = "faculty";
         $core = Core::getInstance();
-        $sql = "SELECT first_name,last_name,email_id FROM `student` WHERE id in (select student_id from `course_student` WHERE course_id in (select id from `course` WHERE course_crn=:course_crn))";
+        $sql = "SELECT first_name,last_name,email_id,id FROM `student` WHERE id in (select student_id from `course_student` WHERE course_id in (select id from `course` WHERE course_crn=:course_crn))";
         $stmt = $core->dbh->prepare($sql);
         $stmt->bindParam("course_crn", $course_crn);
+
+
+        $group_sql = "select id,group_topic,group_no from `group` WHERE course_id in (select id from `course` WHERE course_crn=:course_crn)";
+        $group_stmt = $core->dbh->prepare($group_sql);
+        $group_stmt->bindParam("course_crn", $course_crn);
+
         $response = new stdClass();
-        if ($stmt->execute()) {
-            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $response->success = count($records) > 0;
-            $response->info = $response->success ? $records : 0;
+        $total_student_records = [];
+        if ($group_stmt->execute()) {
+            $groupRecords = $group_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($groupRecords as &$group){
+                $student_sql = "SELECT id,first_name,last_name,email_id FROM student WHERE id in (select student_id from `group_student` WHERE group_id=:group_id)";
+                $student_stmt = $core->dbh->prepare($student_sql);
+                $student_stmt->bindParam("group_id", $group['id']);
+                if ($student_stmt->execute()){
+                    $student_records = $student_stmt->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($student_records as &$student1){
+                        $evaluation_array = [];
+                        foreach ($student_records as &$student2){
+
+                            if($student1['id']!=$student2['id']){
+                                if(checkStudentEvaluation($group['id'],$student2['id'],$student1['id'])== TRUE){
+                                    array_push($evaluation_array,"TRUE");
+                                }
+                            }
+                        }
+                        if(count($evaluation_array)== count($student_records)-1){
+                            $student1['evaluate'] = TRUE;
+                            $student1['group_topic'] = $group['group_topic'];
+                        }else{
+                            $student1['evaluate'] = FALSE;
+                            $student1['group_topic'] = $group['group_topic'];
+                        }
+                    }
+
+                }else{
+
+                }
+                $total_student_records = array_merge($total_student_records,$student_records);
+//                $total_student_records = $total_student_records + $student_records ;
+            }
+            $response->success = count($total_student_records) > 0;
+            $response->info = $response->success ? $total_student_records : 0;
 
         } else {
             $response->success = FALSE;
