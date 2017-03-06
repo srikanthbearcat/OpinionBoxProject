@@ -319,14 +319,39 @@ app.controller('createCourseController', ['$scope', '$window', '$uibModal', '$ht
 }]);
 
 
+// app.controller("courseViewController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', '$stateParams','getCourseName', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope, $stateParams,getCourseName) {
+// //display course details
+//
+//     $scope.studentData = [];
+//     $scope.course_crn = $stateParams.courseid;
+//     getCourseName.returnCourseName($scope.course_crn).then(function (data) {
+//         $scope.course_name = data;
+//     });
+//     console.log($scope.course_name);
+//     $http.get(url + "/viewStudentsByCourse/" + $scope.course_crn).then(function successCallback(response) {
+//         $.each(response.data.info, function (i, data) {
+//             data.i = i;
+//             // data.original_course_crn = data.course_crn;
+//             $scope.studentData.push(data);
+//         });
+//         console.log(JSON.stringify($scope.studentData))
+//     }, function errorCallback(response) {
+//         console.log('error')
+//     })
+//     $scope.questions = [{id: 1, selectedRating: 10, question: ''}];
+//     $scope.range = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+// }]);
+
 app.controller("courseViewController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', '$stateParams','getCourseName', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope, $stateParams,getCourseName) {
 //display course details
 
     $scope.studentData = [];
     $scope.course_crn = $stateParams.courseid;
-    $scope.course_name = getCourseName.returnCourseName($scope.course_crn);
+    getCourseName.returnCourseName($scope.course_crn).then(function (data) {
+        $scope.course_name = data;
+    });
     console.log($scope.course_name);
-    $http.get(url + "/viewStudentsByCourse/" + $scope.course_crn).then(function successCallback(response) {
+    $http.get(url + "/viewStudentsByCourse/" + $scope.course_crn+"/"+$cookies.get('username')).then(function successCallback(response) {
         $.each(response.data.info, function (i, data) {
             data.i = i;
             // data.original_course_crn = data.course_crn;
@@ -338,6 +363,15 @@ app.controller("courseViewController", ['$scope', '$cookies', '$state', '$http',
     })
     $scope.questions = [{id: 1, selectedRating: 10, question: ''}];
     $scope.range = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    $scope.courseReport = {};
+    $scope.downloadReport = function () {
+        $http.get(url + "/courseReport/" + $scope.course_crn).then(function successCallback(response) {
+                $scope.courseReport = response.data.info;
+            console.log(JSON.stringify($scope.courseReport))
+        }, function errorCallback(response) {
+            console.log('error')
+        })
+    }
 }]);
 
 app.controller("groupViewController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope, $stateParams) {
