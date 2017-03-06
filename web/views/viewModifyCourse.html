@@ -21,20 +21,20 @@
             <td style="width: 120px">
                     <span editable-text="course.course_crn" e-name="course_crn" e-form="rowform"
                           onbeforesave="checkCourseNumber($data)" e-required>
-                        {{ course.course_crn || 'empty' }}
+                       <a ui-sref="viewCourse({courseid:course.course_crn})"> {{ course.course_crn || 'empty' }}</a>
                         <!--{{ course.course_number || 'empty' }}-->
                     </span>
             </td>
             <td>
                             <span editable-text="course.course_name" e-name="course_name" e-form="rowform"
                                   onbeforesave="checkCourseName($data)" e-required>
-                                {{ course.course_name || 'empty' }}
+                                <a ui-sref="viewCourse({courseid:course.course_crn})">  {{ course.course_name || 'empty' }}</a>
                             </span>
             </td>
             <td>
                             <span editable-text="course.trimester" e-name="trimester" e-form="rowform"
                                   onbeforesave="checkTrimester($data)" e-required>
-                                {{ course.trimester || 'empty' }}
+                               <a ui-sref="viewCourse({courseid:course.course_crn})">   {{ course.trimester || 'empty' }}</a>
                             </span>
             </td>
            
