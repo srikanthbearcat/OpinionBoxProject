@@ -14,9 +14,10 @@ app.config(function ($stateProvider,$urlRouterProvider, $locationProvider) {
         url: "/adminHome",
         controller: "adminController",
         templateUrl: "web/views/adminHomepage.html",
+
         onEnter: function(){
-        angular.element('nav.navbar-findcond ul.navbar-nav a.highlight').css('border-color', '#26722C');
-    },
+            angular.element('nav.navbar-findcond ul.navbar-nav a.highlight').css('border-color', '#26722C');
+        },
         onExit: function(){
             angular.element('nav.navbar-findcond ul.navbar-nav a.highlight').css('border-color', '#fff');
         }
@@ -92,7 +93,13 @@ app.config(function ($stateProvider,$urlRouterProvider, $locationProvider) {
     $stateProvider.state("Settings", {
         url: "/Settings",
         controller: "settingsController",
-        templateUrl: "web/views/Settings.html"
+        templateUrl: "web/views/Settings.html",
+        onEnter: function(){
+            angular.element('nav.navbar-findcond ul.navbar-nav a.setgs').css('border-color', '#26722C');
+        },
+        onExit: function(){
+            angular.element('nav.navbar-findcond ul.navbar-nav a.setgs').css('border-color', '#fff');
+        }
     });
     // $locationProvider.html5Mode(true);
 });
