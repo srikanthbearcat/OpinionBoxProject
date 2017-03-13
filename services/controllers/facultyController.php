@@ -747,7 +747,7 @@ function getCourseName($course_crn){
      $response = new stdClass();
       $core = Core::getInstance();
     try {
-        $sql = "SELECT course_name FROM `course` WHERE course_crn=:course_crn";
+        $sql = "SELECT course_name,trimester FROM `course` WHERE course_crn=:course_crn";
         $stmt = $core->dbh->prepare($sql);
         $stmt->bindParam("course_crn", $course_crn);
         if ($stmt->execute()) {
