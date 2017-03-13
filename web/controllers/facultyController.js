@@ -5,7 +5,7 @@
      this.returnCourseName = function (course_crn) {
          return  $http.get(url + "/getCourseName/" + course_crn).then(function successCallback(response) {
 
-                return response.data.info.course_name;
+                return response.data.info;
              }, function errorCallback(response) {
                  // console.log('error');
                  return "";
@@ -239,6 +239,9 @@ app.controller('createCourseController', ['$scope', '$window', '$uibModal', '$ht
     $scope.saveData = function () {
         if (!$scope.courseName || !$scope.courseCrn || !$scope.courseTrimester || $scope.studentData.length == 0)
             return;
+        $scope.newData = {
+            "course_name": $scope.courseName
+        }
         var data = {
             "faculty_user_name": $cookies.get("username"),
             "course_name": $scope.courseName,
@@ -348,7 +351,9 @@ app.controller("courseViewController", ['$scope', '$cookies', '$state', '$http',
     $scope.studentData = [];
     $scope.course_crn = $stateParams.courseid;
     getCourseName.returnCourseName($scope.course_crn).then(function (data) {
-        $scope.course_name = data;
+        console.log(data);
+        $scope.course_name = data.course_name;
+        $scope.trimester = data.trimester;
     });
     console.log($scope.course_name);
     $http.get(url + "/viewStudentsByCourse/" + $scope.course_crn+"/"+$cookies.get('username')).then(function successCallback(response) {
@@ -379,7 +384,7 @@ app.controller("groupViewController", ['$scope', '$cookies', '$state', '$http', 
     $scope.groupData = [];
     $scope.course_crn = $stateParams.courseid;
     getCourseName.returnCourseName($scope.course_crn).then(function (data) {
-        $scope.course_name = data;
+        $scope.course_name = data.course_name;
     });
     console.log($stateParams.courseid);
     $http.get(url + "/viewGroupsByCourse/" + $scope.course_crn).then(function successCallback(response) {
@@ -401,7 +406,7 @@ app.controller("addQuestionsController", ['$scope', '$cookies', '$state', '$http
     $scope.getQuestionData = [];
     $scope.course_crn = $stateParams.courseid;
     getCourseName.returnCourseName($scope.course_crn).then(function (data) {
-        $scope.course_name = data;
+        $scope.course_name = data.course_name;
     });
     console.log($stateParams.courseid);
     $http.get(url + "/getQuestionsByCourse/" + $scope.course_crn).then(function successCallback(response) {
