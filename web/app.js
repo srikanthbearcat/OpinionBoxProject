@@ -107,6 +107,7 @@ app.run(function($rootScope, $location,editableOptions) {
     $rootScope.location = $location;
         editableOptions.theme = 'bs3';
 });
+
 //Alert controller
 app.controller('modalInstanceController', function ($scope,$rootScope, $uibModalInstance, modalInfo) {
 
