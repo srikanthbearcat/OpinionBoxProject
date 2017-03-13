@@ -33,7 +33,7 @@
                     <div class="form-group">
                         <label class="col-md-3"></label>
                         <div class="col-md-8">
-                             <label for="courseCrn" generated="true" class="error" style="color: darkred"></label>
+                            <label for="courseCrn" generated="true" class="error" style="color: darkred"></label>
                         </div>
                     </div>
                     <div class="form-group">
@@ -97,7 +97,6 @@
                                     <!--ng-disabled="studentData.length == 0">-->
                                 Cancel
                             </button>
-							
                         </div>
                     </div>
                 </form>
@@ -106,7 +105,7 @@
                      min-height: 40px;
                      width: 768px;">
                     <p style="color: green;font-weight: bold;">
-                        Successful!! Course is created and students added to the course successfully.
+                        Successful!! {{newData.course_name}} is created and students added to the course successfully.
                     </p>
                 </div>
                 <div id="failedMessage" style="display:none;border: 2px solid red;
@@ -249,7 +248,7 @@
 <script>
     $(document).ready(function () {
 //        $('[data-toggle="tooltip"]').css("align", "left").tooltip();
-$('[data-toggle="tooltip"]').tooltip(); 
+            $('[data-toggle="tooltip"]').tooltip();
         $('#createCourseForm').validate({
             rules: {
                 courseName: {
@@ -292,6 +291,7 @@ $('[data-toggle="tooltip"]').tooltip();
             },
             submitHandler: function (form) {
 //                    onSubmitForm();
+
             }
         });
 
