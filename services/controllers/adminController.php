@@ -314,7 +314,6 @@ function isExistInTable($tableName, $email_id) {
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
-
 //For the url http://localhost/OpinionBox/services/index.php/admin/login
 $app->post('/admin/login', $loginAdmin);
 //For the url http://localhost/OpinionBox/services/index.php/admin/addFaculty
