@@ -329,7 +329,10 @@ function updatePinInTable($tableName, $email_id,$details) {
         } else {
             return false;
         }
-    } 
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
 }
 
 //For the url http://localhost/OpinionBox/services/index.php/admin/login
