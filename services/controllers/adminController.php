@@ -334,7 +334,6 @@ function updatePinInTable($tableName, $email_id,$details) {
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
-
 //For the url http://localhost/OpinionBox/services/index.php/admin/login
 $app->post('/admin/login', $loginAdmin);
 //For the url http://localhost/OpinionBox/services/index.php/admin/addFaculty
