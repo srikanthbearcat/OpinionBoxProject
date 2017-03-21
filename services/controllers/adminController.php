@@ -309,6 +309,9 @@ function isExistInTable($tableName, $email_id) {
             $response->info = "";
             return $response;
         }
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
 
