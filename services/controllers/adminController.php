@@ -314,6 +314,24 @@ function isExistInTable($tableName, $email_id) {
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
+function updatePinInTable($tableName, $email_id,$details) {
+    $app = \Slim\Slim::getInstance();
+    try {
+        $core = Core::getInstance();
+        $newPIN = rand(1000, 9999);
+        $updateSQL = "UPDATE `user_account` SET password = :password WHERE id=:id";
+        $updateStmt = $core->dbh->prepare($updateSQL);
+        $updateStmt->bindParam("password", $newPIN);
+        $updateStmt->bindParam("id", $details['user_id']);
+        if ($updateStmt->execute()) {
+            sendMail($email_id, $newPIN);
+            return true;
+        } else {
+            return false;
+        }
+    } 
+}
+
 //For the url http://localhost/OpinionBox/services/index.php/admin/login
 $app->post('/admin/login', $loginAdmin);
 //For the url http://localhost/OpinionBox/services/index.php/admin/addFaculty
