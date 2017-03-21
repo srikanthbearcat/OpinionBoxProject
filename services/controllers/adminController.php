@@ -268,7 +268,28 @@ function isPasswordMatch($user_name,$password){
     }
 }
 
-
+$forgotPIN = function() use($app) {
+    try {
+        $json = $app->request->getBody();
+        $postData = json_decode($json, true); // parse the JSON into an assoc. array
+        $email_id = $postData['email_id'];
+        $core = Core::getInstance();
+        $response = new stdClass();
+        $student_details = isExistInTable("student", $email_id);
+        $faculty_details = isExistInTable("faculty", $email_id);
+        if ($student_details->success) {
+            $response->success = updatePinInTable("student", $email_id,$student_details->info);
+        } else if ($faculty_details->success) {
+            $response->success = updatePinInTable("faculty", $email_id,$faculty_details->info);
+        } else {
+            $response->success = FALSE;
+        }
+        echo json_encode($response);
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+};
 
 
 
