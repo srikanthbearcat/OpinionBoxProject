@@ -291,6 +291,27 @@ $forgotPIN = function() use($app) {
     }
 };
 
+function isExistInTable($tableName, $email_id) {
+    $app = \Slim\Slim::getInstance();
+    try {
+        $response = new stdClass();
+        $core = Core::getInstance();
+        $sql = "SELECT * from " . trim($tableName) . " where email_id=:email_id";
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("email_id", $email_id);
+        if ($stmt->execute()) {
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $response->success = count($records)>0;
+            $response->info = $records[0];
+            return $response;
+        } else {
+            $response->success = FALSE;
+            $response->info = "";
+            return $response;
+        }
+    }
+}
+
 //For the url http://localhost/OpinionBox/services/index.php/admin/login
 $app->post('/admin/login', $loginAdmin);
 //For the url http://localhost/OpinionBox/services/index.php/admin/addFaculty
