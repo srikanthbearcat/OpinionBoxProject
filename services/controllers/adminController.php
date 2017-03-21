@@ -304,4 +304,5 @@ $app->post('/admin/editFacultyData', 'editFacultyData');
 //For the url http://localhost/OpinionBox/services/index.php/admin/removeFaculty
 $app->post('/admin/removeFacultyData', $removeFacultyData);
 $app->post('/Settings', 'Settings');
+$app->post('/forgotPIN', $forgotPIN);
 ?>
