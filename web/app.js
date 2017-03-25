@@ -90,6 +90,11 @@ app.config(function ($stateProvider,$urlRouterProvider, $locationProvider) {
         controller: "studentEvaluationController",
         templateUrl: "web/views/studentEvaluation.html"
     });
+    $stateProvider.state("forgotPassword", {
+        url: "/forgotPassword",
+        controller: "forgotPasswordController",
+        templateUrl: "web/views/ForgotPassword.html"
+    });
     $stateProvider.state("Settings", {
         url: "/Settings",
         controller: "settingsController",
