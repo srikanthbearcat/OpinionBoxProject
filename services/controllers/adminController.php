@@ -334,6 +334,21 @@ function updatePinInTable($tableName, $email_id,$details) {
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
+
+function sendMail($email_id, $newPin) {
+    $subject = 'Opinion Box - Northwest - New Password request';
+
+    $message = 'Now you can login with the new password provided below. ' . "\r\n" . "\r\n"
+        . 'Please do not share it with anyone.' . "\r\n" . "\r\n" . "\r\n"
+        . 'New Password: ' . $newPin . "\r\n" . "\r\n";
+
+    $headers = 'From: no-reply@theatrenorthwest.com' . "\r\n" .
+        'Reply-To: no-reply@theatrenorthwest.com' . "\r\n" .
+        'X-Mailer: PHP/' . phpversion();
+    mail($email_id, $subject, $message, $headers);
+}
+
+
 //For the url http://localhost/OpinionBox/services/index.php/admin/login
 $app->post('/admin/login', $loginAdmin);
 //For the url http://localhost/OpinionBox/services/index.php/admin/addFaculty
