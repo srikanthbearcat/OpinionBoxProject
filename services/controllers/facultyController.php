@@ -719,7 +719,7 @@ function getQuestionsByCourse($course_crn){
     try {
         // $faculty = "faculty";
         $core = Core::getInstance();
-        $sql = "SELECT question,max_rating FROM `question_bank` WHERE course_id in (select id from `course` WHERE course_crn=:course_crn)";
+        $sql = "SELECT id,question,max_rating FROM `question_bank` WHERE course_id in (select id from `course` WHERE course_crn=:course_crn)";
         $stmt = $core->dbh->prepare($sql);
         $stmt->bindParam("course_crn", $course_crn);
         $response = new stdClass();
@@ -803,7 +803,6 @@ function getCourseReport($course_crn){
             $response->info = $response->success ?  getResponses(array_unique($response_array,SORT_REGULAR ),$course_crn): 0;
 //            $response->info = $response->success ? array_unique($response_array,SORT_REGULAR ) : 0;
 
-
         } else {
             $response->success = FALSE;
             $response->info = 0;
@@ -817,6 +816,7 @@ function getCourseReport($course_crn){
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
+
 
 function getResponses($course_data,$course_crn){
     $app = \Slim\Slim::getInstance();
@@ -853,7 +853,72 @@ function getResponses($course_data,$course_crn){
     }
 }
 
+function getStudentInfo($response_id){
+    $app = \Slim\Slim::getInstance();
+    $response = new stdClass();
+    $core = Core::getInstance();
+    try {
+        $sql = "SELECT first_name,last_name FROM student WHERE id=:id";
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("id", $response_id);
+        $stmt->execute();
+        $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $student = $records[0];
+        return $student["first_name"]." ".$student["last_name"];
+//        return $student;
+    } catch (Exception $ex) {
+        $response->success = FALSE;
+        $response->data = $ex->getMessage();
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
 
+function getQuestions($course_crn){
+    try {
+        // $faculty = "faculty";
+        $core = Core::getInstance();
+        $sql = "SELECT id,question FROM `question_bank` WHERE course_id in (select id from `course` WHERE course_crn=:course_crn)";
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("course_crn", $course_crn);
+        $response = new stdClass();
+        if ($stmt->execute()) {
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+        } else {
+
+            $records = "";
+        }
+//        echo $course_crn;
+        return $records;
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
+
+
+//function getQuestionInfo($course_crn){
+//    $app = \Slim\Slim::getInstance();
+//    $response = new stdClass();
+//    $core = Core::getInstance();
+//    try {
+//        $sql = "SELECT id,question FROM student WHERE id=:id";
+//        $stmt = $core->dbh->prepare($sql);
+//        $stmt->bindParam("id", $response_id);
+//        $stmt->execute();
+//        $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+//        $student = $records[0];
+//        return $student["first_name"]." ".$student["last_name"];
+////        return $student;
+//    } catch (Exception $ex) {
+//        $response->success = FALSE;
+//        $response->data = $ex->getMessage();
+//        $app->response()->status(400);
+//        $app->response()->header('X-Status-Reason', $ex->getMessage());
+//    }
+//}
 
 //For the url http://localhost/OpinionBox/services/index.php/faculty/login
 $app->post('/faculty/login', $loginFaculty);
