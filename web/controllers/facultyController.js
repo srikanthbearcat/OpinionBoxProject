@@ -372,7 +372,19 @@ app.controller("courseViewController", ['$scope', '$cookies', '$state', '$http',
     $scope.downloadReport = function () {
         $http.get(url + "/courseReport/" + $scope.course_crn).then(function successCallback(response) {
                 $scope.courseReport = response.data.info;
-            console.log(JSON.stringify($scope.courseReport))
+            var csv = Papa.unparse(response.data.info);
+            var anchor = angular.element('<a/>');
+            anchor.css({display: 'none'}); // Make sure it's not visible
+            angular.element(document.body).append(anchor); // Attach to document
+
+            anchor.attr({
+                href: 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv),
+                // href: 'data:attachment/csv' + csv,
+                target: '_blank',
+                download: 'Extraction1.csv'
+            })[0].click();
+            anchor.remove(); // Clean it up afterwards
+            console.log(JSON.stringify(csv))
         }, function errorCallback(response) {
             console.log('error')
         })
