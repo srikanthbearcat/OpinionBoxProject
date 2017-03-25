@@ -27,19 +27,9 @@
                            name="newPwd"
                            ng-model="settings.newPwd"
                            ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/"
-                           class="form-control"
-                    >
-                    <div class="help-block"
-                         ng-show="settingsForm.newPwd.$error.required && (settingsForm.newPwd.$dirty|| settingsForm.$submitted) ">You can't leave this empty</div>
+                           class="form-control">
+                    <div class="help-block" ng-show="settingsForm.newPwd.$error.required && (settingsForm.newPwd.$dirty|| settingsForm.$submitted) ">You can't leave this empty</div>
                     <div  class="help-block" ng-show="settingsForm.newPwd.$error.pattern && (settingsForm.newPwd.$dirty|| settingsForm.$submitted) && settingsForm.newPwd.$touched">Password must contain alteast one uppercase , lowercase, special character,number and length should be atleast 8 characters. Example: Opinion1!</div>
-
-                    <!--<span class="col-sm-2">-->
-
-                      <!--</span>-->
-
-
-                    <!--<span  ng-show="settingsForm.newPwd.$error.pattern">Password must contain alteast one uppercase , lowercase  and number and length should be 8 characters. Example: Opinion1</span>-->
-
                 </div>
                 <a data-toggle="tooltip" href="" data-placement="bottom" class="glyphicon glyphicon glyphicon-info-sign" title=" Password must contain alteast one uppercase , lowercase  and number. Length should be 8 characters. Example Opinion1 ">&nbspPassword Policy</a>
 
