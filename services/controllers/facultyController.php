@@ -816,6 +816,42 @@ function getCourseReport($course_crn){
     }
 }
 
+function getResponses($course_data,$course_crn){
+    $app = \Slim\Slim::getInstance();
+    $response = new stdClass();
+    $core = Core::getInstance();
+    $question_data = getQuestions($course_crn);
+    try {
+            foreach ($course_data as &$course_data_row){
+             if($course_data_row['response_by_id'] or $course_data_row['response_to_id']){
+                 $course_data_row['Your name'] =  getStudentInfo($course_data_row['response_by_id']);
+                 $course_data_row['Teammate'] =  getStudentInfo($course_data_row['response_to_id']);
+//                 $course_data_row['response_by_id'] =  getStudentInfo($course_data_row['response_by_id']);
+//                 $course_data_row['response_to_id'] =  getStudentInfo($course_data_row['response_to_id']);
+                 foreach ($question_data as &$question_data_row){
+//                     if($question_data_row['id'] = $course_data_row[$question_data_row['id']]){
+                         $course_data_row[$question_data_row['question']] = $course_data_row[$question_data_row['id']];
+                         unset($course_data_row[$question_data_row['id']]);
+//                     }
+                 }
+                 unset($course_data_row['response_by_id']);
+                 unset($course_data_row['response_to_id']);
+//                 array_combine(array_merge($course_data_row, $question_data), $course_data_row);
+             }else{
+
+//                array_combine(array_merge($course_data, $question_data), $course_data);
+             }
+            }
+        return $course_data;
+    } catch (Exception $ex) {
+        $response->success = FALSE;
+        $response->data = $ex->getMessage();
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
+
+
 
 //For the url http://localhost/OpinionBox/services/index.php/faculty/login
 $app->post('/faculty/login', $loginFaculty);
