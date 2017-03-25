@@ -800,7 +800,9 @@ function getCourseReport($course_crn){
 //            $response_array = array_merge($response_array,$records);
 //                $total_student_records = $total_student_records + $student_records ;
             $response->success = count($records) > 0;
-            $response->info = $response->success ? array_unique($response_array,SORT_REGULAR ) : 0;
+            $response->info = $response->success ?  getResponses(array_unique($response_array,SORT_REGULAR ),$course_crn): 0;
+//            $response->info = $response->success ? array_unique($response_array,SORT_REGULAR ) : 0;
+
 
         } else {
             $response->success = FALSE;
