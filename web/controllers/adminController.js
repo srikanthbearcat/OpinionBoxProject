@@ -1,7 +1,7 @@
 /**
  * Created by S525796 on 04-01-2017.
  */
-app.controller("adminController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', function ($scope, $cookies, $state, $http, url,$uibModal) {
+app.controller("adminController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal','$timeout', function ($scope, $cookies, $state, $http, url,$uibModal,$timeout) {
     $scope.addFacultyForm = {};
     $scope.addedFacultySuccess = false;
     $scope.addedFacultyFailed = false;
@@ -32,6 +32,10 @@ app.controller("adminController", ['$scope', '$cookies', '$state', '$http', 'url
             //         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
             //     }
             // };
+$scope.newData = {
+    first_name: $scope.addFaculty.firstName,
+    last_name: $scope.addFaculty.lastName
+}
 
             var data = {
                 first_name: $scope.addFaculty.firstName,
@@ -48,9 +52,12 @@ app.controller("adminController", ['$scope', '$cookies', '$state', '$http', 'url
                     if (response.data.success) {
                         $scope.addedFacultySuccess = true;
                         $scope.addedFacultyFailed = false;
-                        // $scope.addFaculty = angular.copy({});
-                        // $scope.addFacultyForm.$setUntouched();
+                        $scope.addFaculty = {};
                         $scope.addFacultyForm.$setPristine();
+                        $scope.addFacultyForm.$setUntouched();
+                        $timeout(function() {
+                            window.history.go(-1);
+                        }, 2000);
 
 
                     } else {
@@ -141,7 +148,7 @@ app.controller("adminController", ['$scope', '$cookies', '$state', '$http', 'url
     }
     //delete faculty data from database
     $scope.removeFaculty = function (indexd, user_name,first_name,last_name) {
-        $scope.alert('sm', {modalHeader: "Delete Faculty", modalBody: "Are you sure you want to delete? All the data related to this "+first_name+" "+last_name+" will be deleted", data:{indexd:indexd,user_name:user_name, deleteFaculty: true}});
+        $scope.alert('sm', {modalHeader: "Delete Faculty", modalBody: "Are you sure you want to delete? If you click 'OK' all the data related to "+first_name+" "+last_name+" will be deleted", data:{indexd:indexd,user_name:user_name, deleteFaculty: true}});
 
 
     };

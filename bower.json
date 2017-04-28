@@ -18,6 +18,7 @@
     "bootstrap": "^3.3.7",
     "angular-cookies": "1.6.0",
     "angular-bootstrap": "^2.3.2",
-    "angular-xeditable": "^0.6.0"
+    "angular-xeditable": "^0.6.0",
+    "moment-timezone": "^0.5.11"
   }
 }

@@ -4,56 +4,74 @@
     <a ui-sref="modifyCourse" ui-sref-active="active" class="list-group-item">View/Modify Course</a>
 </div>
 
-<!--right dashboard-->
+
+<!--Faculty Dashboard-->
 <div class="col-md-10">
-    <h2>Courses</h2>
-    <table class="table table-hover" style="">
-        <thead>
-        <tr style="background-color: green; opacity: 0.75; color: white;height: 52px">
-            <th>S.No</th>
-            <th>Course CRN</th>
-            <th>Course Name</th>
-            <th>Trimester</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!--<tr ng-repeat="course in courseData track by $index" ng-click="getStudents(course.course_crn)">-->
-        <tr ng-repeat="course in courseData track by $index" >
-            <td>{{$index +1}}</td>
-            <td >
-                <a ui-sref="viewCourse({courseid:course.course_crn})"> {{course.course_crn}}</a>
-            </td>
-            <td >
-                <a ui-sref="viewCourse({courseid:course.course_crn})"> {{course.course_name}}</a>
-            </td>
-            <td >
-                <a ui-sref="viewCourse({courseid:course.course_crn})"> {{course.trimester}}</a>
-            </td>
-        </tr>
+    <div style="margin-top:10px; width: 90%;">
+        <div class="panel panel-default ">
+            <div class="panel-heading panel-color">
+                <div class="panel-title">Dashboard</div>
+
+            </div>
+
+            <div style="padding-top:0px" class="panel-body">
+                <table class="table table-borderless" align="center">
+                    <tbody>
+                    <h3 style="text-align:center">Spring</h3>
+                    <tr ng-repeat="course in courseData | filter: {trimester:'Spring'} | filter: {trimester:currentYear}">
+                        <td class="col-md-9">
+                            <span editable-text="course.course_name" e-name="course_name" e-form="rowform"
+                                  onbeforesave="checkCourseName($data)" e-required>
+                                 {{ course.course_name || 'empty' }}
+                            </span>
+                        </td>
+                        <td>
+                            <span editable-text="course.trimester" e-name="trimester" e-form="rowform"
+                                  onbeforesave="checkTrimester($data)" e-required>
+                               {{ course.trimester || 'empty' }}
+                            </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table" align="center" style="table-layout: fixed;border: none">
+                    <h3 style="text-align:center">Summer</h3>
+                    <tr ng-repeat="course in courseData | filter: {trimester:'Summer'} | filter: {trimester:currentYear}">
+                        <td class="col-md-9">
+                            <span editable-text="course.course_name" e-name="course_name" e-form="rowform"
+                                  onbeforesave="checkCourseName($data)" e-required>
+                                 {{ course.course_name || 'empty' }}
+                            </span>
+                        </td>
+                        <td>
+                            <span editable-text="course.trimester" e-name="trimester" e-form="rowform"
+                                  onbeforesave="checkTrimester($data)" e-required>
+                               {{ course.trimester || 'empty' }}
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+                <table class="table table-borderless" align="center">
+                    <h3 style="text-align:center">Fall</h3>
+                    <tr ng-repeat="course in courseData | filter: {trimester:'Fall'} | filter: {trimester:currentYear}">
+                        <td class="col-md-9">
+                            <span editable-text="course.course_name" e-name="course_name" e-form="rowform"
+                                  onbeforesave="checkCourseName($data)" e-required>
+                                 {{ course.course_name || 'empty' }}
+                            </span>
+                        </td>
+                        <td>
+                            <span editable-text="course.trimester" e-name="trimester" e-form="rowform"
+                                  onbeforesave="checkTrimester($data)" e-required>
+                               {{ course.trimester || 'empty' }}
+                            </span>
+                        </td>
+                    </tr>
+                </table>
 
 
-        <!--<tr>-->
 
-        <!--<td><a href="viewGroups.html" >44-643</a></td>-->
-        <!--<td><a href="viewGroups.html" >Mobile Computing - iOS</a></td>-->
-        <!--<td><a href="viewGroups.html" >Fall 2016</a></td>-->
-        <!--</tr>-->
-
-        <!--<tr>-->
-        <!--<td>44-560</td>-->
-        <!--<td>ADB topics in DB systems</td>-->
-        <!--<td>Fall 2016</td>-->
-        <!--</tr>-->
-        <!--<tr>-->
-        <!--<td>44-691</td>-->
-        <!--<td>Graduate Directed Project</td>-->
-        <!--<td>Fall 2016</td>-->
-        <!--</tr>-->
-        <!--<tr>-->
-        <!--<td>44-542</td>-->
-        <!--<td>Object oriented programming</td>-->
-        <!--<td>Fall 2016</td>-->
-        <!--</tr>-->
-        </tbody>
-    </table>
+            </div>
+        </div>
+    </div>
 </div>

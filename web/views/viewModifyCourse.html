@@ -1,6 +1,7 @@
 <div class="container">
     <!--left pan-->
     <div class="list-group col-md-2" style="margin-top:70px;">
+
         <a ui-sref="addCourse" ui-sref-active="active" class="list-group-item">Add Course</a>
         <a ui-sref="modifyCourse" ui-sref-active="active" class="list-group-item ">View/Modify Course</a>
     </div>
@@ -10,31 +11,36 @@
 
         <tr style="background-color: green; opacity: 0.75; color: white;height: 52px s">
             <th style="width: 50px" >S.No</th>
-            <th style="width: 120px" >CRN</th>
-            <th style="width: 100px">Course Name</th>
+            <th style="width: 50px" >Course Number</th>
+            <th style="width: 200px">Course Name</th>
             <th style="width: 100px">Trimester</th>
             <th style="width: 120px">Edit</th>
         </tr>
 
         <tr ng-repeat="course in courseData track by $index">
-            <td >{{$index +1}}</td>
-            <td style="width: 120px">
-                    <span editable-text="course.course_crn" e-name="course_crn" e-form="rowform"
+            <td ><span style="display: inline-block;
+    width: 20px;
+    text-align: right;">{{$index +1}}</span></td>
+            <td style="width: 50px">
+                    <span style="display: inline-block;
+    width: 80px;
+    text-align: right;" editable-text="course.course_crn" e-name="course_crn" e-form="rowform"
                           onbeforesave="checkCourseNumber($data)" e-required>
-                        {{ course.course_crn || 'empty' }}
+                       <a ui-sref="viewCourse({courseid:course.course_crn})"> {{ course.course_crn || 'empty' }}</a>
                         <!--{{ course.course_number || 'empty' }}-->
+
                     </span>
             </td>
-            <td>
+            <td >
                             <span editable-text="course.course_name" e-name="course_name" e-form="rowform"
                                   onbeforesave="checkCourseName($data)" e-required>
-                                {{ course.course_name || 'empty' }}
+                                <a ui-sref="viewCourse({courseid:course.course_crn})">  {{ course.course_name || 'empty' }}</a>
                             </span>
             </td>
             <td>
                             <span editable-text="course.trimester" e-name="trimester" e-form="rowform"
                                   onbeforesave="checkTrimester($data)" e-required>
-                                {{ course.trimester || 'empty' }}
+                               <a ui-sref="viewCourse({courseid:course.course_crn})">   {{ course.trimester || 'empty' }}</a>
                             </span>
             </td>
            
@@ -62,19 +68,6 @@
         </tr>
 
 
-        <!--old code without xeditable-->
-        <!--<tr ng-repeat="faculty in facultyData track by $index">-->
-        <!--<td>{{$index +1}}</td>-->
-        <!--<td>{{faculty.first_name}}</td>-->
-        <!--<td>{{faculty.last_name}}</td>-->
-        <!--<td>{{faculty.user_name}}</td>-->
-        <!--<td>{{faculty.password}}</td>-->
-        <!--<td>{{faculty.email}}</td>-->
-        <!--<td>-->
-        <!--<a ui-sref="deleteFaculty" ng-click="editFaculty(faculty)"><span class="glyphicon glyphicon-pencil"></span></a>-->
-        <!--</td>-->
-
-        <!--</tr>-->
 
 
         </table>

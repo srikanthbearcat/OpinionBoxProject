@@ -1,48 +1,44 @@
 <div class="container">
-    <div class="col-md-8">
+    <div class="col-sm-10">
         <h2>Reset your password</h2>
 
         <form name="settingsForm" novalidate>
             <div class="form-group">
                 <label  class="col-sm-3 control-label">Current Password: <span
                         style="color: red">*</span></label>
-                <div class="col-sm-8" ng-class="{'has-error' : settingsForm.currentPwd.$invalid && (settingsForm.currentPwd.$dirty || settingsForm.$submitted)}">
+                <div class="col-sm-7" ng-class="{'has-error' : settingsForm.currentPwd.$invalid && (settingsForm.currentPwd.$dirty || settingsForm.$submitted)}">
                     <input type="password"
                            ng-required="true"
                            name="currentPwd"
                            ng-model="settings.currentPwd"
-                           
-                           class="form-control "
-                    >
-                   
+                           class="form-control ">
                     <span class="help-block"
                           ng-show="settingsForm.currentPwd.$error.required && (settingsForm.currentPwd.$dirty|| settingsForm.$submitted) ">You can't leave this empty</span>
-
                 </div>
                 </br></br></br>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">New Password: <span
                         style="color: red">*</span></label>
-                <div class="col-sm-8" ng-class="{'has-error' : settingsForm.newPwd.$invalid && (settingsForm.newPwd.$dirty || settingsForm.$submitted)}">
+                <div class="col-sm-7" ng-class="{'has-error' : settingsForm.newPwd.$invalid && (settingsForm.newPwd.$dirty || settingsForm.$submitted)}">
+
                     <input type="password"
                            ng-required="true"
                            name="newPwd"
                            ng-model="settings.newPwd"
-                           ng-pattern="/^[A-Za-z0-9]{8}/"
-                           class="form-control "
-                    >
-                    <span  ng-show="settingsForm.newPwd.$error.pattern">Password must contain alteast one capital letter, small letter and number and length should be 8 characters. Example: Opinion1</span>
-                    <span class="help-block"
-                          ng-show="settingsForm.newPwd.$error.required && (settingsForm.newPwd.$dirty|| settingsForm.$submitted) ">You can't leave this empty</span>
-
+                           ng-pattern="/^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{8,}$/"
+                           class="form-control">
+                    <div class="help-block" ng-show="settingsForm.newPwd.$error.required && (settingsForm.newPwd.$dirty|| settingsForm.$submitted) ">You can't leave this empty</div>
+                    <div  class="help-block" ng-show="settingsForm.newPwd.$error.pattern && (settingsForm.newPwd.$dirty|| settingsForm.$submitted) && settingsForm.newPwd.$touched">Minimum of 8 characters, at least 1 alphabet and 1 number. No special characters or spaces. Example: opinion1</div>
                 </div>
+                <a data-toggle="tooltip" href="" data-placement="bottom" title="Password must contain minimum of 8 characters, at least 1 alphabet and 1 number. No special characters or spaces. Example: opinion1">&nbspPassword Policy</a>
+
                 </br></br></br>
             </div>
             <div class="form-group">
                 <label  class="col-sm-3 control-label">Confirm Password <span
                         style="color: red">*</span></label>
-                <div class="col-sm-8" ng-class="{'has-error' : settingsForm.confirmPwd.$invalid && (settingsForm.confirmPwd.$dirty || settingsForm.$submitted)}">
+                <div class="col-sm-7" ng-class="{'has-error' : settingsForm.confirmPwd.$invalid && (settingsForm.confirmPwd.$dirty || settingsForm.$submitted)}">
                     <input type="password"
                            ng-required="true"
                            name="confirmPwd"
@@ -56,7 +52,9 @@
                 </div>
                 </br></br></br>
             </div>
-            <div style="margin-left:150px">
+            <p style="font-style: italic"><span
+                    style="color: red">*</span>Indicates required field</p>
+            <div style="margin-left:250px">
                 <button type="submit"  class="btn btn-success" ng-click="resetPassword()">
                     Save
                 </button>
@@ -67,3 +65,10 @@
         <div uib-alert  ng-class="'alert-danger'" ng-show="passwordChangeFailed" close="passwordChangeFailed = false" >Problem in changing password</div>
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>

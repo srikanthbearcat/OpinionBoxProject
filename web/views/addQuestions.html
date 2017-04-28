@@ -1,14 +1,17 @@
 <!--left pan-->
 <div class="list-group col-md-2" style="margin-top:70px;">
+    <a ui-sref="modifyCourse" ui-sref-active="active" class="list-group-item "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>Courses</a>
+    <a ui-sref="viewCourse({courseid:course_crn})" ui-sref-active="active" class="list-group-item">Students</a>
     <a ui-sref="viewGroups({courseid:course_crn})" ui-sref-active="active" class="list-group-item">View Groups</a>
     <a ui-sref="addQuestions({courseid:course_crn})"  ui-sref-active="active" class="list-group-item">Add Questions</a>
+    <a ui-sref="reports({courseid:course_crn})" ui-sref-active="active" class="list-group-item">Reports</a>
 </div>
 
 <!--right dashboard-->
 <div class="col-md-10">
 
 
-    <h2>Questions</h2>
+    <h2>Questions - {{course_name}}</h2>
 
     <table class="table table-hover" style="">
         <thead>
@@ -75,26 +78,27 @@
                                                         Get Student Data Preview
                                                     </button>-->
                             <button class="input-buttongroup-addon btn btn-success"
-                                    name="save" ng-click="saveData()"
-                                    ng-disabled="questionData.length == 0">
+                                    name="save" ng-click="saveData()">
+                                    <!--ng-disabled="questionData.length == 0">-->
                                 Save
                             </button>
                             <button class="input-buttongroup-addon btn btn-default" name="cancel"
-                                    data-dismiss="fileinput" ng-click="cancel()"
-                                    ng-disabled="questionData.length == 0">Cancel
+                                    data-dismiss="fileinput" ng-click="cancel()">
+                                    <!--ng-disabled="questionData.length == 0"-->
+                            Cancel
                             </button>
                         </div>
                     </div>
                 </form>
 
-                <div id="successMessage" style="display:none;border: 2px solid green;
+                <div id="successMessage" style="display:none;
                      min-height: 40px;
                      width: 768px;">
                     <p style="color: green;font-weight: bold;">
                         Successful!! Questions are added to the course successfully.
                     </p>
                 </div>
-                <div id="failedMessage" style="display:none;border: 2px solid red;
+                <div id="failedMessage" style="display:none;
                      min-height: 40px;
                      width: 768px;">
                     <p style="color: red;font-weight: bold;">
@@ -132,15 +136,6 @@
 
 
 
-    <!--<fieldset  data-ng-repeat="question in questions" >-->
-        <!--<div class="form-inline">-->
-        <!--<input type="text"  placeholder="Enter a question" class="form-control" style="width: 80%">-->
-        <!--<select class="form-control" ng-model="selectedRating" style="width: 6%">-->
-            <!--<option ng-repeat="n in range" value="{{n}}">{{n}}</option>-->
-        <!--</select>-->
-        <!--</div>-->
-        <!--<button class="remove" ng-show="$last" ng-click="removeChoice()">remove</button>-->
-    <!--</fieldset>-->
 </div>
 <script>
     $(document).ready(function () {

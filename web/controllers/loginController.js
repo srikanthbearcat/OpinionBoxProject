@@ -19,8 +19,6 @@ app.controller("LoginController", ['$scope', '$cookies', '$state', '$http', '$ro
 
     //Functions
     $scope.alert = function (size, modal_Info) {
-        // $scope.alert = function (size){
-        // $scope.animateEnabled = true;
 
         var modalPopUpInstance = $uibModal.open({
             // animate:$scope.animateEnabled,
@@ -46,6 +44,8 @@ app.controller("LoginController", ['$scope', '$cookies', '$state', '$http', '$ro
                 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
             }
         }
+
+
         var data = $.param({
             usertype: $scope.loginInfo.usertype,
             username: $scope.loginInfo.username,
@@ -107,4 +107,41 @@ app.controller("LoginController", ['$scope', '$cookies', '$state', '$http', '$ro
 
 }]);
 
+
+app.controller("forgotPasswordController", ['$scope', '$cookies', '$state', '$http', '$rootScope', 'url', '$uibModal','$timeout', function ($scope, $cookies, $state, $http, $rootScope, url, $uibModal,$timeout) {
+    $scope.account = {};
+    $scope.forgotPassword = function () {
+        if ($scope.forgotPasswordForm.$invalid) {
+            console.log("form not valid");
+            return;
+        }
+        var data = {
+            "email_id": $scope.account.emailAddress
+        }
+     console.log(data);
+        $http.post(url + "/forgotPIN", data).then(function successCallback(response) {
+        
+             console.log("Hello");
+            if (response.data.success) {
+           
+                $("#successMessage").fadeIn(2000).fadeOut(4000);
+                $("#errorMessageLabel").text("No account associated with this address.");
+              
+                $scope.account.emailAddress = '';
+                $scope.forgotPasswordForm.$setPristine();
+                $scope.forgotPasswordForm.$setUntouched();
+                $timeout(function() {
+                    window.history.go(-1);
+                }, 6000);
+            } else {
+                $("#failedMessage").text("Request failed").fadeIn(2000).fadeOut(6000);
+            }
+        }, function errorCallback(response) {
+            if (!response.data.success) {
+
+            }
+
+        });
+    }
+}]);
 

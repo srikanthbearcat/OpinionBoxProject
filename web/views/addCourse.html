@@ -2,73 +2,134 @@
     <!--left pan-->
     <div class="list-group col-md-2" style="margin-top:70px;">
         <a ui-sref="addCourse" ui-sref-active="active" class="list-group-item ">Add Course</a>
-        <a ui-sref="modifyCourse" ui-sref-active="active" class="list-group-item ">View/Modify Course</a>
+        <a ui-sref="modifyCourse" ui-sref-active="active" class="list-group-item ">View/Modify
+            Course</a>
     </div>
     <div class="col-md-10">
         <div class="col-md-8">
             <div class="row">
                 <h2>Course Details</h2>
-                <form id="createCourseForm" class="form-horizontal" role="form" name="createCourse">
+                <form id="createCourseForm" class="form-horizontal" role="form"
+                      name="createCourse">
                     <div class="form-group">
                         <label class="col-md-3" for="courseName">Course Name: </label>
                         <div class="col-md-8">
-                            <input type="text" class="form-control" autocomplete="off" placeholder="Enter course name"
-                                   id="courseName" name="courseName" ng-model="courseName" required="">
+                            <input type="text" class="form-control" autocomplete="off"
+                                   placeholder="Enter course name"
+                                   id="courseName" name="courseName" ng-model="courseName"
+                                   required="">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3"></label>
                         <div class="col-md-8">
-                            <label for="courseName" generated="true" class="error"></label>
+                            <label for="courseName" generated="true" class="error"
+                                   style="color: darkred"></label>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" for="courseCrn">Course CRN: </label>
+                        <label class="col-md-3" for="courseCrn">Course Number: </label>
                         <div class="col-md-8">
-                            <input type="text" autocomplete="off" class="form-control" id="courseCrn"
-                                   placeholder="Enter course CRN"
+                            <input type="text" autocomplete="off" class="form-control"
+                                   id="courseCrn"
+                                   placeholder="Enter course number"
                                    name="courseCrn" ng-model="courseCrn" required="">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3"></label>
                         <div class="col-md-8">
-                            <label for="courseCrn" generated="true" class="error"></label>
+                            <label for="courseCrn" generated="true" class="error"
+                                   style="color: darkred"></label>
+                        </div>
+                    </div>
+                    <!--<div class="form-group">-->
+                    <!--<label class="col-md-3" for="courseTrimester">Course Trimester:-->
+                    <!--</label>-->
+                    <!--<div class="col-md-8">-->
+
+
+                    <!--<input type="text" autocomplete="off" class="form-control"-->
+                    <!--id="courseTrimester"-->
+                    <!--placeholder="Enter course trimester"-->
+                    <!--name="courseTrimester" ng-model="courseTrimester"-->
+                    <!--required="">-->
+
+                    <!--</div>-->
+                    <!--</div>-->
+                    <div class="form-group">
+
+                        <label class="col-md-3" for="courseTrimester">Course Trimester:
+                        </label>
+                        <div class="col-md-4">
+
+                            <select ng-required="true" name="trimester" class="form-control"
+                                    ng-model="trimester">
+                                <option value="" >Select a trimester</option>
+                                <option ng-repeat="x in trimesterArray" value="{{x}}">{{x}}</option>
+
+                                <!--<option value="Spring">Spring</option>-->
+                                <!--<option value="Summer">Summer</option>-->
+                                <!--<option value="Fall">Fall</option>-->
+                            </select>
+
+                        </div>
+
+                        <div class="col-md-4">
+                            <input type="text" autocomplete="off" class="form-control"
+                                   id="courseTrimester"
+                                   placeholder="e.g., 2017"
+                                   name="year" ng-model="year"
+                                   required="">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3"></label>
+                        <div class="col-md-8">
+                            <label for="courseTrimester" generated="true" class="error"
+                                   style="color: darkred"></label>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" for="courseTrimester">Course Trimester: </label>
+                        <label class="col-md-3" for="dt">Evaluation Due Date: </label>
                         <div class="col-md-8">
-                            <input type="text" autocomplete="off" class="form-control" id="courseTrimester"
-                                   placeholder="Enter course trimester"
-                                   name="courseTrimester" ng-model="courseTrimester" required="">
+                            <p class="input-group">
+                                <input type="text" class="form-control" id="dt" uib-datepicker-popup="{{format}}"
+                                       ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions"
+                                       required="" close-text="Close">
+                                <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open1()"><i style="font-size: 1.5em"
+                                                                                    class="glyphicon glyphicon-calendar glyphicon-bold"></i></button>
+              </span>
+                            </p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3"></label>
                         <div class="col-md-8">
-                            <label for="courseTrimester" generated="true" class="error"></label>
+                            <label for="dt" generated="true" class="error" style="color:
+darkred"></label>
                         </div>
                     </div>
                     <div class="form-group">
-                    <label class="col-md-3">
-                           
-                               <a data-toggle="tooltip" class="glyphicon glyphicon glyphicon-info-sign" title="  Data should contain appropriate headings(user_name,password,first_name,last_name,email_id), each field should be
-                               seperated by comma, no tailing and leading spaces before
-                               and after comma,each row should be seperated by new line
-                               and file should be saved with .csv extension.">&nbspHelp</a>
+                        <label class="col-md-3">
+
+                           Course File:
                         </label>
-                       
+
                         <div class="col-md-5">
                             <input id="filebutton" accept=".csv" name="filebutton"
                                    fileread="files" class="input-file" type="file">
                         </div>
                         <div class="col-md-3">
-                            <a href="javascript:void(0)" ng-click="preview(callBack)" id="previewLink">preview</a>
-                            <!--                        <button class="input-buttongroup-addon btn btn-default" name="preview"
-                                                            ng-click="preview(callBack)" ng-show="studentData.length == 0">
-                                                        Preview File
-                                                    </button>-->
+                            <a data-toggle="tooltip"  title="Data should contain appropriate headings (user_name, password, first_name, last_name, email_id, group_no, group_topic), each field should be
+                         seperated by comma, no tailing and leading spaces before
+                               and after comma,each row should be seperated by new line
+                               and file should be saved with .csv extension.">&nbspHelp</a>
+                            <a href="javascript:void(0)" ng-click="preview(callBack)" style="display: none"
+                               id="previewLink">preview</a>
+
                         </div>
                     </div>
 
@@ -78,36 +139,42 @@
                             <label for="filebutton" generated="true" class="error"></label>
                         </div>
                     </div>
-                    <div uib-alert ng-class="'alert-danger'" ng-show="csvformatwrong" close="csvformatwrong = false">Please check the format of the csv file you are up
+                    <div uib-alert ng-class="'alert-danger'" ng-show="csvformatwrong"
+                         close="csvformatwrong = false">Please check the format of the csv file you are up
                     </div>
                     <div class="form-group">
                         <div class="col-md-3"></div>
                         <div class="col-md-8">
-                            <!--                        <button class="input-buttongroup-addon btn btn-default" name="preview"
-                                                            ng-click="preview(callBack)" ng-show="studentData.length == 0">
+                            <!--                        <button class="input-buttongroup-addon
+btn btn-default" name="preview"
+                                                            ng-click="preview(callBack)" ng-
+show="studentData.length == 0">
                                                         Get Student Data Preview
                                                     </button>-->
                             <button class="input-buttongroup-addon btn btn-success"
-                                    name="save" ng-click="saveData()"
-                                    ng-disabled="studentData.length == 0">
+                                    name="save" ng-click="saveData()">
+                                <!--ng-disabled="studentData.length == 0">-->
                                 Save
                             </button>
-                            <button class="input-buttongroup-addon btn btn-default" name="cancel"
-                                    data-dismiss="fileinput" ng-click="cancel()"
-                                    ng-disabled="studentData.length == 0">Cancel
+                            <button class="input-buttongroup-addon btn btn-default"
+                                    name="cancel"
+                                    data-dismiss="fileinput" ng-click="cancel()">
+                                <!--ng-disabled="studentData.length == 0">-->
+                                Cancel
                             </button>
                         </div>
                     </div>
                 </form>
 
-                <div id="successMessage" style="display:none;border: 2px solid green;
+                <div id="successMessage" style="display:none;
                      min-height: 40px;
                      width: 768px;">
                     <p style="color: green;font-weight: bold;">
-                        Successful!! Course is created and students added to the course successfully.
+                        Successful!! {{newData.course_name}} is created and students added to
+                        the course successfully.
                     </p>
                 </div>
-                <div id="failedMessage" style="display:none;border: 2px solid red;
+                <div id="failedMessage" style="display:none;
                      min-height: 40px;
                      width: 768px;">
                     <p style="color: red;font-weight: bold;">
@@ -129,7 +196,7 @@
                         <th>Firstname</th>
                         <th>Lastname</th>
                         <th>Username</th>
-                        <th>E-mail ID</th>
+                        <th>E-mail Id</th>
                         <th>Password</th>
                         <th>Group Number</th>
                         <th>Group Topic</th>
@@ -137,13 +204,17 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="student in studentData">
-                        <td>{{$index + 1}}</td>
+                        <td><span style="display: inline-block;
+    width: 20px;
+    text-align: right;">{{$index + 1}}</span></td>
                         <td>{{student.first_name}}</td>
                         <td>{{student.last_name}}</td>
                         <td>{{student.user_name}}</td>
                         <td>{{student.email_id}}</td>
                         <td>{{student.password}}</td>
-                        <td>{{student.group_no}}</td>
+                        <td><span style="display: inline-block;
+    width: 40px;
+    text-align: right;">{{student.group_no}}</span></td>
                         <td>{{student.group_topic}}</td>
                     </tr>
                     <!--cancel-->
@@ -153,101 +224,13 @@
         </div>
 
     </div>
-    <!--old code-->
-    <!--<form name="addCourseForm" novalidate>-->
-    <!--<div class="form-group">-->
-    <!--<label class="col-sm-3 control-label">Course Name: <span-->
-    <!--style="color: red">*</span></label>-->
-    <!--<div class="col-sm-8"-->
-    <!--ng-class="{'has-error' : addCourseForm.courseName.$invalid && (addCourseForm.courseName.$dirty || addCourseForm.$submitted)}">-->
-    <!--<input type="text"-->
-    <!--ng-required="true"-->
-    <!--name="courseName"-->
-    <!--ng-model="courseName"-->
-    <!--class="form-control "-->
-    <!--&gt;-->
-    <!--<span class="help-block"-->
-    <!--ng-show="addCourseForm.courseName.$error.required && (addCourseForm.courseName.$dirty|| addCourseForm.$submitted) ">You can't leave this empty</span>-->
 
-    <!--</div>-->
-    <!--</br></br></br>-->
-    <!--</div>-->
-    <!--<div class="form-group">-->
-    <!--<label class="col-sm-3 control-label">Course CRN: <span-->
-    <!--style="color: red">*</span></label>-->
-    <!--<div class="col-sm-8"-->
-    <!--ng-class="{'has-error' : addCourseForm.courseCrn.$invalid && (addCourseForm.courseCrn.$dirty || addCourseForm.$submitted)}">-->
-    <!--<input type="text"-->
-    <!--ng-required="true"-->
-    <!--name="courseCrn"-->
-    <!--ng-model="courseCrn"-->
-    <!--class="form-control "-->
-    <!--&gt;-->
-    <!--<span class="help-block"-->
-    <!--ng-show="addCourseForm.courseCrn.$error.required && (addCourseForm.courseCrn.$dirty|| addCourseForm.$submitted) ">You can't leave this empty</span>-->
-
-    <!--</div>-->
-    <!--</br></br></br>-->
-    <!--</div>-->
-
-    <!--<div class="form-group">-->
-    <!--<label class="col-sm-3 control-label">Trimester Offered: <span-->
-    <!--style="color: red">*</span></label>-->
-    <!--<div class="col-sm-8"-->
-    <!--ng-class="{'has-error' : addCourseForm.trimester.$invalid && (addCourseForm.trimester.$dirty || addCourseForm.$submitted)}">-->
-    <!--<input type="text"-->
-    <!--ng-required="true"-->
-    <!--name="trimester"-->
-    <!--ng-model="addCourse.trimester"-->
-    <!--class="form-control "-->
-    <!--&gt;-->
-    <!--<span class="help-block"-->
-    <!--ng-show="addCourseForm.trimester.$error.required && (addCourseForm.trimester.$dirty|| addCourseForm.$submitted) ">You can't leave this empty</span>-->
-
-    <!--</div>-->
-    <!--</br></br></br>-->
-    <!--</div>-->
-    <!--<div class="form-group">-->
-    <!--<label class="col-sm-3 control-label">Choose file <span-->
-    <!--style="color: red">*</span></label>-->
-    <!--<div class="col-sm-8"-->
-    <!--ng-class="{'has-error' : addCourseForm.files.$invalid && (addCourseForm.files.$dirty || addCourseForm.$submitted)}">-->
-    <!--<input type="file" class="form-control-file" name="coursefile" ng-required="true" fileread="files"-->
-    <!--aria-describedby="fileHelp" class="form-control ">-->
-    <!--<small id="fileHelp" class="form-text text-muted">Upload a CSV file with headers-->
-    <!--(user_name,password,first_name,last_name,email_id)-->
-    <!--</small>-->
-    <!--<span class="help-block"-->
-    <!--ng-show="addCourseForm.files.$error.required && (addCourseForm.files.$dirty|| addCourseForm.$submitted) ">Please select a file</span>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</br></br></br>-->
-    <!--</br></br></br>-->
-    <!--<div style="margin-left:150px">-->
-    <!--<button type="submit" class="btn btn-success" ng-click="addCourse()">-->
-    <!--Invite-->
-    <!--</button>-->
-    <!--</div>-->
-    <!--</form>-->
-
-
-    <!--<div uib-alert ng-class="'alert-danger'" ng-show="addedFacultySuccess" close="addedFacultySuccess = false">-->
-    <!--Faculty-->
-    <!--added successfully-->
-    <!--</div>-->
-    <!--<div uib-alert ng-class="'alert-danger'" ng-show="addedFacultyFailed" close="addedFacultyFailed = false">Problem-->
-    <!--in-->
-    <!--adding faculty-->
-    <!--</div>-->
-    <!--<div uib-alert ng-class="'alert-danger'" ng-show="addFacultyExist" close="addFacultyExist = false">Username is-->
-    <!--already taken-->
-    <!--</div>-->
 
 </div>
 <script>
     $(document).ready(function () {
 //        $('[data-toggle="tooltip"]').css("align", "left").tooltip();
-$('[data-toggle="tooltip"]').tooltip(); 
+        $('[data-toggle="tooltip"]').tooltip();
         $('#createCourseForm').validate({
             rules: {
                 courseName: {
@@ -272,12 +255,15 @@ $('[data-toggle="tooltip"]').tooltip();
                     required: "Please enter course name"
                 },
                 courseCrn: {
-                    minlength: "Minumum length of CRN should be 4 digits",
-                    number: "CRN should be in digits",
-                    required: "Please enter the CRN"
+                    minlength: "Minumum length of course number should be 4 digits",
+                    number: "Course number should be in digits",
+                    required: "Please enter the course number"
                 },
                 courseTrimester: {
                     required: "Please enter course trimester"
+                },
+                dueDate: {
+                    required: "Please enter due date"
                 },
                 studentDataFile: {
                     required: "Please browse a csv file"
@@ -290,6 +276,7 @@ $('[data-toggle="tooltip"]').tooltip();
             },
             submitHandler: function (form) {
 //                    onSubmitForm();
+
             }
         });
 

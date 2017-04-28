@@ -1,24 +1,47 @@
 <!--right dashboard-->
-<div class="col-md-10 col-md-offset-1" >
-    <div class="panel panel-default ">
+<div class="col-md-10 col-md-offset-1">
+    <div ng-show="authorize">
+    <div class="panel panel-default">
         <!-- Default panel contents -->
-        <div class="panel-heading panel-color text-center"><h4>Group Members</h4></div>
-        <table class="table borderless" style="">
 
-            <!--<tr ng-repeat="course in courseData track by $index" ng-click="getStudents(course.course_crn)">-->
-            <tr ng-repeat="student in studentsInGroupData track by $index" >
-                <td >
-                    {{student.first_name}}&nbsp{{student.last_name}}
-                </td>
-                <td >
-                    <a ui-sref="studentEvaluation({studentid:student.id,groupid:group_id})" type="button" class="btn btn-primary"> Evaluate</a>
-                </td>
-                <td>
-                    <a ui-sref="studentEvaluation({studentid:student.id,groupid:group_id})" type="button" class="btn btn-success"> Edit</a>
-                </td>
-            </tr>
+            <div class="form-group row">
+                <label class="col-md-3">Evaluation Due Date: </label>
+                <div class="col-md-4">
+                    {{eval_due_date|date:"fullDate"}}
+                </div>
+            </div>
 
-        </table>
+            <div class="panel-heading panel-color text-center"><h4>Group Members</h4></div>
+            <table class="table borderless" style="">
+
+                <!--<tr ng-repeat="course in courseData track by $index" ng-click="getStudents(course.course_crn)">-->
+                <tr ng-repeat="student in studentsInGroupData track by $index">
+                    <td>
+                        {{student.first_name}}&nbsp{{student.last_name}}
+                    </td>
+                    <td>
+                        <button type="button" ng-disabled="student.evaluate || form_disable" class="btn btn-primary"
+                                ng-click="callEvaluation(student.id)">Evaluate
+                        </button>
+                        <!--<a ui-sref="{{student.evaluate?'studentEvaluation({studentid:student.id,groupid:group_id})':'.'}}" type="button" class="btn btn-primary" ng-disabled="student.evaluate"> Evaluate</a>-->
+                    </td>
+
+                </tr>
+
+            </table>
+        </div>
+    </div>
+    <div class="panel panel-danger" ng-show="!authorize">
+        <div class="panel-heading">
+            <h3 class="panel-title">Unauthorized</h3>
+        </div>
+        <div class="panel-body">
+            It appears that you don't have permission to access this page. Please make sure you're authorized to
+            view this content.
+        </div>
+
 
     </div>
+
+
 </div>

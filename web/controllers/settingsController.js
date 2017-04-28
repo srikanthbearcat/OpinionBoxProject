@@ -18,6 +18,10 @@ app.controller("settingsController", ['$scope', '$cookies', '$state', '$http', '
                 if (response.data.success) {
                     $scope.passwordChangeSuccess = true;
                     $scope.passwordChangeFailed = false;
+                      $scope.settings.currentPwd = "";
+                    $scope.settings = {};
+                    $scope.settingsForm.$setPristine();
+                    $scope.settingsForm.$setUntouched();
                 } else {
                     $scope.passwordChangeSuccess = false;
                     $scope.passwordChangeFailed = true;

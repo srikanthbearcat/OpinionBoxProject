@@ -58,8 +58,11 @@ ON firstset.course_id = secondset.id";
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
+
+
 function getStudentsInGroup($username,$groupId)
 {
+    $app = \Slim\Slim::getInstance();
     try {
 
         $core = Core::getInstance();
@@ -71,10 +74,40 @@ function getStudentsInGroup($username,$groupId)
         if ($stmt->execute()) {
             $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $response->success = count($records) > 0;
+            foreach ($records as &$student){
+                $student['evaluate'] =  checkEvaluation($groupId,$student['id'],$username);
+            }
             $response->info = $response->success ? $records : 0;
+            $response->success = TRUE;
         } else {
             $response->success = FALSE;
             $response->info = 0;
+        }
+
+        echo json_encode($response);
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
+
+function authorization($username,$groupId)
+{
+    $app = \Slim\Slim::getInstance();
+    try {
+
+        $core = Core::getInstance();
+        $sql = "SELECT * FROM `group_student` WHERE group_id=:group_id AND student_id in (SELECT id FROM `student` WHERE user_id in (SELECT id FROM `user_account` WHERE user_name=:user_name))";
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("group_id", $groupId);
+        $stmt->bindParam("user_name", $username);
+        $response = new stdClass();
+        if ($stmt->execute()) {
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $response->success = count($records) > 0;
+        } else {
+            $response->success = FALSE;
+            $response->data = 0;
         }
         echo json_encode($response);
     } catch (Exception $ex) {
@@ -82,6 +115,98 @@ function getStudentsInGroup($username,$groupId)
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
+
+
+function authorization2($username,$groupId,$studentid)
+{
+    $app = \Slim\Slim::getInstance();
+    try {
+
+        $core = Core::getInstance();
+        $sql = "SELECT group_id FROM `group_student` WHERE group_id=:group_id AND student_id in (SELECT id FROM `student` WHERE user_id in (SELECT id FROM `user_account` WHERE user_name=:user_name))";
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("group_id", $groupId);
+        $stmt->bindParam("user_name", $username);
+        $sql2 = "SELECT group_id FROM `group_student` WHERE group_id=:group_id AND student_id=:student_id";
+        $stmt2 = $core->dbh->prepare($sql2);
+        $stmt2->bindParam("group_id", $groupId);
+        $stmt2->bindParam("student_id", $studentid);
+        $response = new stdClass();
+        if ($stmt->execute() and $stmt2->execute()) {
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $records2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+            $record0 = $records[0];
+            $records20 = $records2[0];
+            $response->success = $record0['group_id'] == $records20['group_id'];
+        } else {
+            $response->success = FALSE;
+            $response->data = 0;
+        }
+        echo json_encode($response);
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
+
+
+
+
+function dueDateStudent($groupId)
+{
+    $app = \Slim\Slim::getInstance();
+    try {
+        date_default_timezone_set("America/Chicago");
+        $core = Core::getInstance();
+        $sql = "SELECT due_date FROM `course` WHERE id in (SELECT course_id FROM `group` WHERE id=:group_id)";
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("group_id", $groupId);
+        $response = new stdClass();
+        if ($stmt->execute()) {
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $response->success = count($records) > 0;
+            $response->info = $response->success ? $records[0] : 0;
+            $response->server_date = date("Y-m-d");
+        } else {
+            $response->success = FALSE;
+            $response->info = 0;
+        }
+
+        echo json_encode($response);
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
+
+
+function checkEvaluation($group_id,$response_to_id,$user_name)
+{
+    $app = \Slim\Slim::getInstance();
+    try {
+        $core = Core::getInstance();
+
+        $sql = "SELECT * FROM `response_bank` WHERE response_by_id in (SELECT id FROM `student` WHERE user_id in (SELECT id FROM `user_account` WHERE user_name=:user_name )) AND response_to_id=:response_to_id AND question_id in (SELECT id FROM `question_bank` WHERE course_id in (SELECT course_id FROM `group` WHERE id=:group_id)) ";
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("user_name", $user_name);
+        $stmt->bindParam("response_to_id", $response_to_id);
+        $stmt->bindParam("group_id", $group_id);
+        $response = new stdClass();
+        if ($stmt->execute()) {
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $response->evaluate = count($records) > 0;
+
+        } else {
+            $response->evaluate = FALSE;
+        }
+        return $response->evaluate;
+
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
+
 function getQuestionsInGroup($studentId,$groupId)
 {
     try {
@@ -150,8 +275,13 @@ $app->post('/student/login', $loginStudent);
 $app->post('/coursesByStudent/:sname', 'getCoursesByStudent');
 //For the url http://localhost/OpinionBox/services/index.php/studentsInGroup/:username/:groupId
 $app->post('/studentsInGroup/:username/:groupId', 'getStudentsInGroup');
+//For the url http://localhost/OpinionBox/services/index.php/authorization/:username/:groupId
+$app->post('/authorization/:username/:groupId', 'authorization');
+$app->post('/authorization2/:username/:groupId/:studentId', 'authorization2');
 //For the url http://localhost/OpinionBox/services/index.php/quesionsInGroup/:studentId/:groupId
 $app->post('/questionsInGroup/:studentId/:groupId', 'getQuestionsInGroup');
 //For the url http://localhost/OpinionBox/services/index.php/responsesForQuestions/:responseStudent/:username/:studentId
 $app->post('/responsesForQuestions/:username/:studentId', $insertResponses);
+//For the url http://localhost/OpinionBox/services/index.php/dueDateStudent/:groupId
+$app->post('/dueDateStudent/:groupId', 'dueDateStudent');
 ?>

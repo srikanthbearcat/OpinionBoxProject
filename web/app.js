@@ -14,9 +14,10 @@ app.config(function ($stateProvider,$urlRouterProvider, $locationProvider) {
         url: "/adminHome",
         controller: "adminController",
         templateUrl: "web/views/adminHomepage.html",
+
         onEnter: function(){
-        angular.element('nav.navbar-findcond ul.navbar-nav a.highlight').css('border-color', '#26722C');
-    },
+            angular.element('nav.navbar-findcond ul.navbar-nav a.highlight').css('border-color', '#26722C');
+        },
         onExit: function(){
             angular.element('nav.navbar-findcond ul.navbar-nav a.highlight').css('border-color', '#fff');
         }
@@ -68,6 +69,11 @@ app.config(function ($stateProvider,$urlRouterProvider, $locationProvider) {
         controller: "addQuestionsController",
         templateUrl: "web/views/addQuestions.html"
     });
+    $stateProvider.state("reports", {
+        url: "/reports/:courseid",
+        controller: "courseViewController",
+        templateUrl: "web/views/reports.html"
+    });
     $stateProvider.state("studentHome", {
         url: "/studenthome",
         controller: "studentHomeController",
@@ -89,10 +95,26 @@ app.config(function ($stateProvider,$urlRouterProvider, $locationProvider) {
         controller: "studentEvaluationController",
         templateUrl: "web/views/studentEvaluation.html"
     });
+    $stateProvider.state("forgotPassword", {
+        url: "/forgotPassword",
+        controller: "forgotPasswordController",
+        templateUrl: "web/views/ForgotPassword.html"
+    });
+    $stateProvider.state("unauthorized", {
+        url: "/unauthorized",
+        controller: "studentsInGroupViewController",
+        templateUrl: "web/views/unauthorized.html"
+    });
     $stateProvider.state("Settings", {
         url: "/Settings",
         controller: "settingsController",
-        templateUrl: "web/views/Settings.html"
+        templateUrl: "web/views/Settings.html",
+        onEnter: function(){
+            angular.element('nav.navbar-findcond ul.navbar-nav a.setgs').css('border-color', '#26722C');
+        },
+        onExit: function(){
+            angular.element('nav.navbar-findcond ul.navbar-nav a.setgs').css('border-color', '#fff');
+        }
     });
     // $locationProvider.html5Mode(true);
 });

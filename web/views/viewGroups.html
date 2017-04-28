@@ -1,12 +1,15 @@
 <!--left pan-->
 <div class="list-group col-md-2" style="margin-top:70px;">
+    <a ui-sref="modifyCourse" ui-sref-active="active" class="list-group-item "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>Courses</a>
+    <a ui-sref="viewCourse({courseid:course_crn})" ui-sref-active="active" class="list-group-item">Students</a>
     <a ui-sref="viewGroups({courseid:course_crn})" ui-sref-active="active" class="list-group-item">View Groups</a>
     <a ui-sref="addQuestions({courseid:course_crn})" ui-sref-active="active" class="list-group-item">Add Questions</a>
+    <a ui-sref="reports({courseid:course_crn})" ui-sref-active="active" class="list-group-item">Reports</a>
 </div>
 
 <!--right dashboard-->
 <div class="col-md-10">
-    <h2>Groups</h2>
+    <h2>Groups - {{course_name}}</h2>
 
     <table class="table table-hover" style="">
         <thead>

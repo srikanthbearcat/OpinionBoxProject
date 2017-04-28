@@ -1,14 +1,15 @@
 <html ng-app="myApp">
 <head>
     <title>Opinion Box - Northwest</title>
+    <link rel="icon" href="favicon.png" type="image/png" sizes="16x16">
     <!--<base href="/">-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="bower_components/jquery/dist/jquery.js"></script>
-    <!--<script src="http://code.jquery.com/jquery-1.9.1.js"></script>-->
 
     <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Monoton" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="web/css/customStyles.css" rel="stylesheet">
     <script src="bower_components/angular/angular.js"></script>
@@ -23,9 +24,7 @@
     <!--validate form using jquery validate-->
     <script src="bower_components/jquery-validation/dist/jquery.validate.js"></script>
     <!--papaparse to read CSV file-->
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/3.1.4/papaparse.js"></script>-->
     <script src="bower_components/papaparse/papaparse.min.js"></script>
-
     <script src="web/app.js"></script>
     <script src="web/controllers/loginController.js"></script>
     <script src="web/controllers/adminController.js"></script>
@@ -33,6 +32,7 @@
     <script src="web/controllers/navigationController.js"></script>
     <script src="web/controllers/studentController.js"></script>
     <script src="web/controllers/settingsController.js"></script>
+
 
     <!--<script src="web/services/modalservice.js"></script>-->
 
@@ -45,13 +45,14 @@
     <div class="header">
         <div class=" header-background">
             <div class="container ">
-                <div class="header-northwest-logo">
-
+                <div>
+                <!--<div class="header-northwest-logo">-->
+<h1 style="font-family: 'Monoton', cursive;color: darkgreen;font-size: 50px">Opinion  Box</h1>
                 </div>
             </div>
         </div>
 
-        <div ng-include="'web/views/navigationBar.html'" ng-if="location.path() !== '/login'" ng-controller="navigationController"></div>
+        <div ng-include="'web/views/navigationBar.html'" ng-if="location.path() !== '/login' && location.path() !== '/forgotPassword'" ng-controller="navigationController"></div>
 
     </div>
     <!--content-->

@@ -1,36 +1,99 @@
 <!--left pan-->
 <div class="list-group col-md-2" style="margin-top:70px;">
+    <a ui-sref="modifyCourse" ui-sref-active="active" class="list-group-item "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>Courses</a>
+    <a ui-sref="viewCourse({courseid:course_crn})" ui-sref-active="active" class="list-group-item">Students</a>
     <a ui-sref="viewGroups({courseid:course_crn})" ui-sref-active="active" class="list-group-item">View Groups</a>
-    <a ui-sref="addQuestions({courseid:course_crn})"  ui-sref-active="active" class="list-group-item">Add Questions</a>
+    <a ui-sref="addQuestions({courseid:course_crn})" ui-sref-active="active" class="list-group-item">Add Questions</a>
+    <a ui-sref="reports({courseid:course_crn})" ui-sref-active="active" class="list-group-item">Reports</a>
 </div>
 
 <!--right dashboard-->
 <div class="col-md-10">
-    <h2>Students  {{course_name}}</h2>
+    <div class="row">
+        <div class="col-md-9">
+            <div class="form-group row">
+                <label class="col-md-3">Evaluation Due Date: </label>
+                <div class="col-md-4">
+                    {{due_date|date:"fullDate"}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3" for="dt">Change Due Date: </label>
+                <div class="col-md-4">
+                    <p class="input-group">
+                        <input type="text" class="form-control" id="dt" uib-datepicker-popup="{{format}}"
+                               ng-model="duedt" is-open="popup1.opened" datepicker-options="dateOptions"
+                               required="" close-text="Close">
+                        <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open1()"><i style="font-size: 1.5em"
+                                                                                    class="glyphicon glyphicon-calendar glyphicon-bold"></i></button>
+              </span>
+                    </p>
+                </div>
+                <button type="button" class="btn btn-success" ng-click="changeDate()">Change</button>
+            </div>
+
+            <div id="successMessage" style="display:none;
+                     min-height: 40px;
+                     width: 768px;">
+                <p style="color: green;font-weight: bold;">
+                    Due date changed successfully.
+                </p>
+            </div>
+            <div id="failedMessage" style="display:none;
+                     min-height: 40px;
+                     width: 768px;">
+                <p style="color: red;font-weight: bold;">
+                    <label id="errorMessageLabel" class="error"></label>
+                </p>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-12">
+        <h2>Students - <span style="font-size:0.8em">{{course_name}}/{{trimester}}</span></h2>
+    </div>
 
     <table class="table table-hover" style="">
         <thead>
         <tr style="background-color: green; opacity: 0.75; color: white;height: 52px">
             <th>S.No</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email id</th>
+            <th ng-click="sortData('first_name')">First Name <div ng-class="getSortClass('first_name')"></div></th>
+            <th ng-click="sortData('last_name')">Last Name <div ng-class="getSortClass('first_name')"></div></th>
+            <th ng-click="sortData('email_id')">Email id <div ng-class="getSortClass('first_name')"></div></th>
+            <th ng-click="sortData('group_no')">Group Number </th>
+            <th ng-click="sortData('group_topic')">Group Topic</th>
+            <th >Evaluation</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="student in studentData track by $index">
-            <td>{{$index +1}}</td>
-            <td >
-                 {{student.first_name}}
+        <tr ng-repeat="student in studentData | orderBy:sortColumn:reverseSort track by $index">
+            <td><span style="display: inline-block;
+    width: 20px;
+    text-align: right;">{{$index +1}}</span></td>
+            <td>
+                {{student.first_name}}
             </td>
-            <td >
-               {{student.last_name}}
+            <td>
+                {{student.last_name}}
             </td>
-            <td >
+            <td>
                 {{student.email_id}}
             </td>
+            <td>
+                <span style="display: inline-block;
+    width: 50px;
+    text-align: right;">{{student.group_no}}</span>
+            </td>
+            <td>
+                {{student.group_topic}}
+            </td>
+            <td>
+                <span class="glyphicon glyphicon-ok" style="color:darkgreen" ng-show="student.evaluate"></span>
+                <span class="glyphicon glyphicon-remove" style="color:crimson" ng-show="!student.evaluate"></span>
+                <!--{{student.evaluate}}-->
+            </td>
         </tr>
-
 
 
         </tbody>

@@ -1,21 +1,20 @@
 <?php
 
 
-
 $loginAdmin = function () use ($app) {
-   try {
+    try {
         $postData = $app->request->post();
         $user_name = $postData['username'];
         $password = $postData['password'];
         $core = Core::getInstance();
 
-       $sql = "SELECT first_name,last_name,email_id FROM `admin` WHERE user_id in (SELECT id FROM user_account WHERE user_name=:user_name AND password =:password)";
-       $stmt = $core->dbh->prepare($sql);
+        $sql = "SELECT first_name,last_name,email_id FROM `admin` WHERE user_id in (SELECT id FROM user_account WHERE user_name=:user_name AND password =:password)";
+        $stmt = $core->dbh->prepare($sql);
         $stmt->bindParam("user_name", $user_name);
         $stmt->bindParam("password", $password);
         $response = new stdClass();
         $response->user_type = "admin";
-       $response->user_name = $user_name;
+        $response->user_name = $user_name;
         if ($stmt->execute()) {
             $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $response->success = count($records) > 0;
@@ -26,8 +25,8 @@ $loginAdmin = function () use ($app) {
         }
         echo json_encode($response);
     } catch (Exception $ex) {
-       $response->success = FALSE;
-       $response->data = $ex->getMessage();
+        $response->success = FALSE;
+        $response->data = $ex->getMessage();
         $app->response()->status(400);
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
@@ -48,7 +47,7 @@ $addFaculty = function () use ($app) {
         $facultyExist = isFacultyExist($user_name);
         if ($facultyExist > 0) {
             throw new Exception("Username already Exists", 400);
-        }else {
+        } else {
             $sql = "INSERT INTO user_account (user_name,password,role)  VALUES (:user_name,:password,'faculty')";
             $stmt = $core->dbh->prepare($sql);
             $stmt->bindParam("user_name", $user_name);
@@ -71,15 +70,12 @@ $addFaculty = function () use ($app) {
         $response->success = false;
         $response->info["reason"] = $ex->getMessage();
         echo json_encode($response);
-//        $app->response()->status(400);
-//        $app->response()->header('X-Status-Reason', $ex->getMessage());
-//        // Append response body
-//        $app->response->write('Bar');
-//        echo json_encode($response);
+
     }
 };
 
-function isFacultyExist($user_name){
+function isFacultyExist($user_name)
+{
     $app = \Slim\Slim::getInstance();
     try {
         $core = Core::getInstance();
@@ -96,8 +92,10 @@ function isFacultyExist($user_name){
         $app->response()->header('X-Status-Reason', $ex->getMessage());
     }
 }
+
 //Get faculty Data
-function getFacultyData(){
+function getFacultyData()
+{
     $app = \Slim\Slim::getInstance();
     try {
         $core = Core::getInstance();
@@ -124,7 +122,8 @@ function getFacultyData(){
 }
 
 //Edit faculty Data
-function editFacultyData(){
+function editFacultyData()
+{
     $app = \Slim\Slim::getInstance();
     try {
         $core = Core::getInstance();
@@ -136,9 +135,9 @@ function editFacultyData(){
         $email_id = $postData['email_id'];
         $user_name = $postData['user_name'];
         $original_user_name = $postData['original_user_name'];
-        $faculty = new faculty($first_name, $last_name, $email_id);
+        $faculty = new Faculty($first_name, $last_name, $email_id);
         $response = new stdClass();
-        if (!$user_name || !$first_name ||  !$last_name ||  !$email_id ) {
+        if (!$user_name || !$first_name || !$last_name || !$email_id) {
             throw new Exception('Missing faculty $original_user_name or email  or password or email of faculty');
         } else {
             if ($original_user_name != $user_name) {
@@ -146,10 +145,10 @@ function editFacultyData(){
                 if ($facultyExist > 0) {
                     throw new Exception("Cannot Update! Because username already Exists", 400);
                 } else {
-                    $response = updateFaculty($faculty,$user_name, $original_user_name);
+                    $response = updateFaculty($faculty, $user_name, $original_user_name);
                 }
             } else {
-                $response = updateFaculty($faculty,$user_name, $original_user_name);
+                $response = updateFaculty($faculty, $user_name, $original_user_name);
             }
         }
         echo json_encode($response);
@@ -161,7 +160,8 @@ function editFacultyData(){
     }
 }
 
-function updateFaculty($faculty,$user_name,$original_user_name) {
+function updateFaculty($faculty, $user_name, $original_user_name)
+{
     $app = \Slim\Slim::getInstance();
     $response = new stdClass();
     try {
@@ -190,7 +190,7 @@ function updateFaculty($faculty,$user_name,$original_user_name) {
     return $response;
 }
 
-$removeFacultyData = function() use($app) {
+$removeFacultyData = function () use ($app) {
     $json = $app->request->getBody();
     $postData = json_decode($json, true); // parse the JSON into an assoc. array
     $user_name = $postData['user_name'];
@@ -209,7 +209,8 @@ $removeFacultyData = function() use($app) {
     }
 };
 
-function Settings() {
+function Settings()
+{
     $app = \Slim\Slim::getInstance();
     $response = new stdClass();
     try {
@@ -220,8 +221,8 @@ function Settings() {
         $user_name = $postData['user_name'];
         $new_pwd = $postData['new_password'];
         $core = Core::getInstance();
-        $passwordMatch = isPasswordMatch($user_name,$password);
-        if ($passwordMatch >0) {
+        $passwordMatch = isPasswordMatch($user_name, $password);
+        if ($passwordMatch > 0) {
             $sql = "UPDATE user_account set password=:new_pwd WHERE user_name=:user_name && password =:password";
             $stmt = $core->dbh->prepare($sql);
             $stmt->bindParam("user_name", $user_name);
@@ -230,7 +231,7 @@ function Settings() {
             $response->success = $stmt->execute();
             $response->data = 0;
 
-        }else {
+        } else {
 
             throw new Exception("User doesn't exist", 400);
 
@@ -242,14 +243,13 @@ function Settings() {
         $response->success = false;
         $response->info["reason"] = $ex->getMessage();
         echo json_encode($response);
-//        $app->response()->status(400);
-//        $app->response()->header('X-Status-Reason', $ex->getMessage());
-//        // Append response body
-//        $app->response->write('Bar');
-//        echo json_encode($response);
+
     }
-};
-function isPasswordMatch($user_name,$password){
+}
+
+;
+function isPasswordMatch($user_name, $password)
+{
     $app = \Slim\Slim::getInstance();
     try {
         $core = Core::getInstance();
@@ -268,8 +268,92 @@ function isPasswordMatch($user_name,$password){
     }
 }
 
+$forgotPIN = function () use ($app) {
+    try {
+        $json = $app->request->getBody();
+        $postData = json_decode($json, true); // parse the JSON into an assoc. array
+        $email_id = $postData['email_id'];
+        $core = Core::getInstance();
+        $response = new stdClass();
+        $student_details = isExistInTable("student", $email_id);
+        $faculty_details = isExistInTable("faculty", $email_id);
+        if ($student_details->success) {
+            $response->success = updatePinInTable("student", $email_id, $student_details->info);
+        } else if ($faculty_details->success) {
+            $response->success = updatePinInTable("faculty", $email_id, $faculty_details->info);
+        } else {
+            $response->success = FALSE;
+        }
+        echo json_encode($response);
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+};
+
+function isExistInTable($tableName, $email_id)
+{
+    $app = \Slim\Slim::getInstance();
+    try {
+        $response = new stdClass();
+        $core = Core::getInstance();
+        $sql = "SELECT * from " . trim($tableName) . " where email_id=:email_id";
+        $stmt = $core->dbh->prepare($sql);
+        $stmt->bindParam("email_id", $email_id);
+        if ($stmt->execute()) {
+            $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $response->success = count($records) > 0;
+            $response->info = $records;
+            return $response;
+        } else {
+            $response->success = FALSE;
+            $response->info = "";
+            return $response;
+        }
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
 
 
+function updatePinInTable($tableName, $email_id, $details)
+{
+    $app = \Slim\Slim::getInstance();
+    try {
+        $core = Core::getInstance();
+        $newPIN = rand(1000, 9999);
+        $updateSQL = "UPDATE `user_account` SET password=:password WHERE id=:id AND role=:role";
+        $updateStmt = $core->dbh->prepare($updateSQL);
+        $updateStmt->bindParam("password", $newPIN);
+        $updateStmt->bindParam("role", $tableName);
+        $detail = $details[0];
+        $updateStmt->bindParam("id", $detail['user_id']);
+        if ($updateStmt->execute()) {
+            sendMail($email_id, $newPIN);
+            return true;
+        } else {
+            return false;
+        }
+    } catch (Exception $ex) {
+        $app->response()->status(400);
+        $app->response()->header('X-Status-Reason', $ex->getMessage());
+    }
+}
+
+function sendMail($email_id, $newPin)
+{
+    $subject = 'Opinion Box - Northwest - New Password request';
+
+    $message = 'Now you can login with the new password provided below. ' . "\r\n" . "\r\n"
+        . 'Please do not share it with anyone.' . "\r\n" . "\r\n" . "\r\n"
+        . 'New Password: ' . $newPin. "\r\n" . "\r\n";
+
+    $headers = 'From: no-reply@theatrenorthwest.com' . "\r\n" .
+        'Reply-To: no-reply@theatrenorthwest.com' . "\r\n" .
+        'X-Mailer: PHP/' . phpversion();
+    mail($email_id, $subject, $message, $headers);
+}
 
 
 //For the url http://localhost/OpinionBox/services/index.php/admin/login
@@ -283,4 +367,5 @@ $app->post('/admin/editFacultyData', 'editFacultyData');
 //For the url http://localhost/OpinionBox/services/index.php/admin/removeFaculty
 $app->post('/admin/removeFacultyData', $removeFacultyData);
 $app->post('/Settings', 'Settings');
+$app->post('/forgotPIN', $forgotPIN);
 ?>

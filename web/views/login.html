@@ -52,9 +52,9 @@
                               ng-show="loginForm.password.$error.required && (loginForm.password.$dirty || loginForm.$submitted)">*password is required</span>
                     </div>
 
-                    <!--<div class="alert alert-success page-alert">-->
-                    <!--<p id="validations"></p>-->
-                    <!--</div>-->
+
+
+                    <a ui-sref="forgotPassword" align="right">Forgot Password?</a>
                     <div style="margin-top:10px" class="form-group">
                         <!-- Button -->
                         <div class="col-sm-15 text-center controls">
@@ -63,10 +63,8 @@
                         </div>
                     </div>
                 </form>
-                <!--<div class="alert alert-danger alert-dismissable fade in" ng-show="loginAlert">-->
-                <!--<a href="#" class="close" data-dismiss="alert" aria-label="close" ng-click="loginAlert =!loginAlert">&times;</a>-->
-                <!--Incorrect username or password.-->
-                <!--</div>-->
+
+
                 <div uib-alert  ng-class="'alert-danger'" ng-show="loginAlert" close="loginAlert =!loginAlert" >username and password didn't mismatch</div>
             </div>
         </div>

@@ -1,30 +1,19 @@
 /**
  * Created by S525796 on 04-01-2017.
  */
- app.service('getCourseName', ['$http','url', function($http,url) {
-    var course_name = "";
-   this.returnCourseName = function(course_crn) {
-    $http.get(url + "/getCourseName/" + course_crn).then(function successCallback(response) {
-        console.log(response.data.info.course_name);
-    course_name = response.data.info.course_name;
-    }, function errorCallback(response) {
-        console.log('error');
-    })
+app.service('getCourseName', ['$http', 'url', function ($http, url) {
+    this.returnCourseName = function (course_crn) {
+        return $http.get(url + "/getCourseName/" + course_crn).then(function successCallback(response) {
 
-    return course_name;
-   };
-  
+            return response.data.info;
+        }, function errorCallback(response) {
+            // console.log('error');
+            return "";
+        });
+    };
 }]);
 app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope) {
-// //Get course data from database
-//     $scope.courseData = [];
-//     $http.get(url + "/coursesByFaculty/" + $cookies.get('username')).then(function successCallback(response) {
 
-//         $scope.courseData = response.data.info;
-//         console.log(JSON.stringify(response.data.info));
-//         console.log(JSON.stringify($scope.courseData));
-//     }, function errorCallback(response) {
-//     })
 
     $scope.getStudents = function (course_crn) {
         $rootScope.studentData = [];
@@ -35,16 +24,15 @@ app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'u
                 // data.original_course_crn = data.course_crn;
                 $scope.studentData.push(data);
             });
-            console.log(JSON.stringify($scope.studentData))
+            console.log(JSON.stringify($scope.studentData));
         }, function errorCallback(response) {
-            console.log('error')
-        })
-    }
+            console.log('error');
+        });
+    };
 
     //To get popup message
     $scope.alert = function (size, modal_Info) {
-        // $scope.alert = function (size){
-        // $scope.animateEnabled = true;
+
 
         var modalPopUpInstance = $uibModal.open({
             // animate:$scope.animateEnabled,
@@ -57,7 +45,9 @@ app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'u
                 }
             }
         });
-    }
+    };
+
+
     //Get course data from database
     $scope.courseData = [];
     $http.get(url + "/coursesByFaculty/" + $cookies.get('username')).then(function successCallback(response) {
@@ -65,6 +55,9 @@ app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'u
         // angular.forEach(response.data.info, function () {1
         // });
         // $scope.facultyData = response.data.info;
+        var newDate = new Date();
+        $scope.currentYear = newDate.getFullYear();
+        console.log($scope.currentYear);
         $.each(response.data.info, function (i, data) {
             data.i = i;
             data.original_course_crn = data.course_crn;
@@ -78,18 +71,21 @@ app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'u
         // console.log(data+" sdvf"+data.length);
         var letters = /^[0-9]+$/;
         if (data === undefined || data === '') {
-            return "Enter crn number";
+            return "Enter course number";
         } else if (!data.match(letters)) {
             return "Only numbers";
         }
     };
     $scope.checkCourseName = function (data) {
         // console.log(data+" sdvf"+data.length);
-        var letters = /^[A-Za-z ]+$/;
+        // var letters = /^[A-Za-z ]+$/;
+        // if (data === undefined || data === '') {
+        //     return "Enter course name";
+        // } else if (!data.match(letters)) {
+        //     return "Only character";
+        // }
         if (data === undefined || data === '') {
             return "Enter course name";
-        } else if (!data.match(letters)) {
-            return "Only character";
         }
     };
     $scope.checkTrimester = function (data) {
@@ -116,10 +112,10 @@ app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'u
     }
 
     //delete course data from database
-    $scope.removeCourse = function (indexd, course_crn,course_name) {
+    $scope.removeCourse = function (indexd, course_crn, course_name) {
         $scope.alert('sm', {
             modalHeader: "Delete Course",
-            modalBody: "Are you sure you want to delete "+course_name+" course"+" ? All the data related to this course will be deleted",
+            modalBody: "Are you sure you want to delete " + course_name + " course" + " ? If you click 'OK' all the data related to this course will be deleted",
             data: {indexd: indexd, course_crn: course_crn, deleteCourse: true}
         });
 
@@ -146,8 +142,105 @@ app.controller("facultyController", ['$scope', '$cookies', '$state', '$http', 'u
 }]);
 
 //controller to read CSV file
-app.controller('createCourseController', ['$scope', '$window', '$uibModal', '$http', 'url', '$cookies', function ($scope, $window, $uibModal, $http, url, $cookies) {
+app.controller('createCourseController', ['$scope', '$window', '$uibModal', '$http', 'url', '$cookies', '$timeout', '$filter', function ($scope, $window, $uibModal, $http, url, $cookies, $timeout, $filter) {
+//Course date
+    $scope.today = function () {
+        $scope.dt = new Date();
+    };
+    $scope.today();
 
+    $scope.clear = function () {
+        $scope.dt = null;
+    };
+
+    $scope.inlineOptions = {
+        customClass: getDayClass,
+        minDate: new Date(),
+        showWeeks: true
+    };
+
+    $scope.dateOptions = {
+        // dateDisabled: disabled,
+        formatYear: 'yy',
+        maxDate: new Date(2050, 5, 22),
+        minDate: new Date(),
+        startingDay: 1
+    };
+
+    //Disable weekend selection
+    function disabled(data) {
+        var date = data.date,
+            mode = data.mode;
+        return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+    }
+
+    $scope.toggleMin = function () {
+        $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
+        $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
+    };
+
+    $scope.toggleMin();
+
+    $scope.open1 = function () {
+        $scope.popup1.opened = true;
+    };
+
+    $scope.open2 = function () {
+        $scope.popup2.opened = true;
+    };
+
+    $scope.setDate = function (year, month, day) {
+        $scope.dt = new Date(year, month, day);
+    };
+
+    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+    $scope.format = $scope.formats[0];
+    $scope.altInputFormats = ['M!/d!/yyyy'];
+
+    $scope.popup1 = {
+        opened: false,
+        maxDate: new Date('04/04/2017')
+    };
+
+    $scope.popup2 = {
+        opened: false,
+        maxDate: new Date('04/04/2017')
+    };
+
+    var tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    var afterTomorrow = new Date();
+    afterTomorrow.setDate(tomorrow.getDate() + 1);
+    $scope.events = [
+        {
+            date: tomorrow,
+            status: 'full'
+        },
+        {
+            date: afterTomorrow,
+            status: 'partially'
+        }
+    ];
+
+    function getDayClass(data) {
+        var date = data.date,
+            mode = data.mode;
+        if (mode === 'day') {
+            var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
+
+            for (var i = 0; i < $scope.events.length; i++) {
+                var currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
+
+                if (dayToCheck === currentDay) {
+                    return $scope.events[i].status;
+                }
+            }
+        }
+
+        return '';
+    }
+
+    ///Course CSV
     var USER_NAME_COLUMN_HEADER = "user_name";
     var PASSWORD_COLUMN_HEADER = "password";
     var FIRST_NAME_COLUMN_HEADER = "first_name";
@@ -174,7 +267,7 @@ app.controller('createCourseController', ['$scope', '$window', '$uibModal', '$ht
         if ($scope.files == null) {
             return;
         }
-        console.log(JSON.stringify($scope.files));
+
         $window.Papa.parse($scope.files, {
             header: true,
             dynamicTyping: true,
@@ -192,10 +285,7 @@ app.controller('createCourseController', ['$scope', '$window', '$uibModal', '$ht
                     // $scope.alert('sm', {modalHeader: "Error", modalBody: "Format Error: Please check the format of the csv file you are up", data:{}});
                     $scope.csvformatwrong = true;
 
-                    // alertDialog({
-                    //     title: "Error",
-                    //     message: "Format Error: Please check the format of the csv file you are up "
-                    // });
+
                 } else {
                     data.push({
                         user_name: row[USER_NAME_COLUMN_HEADER],
@@ -216,75 +306,61 @@ app.controller('createCourseController', ['$scope', '$window', '$uibModal', '$ht
         });
     });
     $scope.preview = function (callBack) {
-        // console.log($scope.studentData);
-//                var data = [];
-//                $window.Papa.parse($scope.files, {
-//                    header: true,
-//                    dynamicTyping: true,
-//                    complete: function (results) {
-//                        callBack(results.data);
-//                    }
-//
-//                });
+
     };
     $scope.remove = function () {
         $scope.cancel();
-//                $("#preview").css("visibility", "visible");
-//                $("#save").css("visibility", "hidden");
-//                $("#cancel").css("visibility", "hidden");
+
     };
     $scope.change = function () {
-//                $("#previewTable").css("visibility", "hidden");
-//                $("#preview").css("visibility", "visible");
-//                $("#cancel").css("visibility", "hidden");
-//                $("#save").css("visibility", "hidden");
+
     };
+
+    $scope.trimesterArray = ["Spring","Summer","Fall"];
     $scope.saveData = function () {
-        if (!$scope.courseName || !$scope.courseCrn || !$scope.courseTrimester || $scope.studentData.length == 0)
+        if (!$scope.courseName || !$scope.courseCrn || !$scope.trimester || $scope.studentData.length == 0)
             return;
+        $scope.newData = {
+            "course_name": $scope.courseName
+        }
+        var date = $filter('date')($scope.dt, "yyyy-MM-dd");
+        console.log(date);
+        var trimester = $scope.trimester +"-"+$scope.year;
+        console.log(trimester);
         var data = {
             "faculty_user_name": $cookies.get("username"),
             "course_name": $scope.courseName,
             "course_crn": $scope.courseCrn,
-            "course_trimester": $scope.courseTrimester,
+            "course_trimester": trimester,
+            "due_date": date,
             "student_data": JSON.stringify($scope.studentData)
         }
         console.log(JSON.stringify(data));
         $http.post(url + "/addCourse", data).then(function successCallback(response) {
             console.log(response.data.success + " add course request success");
             if (response.data.success) {
-                $("#successMessage").fadeIn(2000).fadeOut(6000);
+                $("#successMessage").fadeIn(2000).fadeOut(4000);
                 $("#errorMessageLabel").text("");
                 $scope.cancel();
+                $scope.courseName = '';
+                $scope.courseCrn = '';
+                $scope.courseTrimester = '';
+                $scope.createCourse.$setPristine();
+                $scope.createCourse.$setUntouched();
+                $timeout(function () {
+                    window.history.go(-1);
+                }, 2000);
             } else {
                 $("#failedMessage").text(response.data.data).fadeIn(2000).fadeOut(6000);
             }
         }, function errorCallback(response) {
             if (!response.data.success) {
-
+                $state.go('unauthorized')
             }
 
         });
 
 
-        // $.ajax({
-        //     type: 'POST',
-        //     url: url + "/addCourse",
-        //     headers: {
-        //         "user_name": $cookies.get("username"),
-        //         "course_name": $scope.courseName,
-        //         "course_crn": $scope.courseCrn,
-        //         "data": JSON.stringify($scope.studentData)
-        //     }
-        // }).done(function (data) {
-        //     if (data.success) {
-        //         $("#successMessage").fadeIn(2000).fadeOut(6000);
-        //         $("#errorMessageLabel").text("");
-        //         $scope.cancel();
-        //     } else {
-        //         $("#errorMessageLabel").text(data.data).fadeIn(3000);
-        //     }
-        // });
     };
     $scope.cancel = function () {
         $scope.courseCrn = "";
@@ -295,8 +371,6 @@ app.controller('createCourseController', ['$scope', '$window', '$uibModal', '$ht
     };
 
     $scope.alert = function (size, modal_Info) {
-        // $scope.alert = function (size){
-        // $scope.animateEnabled = true;
 
         var modalPopUpInstance = $uibModal.open({
             // animate:$scope.animateEnabled,
@@ -314,31 +388,219 @@ app.controller('createCourseController', ['$scope', '$window', '$uibModal', '$ht
 }]);
 
 
-app.controller("courseViewController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', '$stateParams','getCourseName', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope, $stateParams,getCourseName) {
+
+app.controller("courseViewController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', '$stateParams', 'getCourseName','$filter', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope, $stateParams, getCourseName,$filter) {
 //display course details
 
     $scope.studentData = [];
     $scope.course_crn = $stateParams.courseid;
-    $scope.course_name = getCourseName.returnCourseName($scope.course_crn);
+    getCourseName.returnCourseName($scope.course_crn).then(function (data) {
+        console.log(data);
+        $scope.course_name = data.course_name;
+        $scope.trimester = data.trimester;
+        $scope.due_date = data.due_date;
+        $scope.displayDate();
+    });
     console.log($scope.course_name);
-    $http.get(url + "/viewStudentsByCourse/" + $scope.course_crn).then(function successCallback(response) {
+    $http.get(url + "/viewStudentsByCourse/" + $scope.course_crn + "/" + $cookies.get('username')).then(function successCallback(response) {
         $.each(response.data.info, function (i, data) {
             data.i = i;
             // data.original_course_crn = data.course_crn;
             $scope.studentData.push(data);
         });
-        console.log(JSON.stringify($scope.studentData))
+        console.log(JSON.stringify($scope.studentData));
     }, function errorCallback(response) {
-        console.log('error')
-    })
+        console.log('error');
+    });
+//Sort Student data
+    $scope.sortColumn = "first_name";
+    $scope.reverseSort = false;
+
+    $scope.sortData = function (column) {
+        $scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
+        $scope.sortColumn = column;
+    }
+
+    $scope.getSortClass = function (column) {
+        if ($scope.sortColumn == column) {
+            return $scope.reverseSort
+                ? 'arrow-down'
+                : 'arrow-up';
+        }
+        return '';
+    }
+
     $scope.questions = [{id: 1, selectedRating: 10, question: ''}];
     $scope.range = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    $scope.courseReport = {};
+
+    $scope.downloadReport = function () {
+        $http.get(url + "/courseReport/" + $scope.course_crn).then(function successCallback(response) {
+            $scope.courseReport = response.data.info;
+            var csv = Papa.unparse(response.data.info);
+            var anchor = angular.element('<a/>');
+            anchor.css({display: 'none'}); // Make sure it's not visible
+            angular.element(document.body).append(anchor); // Attach to document
+            anchor.attr({
+                href: 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv),
+                // href: 'data:attachment/csv' + csv,
+                //target: '_blank',
+                download: 'Extraction1.csv'
+            })[0].click();
+            anchor.remove(); // Clean it up afterwards
+            console.log(JSON.stringify($scope.courseReport));
+        }, function errorCallback(response) {
+            console.log('error');
+        });
+    }
+
+
+    $scope.downloadReport2 = function () {
+        $http.get(url + "/courseReport2/" + $scope.course_crn).then(function successCallback(response) {
+            $scope.courseReport = response.data.info;
+            var csv = Papa.unparse(response.data.info);
+            var anchor = angular.element('<a/>');
+            anchor.css({display: 'none'}); // Make sure it's not visible
+            angular.element(document.body).append(anchor); // Attach to document
+
+            anchor.attr({
+                href: 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv),
+                // href: 'data:attachment/csv' + csv,
+                target: '_blank',
+                download: 'Extraction2.csv'
+            })[0].click();
+            anchor.remove(); // Clean it up afterwards
+            console.log(JSON.stringify(csv))
+            console.log(JSON.stringify($scope.courseReport));
+        }, function errorCallback(response) {
+            console.log('error');
+        });
+    }
+
+
+    $scope.displayDate = function () {
+        $scope.today = function () {
+            $scope.duedt = new Date();
+            console.log($scope.dt);
+        };
+        $scope.today();
+
+        $scope.clear = function () {
+            $scope.duedt = null;
+        };
+
+        $scope.inlineOptions = {
+            customClass: getDayClass,
+            minDate: new Date(),
+            showWeeks: true
+        };
+
+        $scope.dateOptions = {
+            // dateDisabled: disabled,
+            formatYear: 'yy',
+            maxDate: new Date(2050, 5, 22),
+            minDate: new Date(),
+            startingDay: 1
+        };
+
+        // Disable weekend selection
+        function disabled(data) {
+            var date = data.date,
+                mode = data.mode;
+            return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+        }
+
+        $scope.toggleMin = function () {
+            $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
+            $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
+        };
+
+        $scope.toggleMin();
+
+        $scope.open1 = function () {
+            $scope.popup1.opened = true;
+        };
+
+        $scope.open2 = function () {
+            $scope.popup2.opened = true;
+        };
+
+        $scope.setDate = function (year, month, day) {
+            $scope.duedt = new Date(year, month, day);
+        };
+
+        $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+        $scope.format = $scope.formats[0];
+        $scope.altInputFormats = ['M!/d!/yyyy'];
+
+        $scope.popup1 = {
+            opened: false,
+            maxDate: new Date('04/04/2017')
+        };
+
+        $scope.popup2 = {
+            opened: false,
+            maxDate: new Date('04/04/2017')
+        };
+
+        var tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        var afterTomorrow = new Date();
+        afterTomorrow.setDate(tomorrow.getDate() + 1);
+        $scope.events = [
+            {
+                date: tomorrow,
+                status: 'full'
+            },
+            {
+                date: afterTomorrow,
+                status: 'partially'
+            }
+        ];
+
+        function getDayClass(data) {
+            var date = data.date,
+                mode = data.mode;
+            if (mode === 'day') {
+                var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
+
+                for (var i = 0; i < $scope.events.length; i++) {
+                    var currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
+
+                    if (dayToCheck === currentDay) {
+                        return $scope.events[i].status;
+                    }
+                }
+            }
+
+            return '';
+        }
+    }
+
+
+    $scope.changeDate = function () {
+        var dueDate = $filter('date')($scope.duedt, "yyyy-MM-dd");
+        var data = {
+            "course_crn": $scope.course_crn,
+            "due_date": dueDate
+        }
+        console.log($scope.duedt);
+        $http.post(url + "/changeDueDate", data).then(function successCallback(response) {
+            $("#successMessage").fadeIn(2000).fadeOut(4000);
+            $("#errorMessageLabel").text("");
+        }, function errorCallback(response) {
+            console.log('error')
+        })
+    }
 }]);
 
-app.controller("groupViewController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope, $stateParams) {
+app.controller("groupViewController", ['$scope', '$cookies', '$state', '$http', 'url', '$uibModal', '$rootScope', '$stateParams', 'getCourseName', function ($scope, $cookies, $state, $http, url, $uibModal, $rootScope, $stateParams, getCourseName) {
 //display group details
     $scope.groupData = [];
     $scope.course_crn = $stateParams.courseid;
+    getCourseName.returnCourseName($scope.course_crn).then(function (data) {
+        $scope.course_name = data.course_name;
+    });
     console.log($stateParams.courseid);
     $http.get(url + "/viewGroupsByCourse/" + $scope.course_crn).then(function successCallback(response) {
         $.each(response.data.info, function (i, data) {
@@ -348,31 +610,33 @@ app.controller("groupViewController", ['$scope', '$cookies', '$state', '$http', 
         });
 
     }, function errorCallback(response) {
-        console.log('error')
-    })
-
+        console.log('error');
+    });
 
 }]);
 
-app.controller("addQuestionsController", ['$scope', '$cookies', '$state', '$http', 'url', '$window', '$uibModal', '$stateParams', function ($scope, $cookies, $state, $http, url, $uibModal, $window, $stateParams) {
+app.controller("addQuestionsController", ['$scope', '$cookies', '$state', '$http', 'url', '$window', '$uibModal', '$stateParams', 'getCourseName', function ($scope, $cookies, $state, $http, url, $uibModal, $window, $stateParams, getCourseName) {
     //get questions for the course
     $scope.getQuestionData = [];
     $scope.course_crn = $stateParams.courseid;
+    getCourseName.returnCourseName($scope.course_crn).then(function (data) {
+        $scope.course_name = data.course_name;
+    });
     console.log($stateParams.courseid);
     $http.get(url + "/getQuestionsByCourse/" + $scope.course_crn).then(function successCallback(response) {
-        if (response.data.success){
+        if (response.data.success) {
             $.each(response.data.info, function (i, data) {
                 data.i = i;
                 // data.original_course_crn = data.course_crn;
                 $scope.getQuestionData.push(data);
             });
-        }else{
+        } else {
 
         }
 
 
     }, function errorCallback(response) {
-        console.log('error')
+        console.log('error');
     })
 
 
@@ -406,13 +670,9 @@ app.controller("addQuestionsController", ['$scope', '$cookies', '$state', '$http
 
                 if (row[QUESTION_COLUMN_HEADER] == undefined
                     || row[MAX_RATING_COLUMN_HEADER] == undefined) {
-                    // $scope.alert('sm', {modalHeader: "Error", modalBody: "Format Error: Please check the format of the csv file you are up", data:{}});
+
                     $scope.csvformatwrong = true;
 
-                    // alertDialog({
-                    //     title: "Error",
-                    //     message: "Format Error: Please check the format of the csv file you are up "
-                    // });
                 } else {
                     data.push({
                         question: row[QUESTION_COLUMN_HEADER],
@@ -429,28 +689,14 @@ app.controller("addQuestionsController", ['$scope', '$cookies', '$state', '$http
         });
     });
     $scope.preview = function (callBack) {
-        // console.log($scope.questionData);
-//                var data = [];
-//                $window.Papa.parse($scope.files, {
-//                    header: true,
-//                    dynamicTyping: true,
-//                    complete: function (results) {
-//                        callBack(results.data);
-//                    }
-//
-//                });
+
     };
     $scope.remove = function () {
         $scope.cancel();
-//                $("#preview").css("visibility", "visible");
-//                $("#save").css("visibility", "hidden");
-//                $("#cancel").css("visibility", "hidden");
+
     };
     $scope.change = function () {
-//                $("#previewTable").css("visibility", "hidden");
-//                $("#preview").css("visibility", "visible");
-//                $("#cancel").css("visibility", "hidden");
-//                $("#save").css("visibility", "hidden");
+
     };
     $scope.saveData = function () {
         if ($scope.questionData.length == 0)
@@ -478,24 +724,6 @@ app.controller("addQuestionsController", ['$scope', '$cookies', '$state', '$http
         });
 
 
-        // $.ajax({
-        //     type: 'POST',
-        //     url: url + "/addCourse",
-        //     headers: {
-        //         "user_name": $cookies.get("username"),
-        //         "course_name": $scope.courseName,
-        //         "course_crn": $scope.courseCrn,
-        //         "data": JSON.stringify($scope.questionData)
-        //     }
-        // }).done(function (data) {
-        //     if (data.success) {
-        //         $("#successMessage").fadeIn(2000).fadeOut(6000);
-        //         $("#errorMessageLabel").text("");
-        //         $scope.cancel();
-        //     } else {
-        //         $("#errorMessageLabel").text(data.data).fadeIn(3000);
-        //     }
-        // });
     };
     $scope.cancel = function () {
         $scope.questionData = [];

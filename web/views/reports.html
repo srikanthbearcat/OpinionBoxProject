@@ -1,0 +1,59 @@
+<!--left pan-->
+<div class="list-group col-md-2" style="margin-top:70px;">
+    <a ui-sref="modifyCourse" ui-sref-active="active" class="list-group-item "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>Courses</a>
+    <a ui-sref="viewCourse({courseid:course_crn})" ui-sref-active="active" class="list-group-item">Students</a>
+    <a ui-sref="viewGroups({courseid:course_crn})" ui-sref-active="active" class="list-group-item">View Groups</a>
+    <a ui-sref="addQuestions({courseid:course_crn})" ui-sref-active="active" class="list-group-item">Add Questions</a>
+    <a ui-sref="reports({courseid:course_crn})" ui-sref-active="active" class="list-group-item">Reports</a>
+</div>
+
+<!--right dashboard-->
+<div class="col-md-10">
+
+    <h2>Reports - {{course_name}}</span></h2>
+    <hr style="1px solid #8c8b8b">
+    <div class="row">
+        <br>
+    </div>
+
+    <div class="row">
+        </br>
+        </br>
+        <div class="col-md-3">
+            <button class="btn btn-primary " style="margin-bottom: 0%" ng-click="downloadReport()">Individual Responses
+            </button>
+        </div>
+        <div class="col-md-1">
+            &nbsp
+        </div>
+        <div class="col-md-8" style="padding-top:8px">
+            - Collection of responses given by student to his teammates.
+        </div>
+    </div>
+
+    <div class="row">
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <button class="btn btn-primary " style="margin-bottom: 0%" ng-click="downloadReport2()">Final Report
+            </button>
+        </div>
+        <div class="col-md-1">
+            &nbsp
+        </div>
+        <div class="col-md-8"  style="padding-top:8px">
+            - Average score secured by each student.</br><br>
+        </div>
+    </div>
+    <style>
+        hr {
+            display: block;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+            margin-left: auto;
+            margin-right: auto;
+            border-style: inset;
+            border-width: 1px;
+        }
+    </style>

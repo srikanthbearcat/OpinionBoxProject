@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-class faculty{
+class Faculty{
     private  $first_name;
     private  $last_name;
     private  $email_id;
