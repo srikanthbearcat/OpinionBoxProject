@@ -1,0 +1,6 @@
+[16-Mar-2017 13:15:13 UTC] PHP Fatal error:  Class 'faculty' not found in /home/patrickimmelsub/public_html/OpinionBoxProject/services/controllers/adminController.php on line 139
+[16-Mar-2017 13:15:19 UTC] PHP Fatal error:  Class 'faculty' not found in /home/patrickimmelsub/public_html/OpinionBoxProject/services/controllers/adminController.php on line 139
+[16-Mar-2017 14:42:20 UTC] PHP Parse error:  syntax error, unexpected '<' in /home/patrickimmelsub/public_html/OpinionBoxProject/services/controllers/adminController.php on line 278
+[16-Mar-2017 14:42:33 UTC] PHP Parse error:  syntax error, unexpected '<' in /home/patrickimmelsub/public_html/OpinionBoxProject/services/controllers/adminController.php on line 278
+[16-Mar-2017 14:43:06 UTC] PHP Parse error:  syntax error, unexpected '<' in /home/patrickimmelsub/public_html/OpinionBoxProject/services/controllers/adminController.php on line 279
+[16-Apr-2017 03:07:51 UTC] PHP Fatal error:  Class 'faculty' not found in /home/patrickimmelsub/public_html/OpinionBoxProject/services/controllers/adminController.php on line 142
